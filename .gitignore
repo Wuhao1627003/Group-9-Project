@@ -2,7 +2,7 @@
 */node_modules
 */.DS_Store
 .idea/*
-CIS 5730 Group Project Setup Guide.docx
+*.docx
 contributor/.gradle/*
 contributor/gradle/*
 contributor/local.properties
