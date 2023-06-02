@@ -1,3 +1,4 @@
+package org;
 public class Donation {
 	
 	private String fundId;
