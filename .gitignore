@@ -7,3 +7,5 @@ contributor/.gradle/*
 contributor/gradle/*
 contributor/local.properties
 db/*
+out
+lib
