@@ -1,4 +1,9 @@
 package org;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+
 public class Donation {
 	
 	private String fundId;
@@ -10,7 +15,8 @@ public class Donation {
 		this.fundId = fundId;
 		this.contributorName = contributorName;
 		this.amount = amount;
-		this.date = date;
+		LocalDateTime dateTime = LocalDateTime.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"));
+		this.date = dateTime.format(DateTimeFormatter.ofPattern("MMM dd, yyyy"));
 	}
 
 	public String getFundId() {
