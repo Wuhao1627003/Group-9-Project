@@ -1,4 +1,4 @@
-package org;
+//package org;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -11,10 +11,24 @@ public class Fund {
 	private List<Donation> donations;
 	
 	public Fund(String id, String name, String description, long target) {
-		this.id = id;
-		this.name = name;
+		// Check id value
+		if(id.matches("\\w+")) {
+			this.id = id;
+		} else {
+			throw new IllegalArgumentException("[Invalid id] word without spaces and special characters.");
+		}
+
+		// Check name value
+		if(name.matches("[A-Za-z0-9\\s]*")) {
+			this.name = name;
+		} else {
+			throw new IllegalArgumentException("[Invalid name] word without special characters.");
+		}
+
 		this.description = description;
+
 		this.target = target;
+
 		donations = new LinkedList<>();
 	}
 
@@ -41,7 +55,5 @@ public class Fund {
 	public List<Donation> getDonations() {
 		return donations;
 	}
-	
-	
-	
+
 }

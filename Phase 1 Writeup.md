@@ -2,28 +2,57 @@
 
 ## Group 9
 
-1. 1.7-9.
+### 1. Additional Tasks Choice
+   1.7 - 1.9.
 
-2. 1.1 org/DataManager_attemptLogin_Test.java
-   org/DataManager_createFund_Test.java
-   org/DataManager_getContributorName_Test.java
+### 2. Tasks Notes
+#### 1.1 Test
+      org/DataManager_attemptLogin_Test.java
+      org/DataManager_createFund_Test.java
+      org/DataManager_getContributorName_Test.java
 
-   1.2
+#### 1.2 Debug
+      1. DataManager.java
+      attemptLogin()
+      // Check login ID value to make sure it only contains words ([a-zA-Z_0-9]).
+      // Check password value to make sure it only contains words ([a-zA-Z_0-9]).
+      // Correct typo: String description = (String)data.get("description");
+      createFund()
+      // Check orgID value to make sure it only contains words ([a-zA-Z_0-9]).
+      // Check fund name value to make sure it does not contain special characters.
+      
+      3. Organization.java
+      // Check id value to make sure it only contains words ([a-zA-Z_0-9]).
+      // Check name value to make sure it only contains words ([a-zA-Z_0-9]).
+      
+      4. Donation.java
+      // Check fundId value to make sure it only contains words ([a-zA-Z_0-9]).
+      // Check contributorName value to make sure it only contains words ([a-zA-Z_0-9]).
+      // Check date value to make sure it is in format YYYY/MM/DD.      
 
-   1.3
+      5. Fund.java
+      // Check id value to make sure it only contains words ([a-zA-Z_0-9]).
+      // Check name value to make sure it only contains words ([a-zA-Z_0-9]).
 
-   1.7
+#### 1.3 Display Total Donations For Fund
 
-   1.8
+#### 1.7 Input Error Handling
 
-   1.9 Donation constructor
+#### 1.8 Login Error Handing
+     // DataManager.attemptLogin() modified.
+     // UserInterface.main() modified.
 
-3.
+#### 1.9 Donation constructor
 
-4.
+### 3.
 
-5.
+### 4.
 
-6. Hao: 1.1, 1.9
-   Qi: 1.2, 1.8
-   Zitong: 1.3, 1.7
+### 5.
+
+### 6. Contribution
+|        | Required Tasks | Additional Tasks  |
+|:--------:|:--------------:|:-----------------:|
+| Hao    |      1.1       |        1.9        |
+| Qi     |      1.2       |        1.8        |
+| Zitong |      1.3       |        1.7        |

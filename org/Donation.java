@@ -1,4 +1,4 @@
-package org;
+//package org;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -12,11 +12,30 @@ public class Donation {
 	private String date;
 	
 	public Donation(String fundId, String contributorName, long amount, String date) {
-		this.fundId = fundId;
-		this.contributorName = contributorName;
+		// Check fundId value
+		if(fundId.matches("\\w+")) {
+			this.fundId = fundId;
+		} else {
+			throw new IllegalArgumentException("[Invalid fundId] word without spaces and special characters.");
+		}
+
+		// Check contributorName value
+		if(contributorName.matches("[A-Za-z0-9\\s]*")) {
+			this.contributorName = contributorName;
+		} else {
+			System.out.println(contributorName);
+			throw new IllegalArgumentException("[Invalid contributorName] word without special characters.");
+		}
+
 		this.amount = amount;
-		LocalDateTime dateTime = LocalDateTime.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"));
-		this.date = dateTime.format(DateTimeFormatter.ofPattern("MMM dd, yyyy"));
+
+		// Check date value
+		if(date.matches("\\d\\d\\d\\d/[0-1]\\d/[0-3]\\d|\\d\\d\\d\\d/\\d/[0-3]\\d|\\d\\d\\d\\d/[0-1]\\d/\\d|\\d\\d\\d\\d/\\d/\\d")) {
+			LocalDateTime dateTime = LocalDateTime.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"));
+			this.date = dateTime.format(DateTimeFormatter.ofPattern("MM dd, yyyy"));
+		} else {
+			throw new IllegalArgumentException("[Invalid date] should be YYYY-MM-DD.");
+		}
 	}
 
 	public String getFundId() {
@@ -34,7 +53,5 @@ public class Donation {
 	public String getDate() {
 		return date;
 	}
-	
-	
 
 }
