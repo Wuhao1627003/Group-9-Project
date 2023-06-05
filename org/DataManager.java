@@ -1,4 +1,4 @@
-package org;
+//package org;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -26,20 +26,32 @@ public class DataManager {
 
 		try {
 			Map<String, Object> map = new HashMap<>();
-			map.put("login", login);
-			map.put("password", password);
+
+			// Check login ID value
+			if(login.matches("\\w+")) {
+				map.put("login", login);
+			} else {
+				throw new IllegalArgumentException("[Invalid login ID] word without spaces and special characters.");
+			}
+
+			// Check password value
+			if(login.matches("\\w+")) {
+				map.put("password", password);
+			} else {
+				throw new IllegalArgumentException("[Invalid password] word without spaces and special characters.");
+			}
+
 			String response = client.makeRequest("/findOrgByLoginAndPassword", map);
 
 			JSONParser parser = new JSONParser();
 			JSONObject json = (JSONObject) parser.parse(response);
 			String status = (String)json.get("status");
 
-
 			if (status.equals("success")) {
 				JSONObject data = (JSONObject)json.get("data");
 				String fundId = (String)data.get("_id");
 				String name = (String)data.get("name");
-				String description = (String)data.get("description"); //Edit: Typo?
+				String description = (String)data.get("description"); // Correct typo
 				Organization org = new Organization(fundId, name, description);
 
 				JSONArray funds = (JSONArray)data.get("funds");
@@ -91,7 +103,14 @@ public class DataManager {
 		try {
 
 			Map<String, Object> map = new HashMap<>();
-			map.put("id", id);
+
+			// Check contributor ID value
+			if(!id.matches("\\s+")) {
+				map.put("id", id);
+			} else {
+				throw new IllegalArgumentException("Invalid contributor ID: contributor ID should not have spaces.");
+			}
+
 			String response = client.makeRequest("/findContributorNameById", map);
 
 			JSONParser parser = new JSONParser();
@@ -120,10 +139,24 @@ public class DataManager {
 		try {
 
 			Map<String, Object> map = new HashMap<>();
-			map.put("orgId", orgId);
-			map.put("name", name);
+
+			// Check organization ID value
+			if(orgId.matches("\\w+")) {
+				map.put("orgId", orgId);
+			} else {
+				throw new IllegalArgumentException("[Invalid contributor ID] word without spaces and special characters.");
+			}
+
+			// Check name value
+			if(name.matches("[A-Za-z0-9\\s]*")) {
+				map.put("name", name);
+			} else {
+				throw new IllegalArgumentException("[Invalid fund name] word without special characters.");
+			}
+
 			map.put("description", description);
 			map.put("target", target);
+
 			String response = client.makeRequest("/createFund", map);
 
 			JSONParser parser = new JSONParser();
@@ -143,6 +176,4 @@ public class DataManager {
 			return null;
 		}	
 	}
-
-
 }
