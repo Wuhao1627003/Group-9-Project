@@ -36,7 +36,7 @@
 
 #### 1.3 Display Total Donations For Fund
 
-#### 1.7 Input error handling
+#### 1.7 Input Error Handling
 
 #### 1.8 Login Error Handing
      // DataManager.attemptLogin() modified.
