@@ -9,3 +9,4 @@ contributor/local.properties
 db/*
 out/*
 lib/*
+regexTest.java

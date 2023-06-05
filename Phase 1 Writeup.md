@@ -20,6 +20,19 @@
       createFund()
       // Check orgID value to make sure it only contains words ([a-zA-Z_0-9]).
       // Check fund name value to make sure it does not contain special characters.
+      
+      3. Organization.java
+      // Check id value to make sure it only contains words ([a-zA-Z_0-9]).
+      // Check name value to make sure it only contains words ([a-zA-Z_0-9]).
+      
+      4. Donation.java
+      // Check fundId value to make sure it only contains words ([a-zA-Z_0-9]).
+      // Check contributorName value to make sure it only contains words ([a-zA-Z_0-9]).
+      // Check date value to make sure it is in format YYYY/MM/DD.      
+
+      5. Fund.java
+      // Check id value to make sure it only contains words ([a-zA-Z_0-9]).
+      // Check name value to make sure it only contains words ([a-zA-Z_0-9]).
 
 #### 1.3
 
