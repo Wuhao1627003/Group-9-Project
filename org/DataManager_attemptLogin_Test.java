@@ -21,7 +21,7 @@ public class DataManager_attemptLogin_Test {
 							+
 							"\"funds\": [{\"_id\":\"12345\",\"name\":\"new fund\",\"description\":\"this is the new fund\",\"target\":10000,"
 							+
-							"\"donations\":[{\"contributor\":\"1\", \"amount\":1, \"date\":\"2023/06/02\"}]}]}}";
+							"\"donations\":[{\"contributor\":\"1\", \"amount\":1, \"date\":\"2023-06-05T23:00:59.238Z\"}]}]}}";
 				} else if (resource.equals("/findContributorNameById")) {
 					return "{\"status\":\"success\",\"data\":\"Chris\"}";
 				}
@@ -53,7 +53,7 @@ public class DataManager_attemptLogin_Test {
 		assertEquals("12345", d.getFundId());
 		assertEquals("Chris", d.getContributorName());
 		assertEquals(1, d.getAmount());
-		assertEquals("2023/06/02", d.getDate());
+		assertEquals("Jun 05, 2023", d.getDate());
 	}
 
 	@Test
