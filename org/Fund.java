@@ -55,7 +55,5 @@ public class Fund {
 	public List<Donation> getDonations() {
 		return donations;
 	}
-	
-	
-	
+
 }

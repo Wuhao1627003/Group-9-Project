@@ -34,11 +34,13 @@
       // Check id value to make sure it only contains words ([a-zA-Z_0-9]).
       // Check name value to make sure it only contains words ([a-zA-Z_0-9]).
 
-#### 1.3
+#### 1.3 Display Total Donations For Fund
 
-#### 1.7
+#### 1.7 Input error handling
 
-#### 1.8
+#### 1.8 Login Error Handing
+     // DataManager.attemptLogin() modified.
+     // UserInterface.main() modified.
 
 #### 1.9 Donation constructor
 

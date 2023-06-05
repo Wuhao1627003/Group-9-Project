@@ -53,7 +53,5 @@ public class Donation {
 	public String getDate() {
 		return date;
 	}
-	
-	
 
 }

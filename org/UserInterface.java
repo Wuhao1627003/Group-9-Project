@@ -39,8 +39,7 @@ public class UserInterface {
 			else {
 				displayFund(option);
 			}
-		}			
-			
+		}
 	}
 	
 	public void createFund() {
@@ -57,8 +56,6 @@ public class UserInterface {
 
 		Fund fund = dataManager.createFund(org.getId(), name, description, target);
 		org.getFunds().add(fund);
-
-		
 	}
 	
 	
@@ -77,13 +74,10 @@ public class UserInterface {
 		for (Donation donation : donations) {
 			System.out.println("* " + donation.getContributorName() + ": $" + donation.getAmount() + " on " + donation.getDate());
 		}
-	
-		
+
 		System.out.println("Press the Enter key to go back to the listing of funds");
 		in.nextLine();
-		
-		
-		
+
 	}
 	
 	
@@ -91,21 +85,23 @@ public class UserInterface {
 		
 		DataManager ds = new DataManager(new WebClient("localhost", 3001));
 		
-		String login = args[0];
-		String password = args[1];
-		
-		
-		Organization org = ds.attemptLogin(login, password);
-		
-		if (org == null) {
-			System.out.println("Login failed.");
-		}
-		else {
+//		String login = args[0];
+//		String password = args[1];
 
-			UserInterface ui = new UserInterface(ds, org);
-		
-			ui.start();
-		
+		String login = "id";
+		String password = "password";
+
+		try {
+			Organization org = ds.attemptLogin(login, password);
+			if (org == null) {
+				System.out.println("Login failed.");
+			}
+			else {
+				UserInterface ui = new UserInterface(ds, org);
+				ui.start();
+			}
+		} catch (IllegalStateException ise) {
+			throw ise;
 		}
 	}
 

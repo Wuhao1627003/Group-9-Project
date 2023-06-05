@@ -49,6 +49,5 @@ public class Organization {
 	public void addFund(Fund fund) {
 		funds.add(fund);
 	}
-	
 
 }
