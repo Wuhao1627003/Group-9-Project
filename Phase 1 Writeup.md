@@ -35,8 +35,11 @@
       // Check name value to make sure it only contains words ([a-zA-Z_0-9]).
 
 #### 1.3 Display Total Donations For Fund
+     //UserInterface.displayFund() modified.
 
 #### 1.7 Input Error Handling
+      //UserInterface.start() modified.
+      //UserInterface.createFund() modified.
 
 #### 1.8 Login Error Handing
      // DataManager.attemptLogin() modified.
