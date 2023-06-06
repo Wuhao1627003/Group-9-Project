@@ -1,4 +1,5 @@
 //package org;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Scanner;
 
@@ -31,7 +32,22 @@ public class UserInterface {
 				System.out.println("Enter the fund number to see more information.");
 			}
 			System.out.println("Enter 0 to create a new fund");
-			int option = in.nextInt();
+			int option = 0;
+            boolean validInput = false;
+            while (!validInput) {
+                try{
+                    option = in.nextInt();
+                    if (option >= 0 && option <= org.getFunds().size()) {
+                        validInput = true;
+                    } else {
+                        System.out.println("Please enter an Integer within Range");
+                        in.nextLine();
+                    }
+                } catch (Exception e) {
+                    System.out.println("Please enter an Integer");
+                    in.nextLine();
+                }
+            }
 			in.nextLine();
 			if (option == 0) {
 				createFund(); 
@@ -43,16 +59,29 @@ public class UserInterface {
 	}
 	
 	public void createFund() {
-		
-		System.out.print("Enter the fund name: ");
-		String name = in.nextLine().trim();
+
+        String name = "";
+        while (true) {
+            System.out.print("Enter the fund name: ");
+            name = in.nextLine().trim();
+            if (!name.equals("")) break;
+        }
 		
 		System.out.print("Enter the fund description: ");
 		String description = in.nextLine().trim();
-		
-		System.out.print("Enter the fund target: ");
-		long target = in.nextInt();
-		in.nextLine();
+
+        System.out.print("Enter the fund target: ");
+        long target = 0;
+        while (true) {
+            try {
+                target = in.nextInt();
+                in.nextLine();
+                break;
+            } catch (Exception e){
+                System.out.print("Please enter an Integer: ");
+                in.nextLine();
+            }
+        }
 
 		Fund fund = dataManager.createFund(org.getId(), name, description, target);
 		org.getFunds().add(fund);
@@ -71,13 +100,16 @@ public class UserInterface {
 		
 		List<Donation> donations = fund.getDonations();
 		System.out.println("Number of donations: " + donations.size());
+        long totalDonation = 0;
 		for (Donation donation : donations) {
 			System.out.println("* " + donation.getContributorName() + ": $" + donation.getAmount() + " on " + donation.getDate());
+            totalDonation += donation.getAmount();
 		}
-
+        double donationPercentage =  totalDonation*1.0/fund.getTarget();
+        System.out.println("Total donation amount: $" + totalDonation + "(" +Math.round(donationPercentage*100) + "% of " +
+                "the target)");
 		System.out.println("Press the Enter key to go back to the listing of funds");
 		in.nextLine();
-
 	}
 	
 	
@@ -85,11 +117,11 @@ public class UserInterface {
 		
 		DataManager ds = new DataManager(new WebClient("localhost", 3001));
 		
-//		String login = args[0];
-//		String password = args[1];
+		String login = args[0];
+		String password = args[1];
 
-		String login = "id";
-		String password = "password";
+//		String login = "id";
+//		String password = "password";
 
 		try {
 			Organization org = ds.attemptLogin(login, password);
@@ -104,5 +136,4 @@ public class UserInterface {
 			throw ise;
 		}
 	}
-
 }
