@@ -74,7 +74,7 @@ public class DataManager_attemptLogin_Test {
 		assertNull(org);
 	}
 
-	@Test
+	@Test(expected = IllegalStateException.class)
 	public void testExceptionCreation() {
 
 		DataManager dm = new DataManager(new WebClient("localhost", 3001) {
@@ -94,7 +94,5 @@ public class DataManager_attemptLogin_Test {
 		});
 
 		Organization org = dm.attemptLogin("chrism", "IamChris");
-
-		assertNull(org);
 	}
 }

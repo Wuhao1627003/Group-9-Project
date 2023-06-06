@@ -29,13 +29,9 @@ public class Donation {
 
 		this.amount = amount;
 
-		// Check date value
-		if(date.matches("\\d\\d\\d\\d/[0-1]\\d/[0-3]\\d|\\d\\d\\d\\d/\\d/[0-3]\\d|\\d\\d\\d\\d/[0-1]\\d/\\d|\\d\\d\\d\\d/\\d/\\d")) {
-			LocalDateTime dateTime = LocalDateTime.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"));
-			this.date = dateTime.format(DateTimeFormatter.ofPattern("MM dd, yyyy"));
-		} else {
-			throw new IllegalArgumentException("[Invalid date] should be YYYY-MM-DD.");
-		}
+		// Format date value
+		LocalDateTime dateTime = LocalDateTime.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"));
+		this.date = dateTime.format(DateTimeFormatter.ofPattern("MMM dd, yyyy"));
 	}
 
 	public String getFundId() {
