@@ -120,9 +120,6 @@ public class UserInterface {
 		String login = args[0];
 		String password = args[1];
 
-//		String login = "id";
-//		String password = "password";
-
 		try {
 			Organization org = ds.attemptLogin(login, password);
 			if (org == null) {
