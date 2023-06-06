@@ -25,40 +25,39 @@
       // Check orgID value to make sure it only contains words ([a-zA-Z_0-9]).
       // Check fund name value to make sure it does not contain special characters.
 
-      3. Organization.java
+      2. Organization.java
       // Check id value to make sure it only contains words ([a-zA-Z_0-9]).
       // Check name value to make sure it only contains words ([a-zA-Z_0-9]).
 
-      4. Donation.java
+      3. Donation.java
       // Check fundId value to make sure it only contains words ([a-zA-Z_0-9]).
       // Check contributorName value to make sure it only contains words ([a-zA-Z_0-9]).
-      // Check date value to make sure it is in format YYYY/MM/DD.
+      // Change data to system local timestamp
 
-      5. Fund.java
+      4. Fund.java
       // Check id value to make sure it only contains words ([a-zA-Z_0-9]).
       // Check name value to make sure it only contains words ([a-zA-Z_0-9]).
 
 #### 1.3 Display Total Donations For Fund
-
-     //UserInterface.displayFund() modified.
+     UserInterface.displayFund() modified.
 
 #### 1.7 Input Error Handling
-
-      //UserInterface.start() modified.
-      //UserInterface.createFund() modified.
+      UserInterface.start() modified.
+      UserInterface.createFund() modified.
 
 #### 1.8 Login Error Handing
-
-     // DataManager.attemptLogin() modified.
-     // UserInterface.main() modified.
+     DataManager.attemptLogin() modified.
+     UserInterface.main() modified.
 
 #### 1.9 Donation
+      Constructor modified to parse date
 
-      constructor modified to parse date
-
-### 3.
-
-      "description" was misspelled on L54 in DataManager.java
+### 3. Bugs Fixed
+      1. "description" was misspelled on L54 in DataManager.java
+      2. Throw IllegalArgumentException() whenever the inputs are
+         invalid when creating new orgnization, donation, and fund,
+         and when users try to login to prevent bugs in other code
+         corrupt the database.
 
 ### 4. N/A
 
