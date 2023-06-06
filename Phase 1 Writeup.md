@@ -4,18 +4,16 @@
 
 ### 1. Additional Tasks Choice
 
-1.7 - 1.9.
+1.7 1.8 1.9.
 
 ### 2. Tasks Notes
 
 #### 1.1 Test
-
       org/DataManager_attemptLogin_Test.java
       org/DataManager_createFund_Test.java
       org/DataManager_getContributorName_Test.java
 
 #### 1.2 Debug
-
       1. DataManager.java
       attemptLogin()
       // Check login ID value to make sure it only contains words ([a-zA-Z_0-9]).
@@ -50,7 +48,7 @@
      UserInterface.main() modified.
 
 #### 1.9 Donation
-      Constructor modified to parse date
+      Constructor modified to parse date.
 
 ### 3. Bugs Fixed
       1. "description" was misspelled on L54 in DataManager.java
