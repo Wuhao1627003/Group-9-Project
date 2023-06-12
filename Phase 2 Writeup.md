@@ -25,6 +25,8 @@
 #### 2.7 Organization App delete fund
 
 #### 2.8 Organization App logout/login
+      Login prompt added before starting the UI.
+      Logout option added to the menu that lists the organization’s funds.
 
 ### 3. N/A
 

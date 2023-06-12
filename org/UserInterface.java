@@ -16,8 +16,9 @@ public class UserInterface {
 	}
 	
 	public void start() {
-				
-		while (true) {
+		boolean logout = false;
+
+		while (!logout) {
 			System.out.println("\n\n");
 			if (org.getFunds().size() > 0) {
 				System.out.println("There are " + org.getFunds().size() + " funds in this organization:");
@@ -32,6 +33,7 @@ public class UserInterface {
 				System.out.println("Enter the fund number to see more information.");
 			}
 			System.out.println("Enter 0 to create a new fund");
+			System.out.println("Enter -1 to logout");
 			int option = 0;
             boolean validInput = false;
             while (!validInput) {
@@ -39,20 +41,24 @@ public class UserInterface {
                     option = in.nextInt();
                     if (option >= 0 && option <= org.getFunds().size()) {
                         validInput = true;
-                    } else {
+                    } else if (option == 0) {
                         System.out.println("Please enter an Integer within Range");
                         in.nextLine();
-                    }
+                    } else if (option == -1) {
+						logout = true;
+						break;
+					}
                 } catch (Exception e) {
                     System.out.println("Please enter an Integer");
                     in.nextLine();
                 }
             }
 			in.nextLine();
-			if (option == 0) {
+			if (option == -1) {
+
+			} else if (option == 0) {
 				createFund(); 
-			}
-			else {
+			} else {
 				displayFund(option);
 			}
 		}
@@ -83,8 +89,12 @@ public class UserInterface {
             }
         }
 
-		Fund fund = dataManager.createFund(org.getId(), name, description, target);
-		org.getFunds().add(fund);
+		try {
+			Fund fund = dataManager.createFund(org.getId(), name, description, target);
+			org.getFunds().add(fund);
+		} catch (IllegalStateException | IllegalArgumentException e) {
+			System.out.println(e);
+		}
 	}
 	
 	
@@ -115,26 +125,58 @@ public class UserInterface {
 		System.out.println("Press the Enter key to go back to the listing of funds");
 		in.nextLine();
 	}
+
+	private static String userLoginID() {
+		Scanner loginScanner = new Scanner(System.in);
+		System.out.print("Enter your login ID: ");
+		String login = loginScanner.nextLine();
+		if (login.equals("")) {
+			return null;
+		}
+		return login;
+	}
+
+	private static String userLoginPassword() {
+		Scanner loginScanner = new Scanner(System.in);
+		System.out.print("Enter your password: ");
+		String password = loginScanner.nextLine();
+		if (password.equals("")) {
+			return null;
+		}
+		return password;
+	}
 	
 	
 	public static void main(String[] args) {
 		
 		DataManager ds = new DataManager(new WebClient("localhost", 3001));
-		
-		String login = args[0];
-		String password = args[1];
 
-		try {
-			Organization org = ds.attemptLogin(login, password);
-			if (org == null) {
-				System.out.println("Login failed.");
+		// Login
+		while (true) {
+			String login = userLoginID();
+			String password = userLoginPassword();
+
+			try {
+				Organization org = ds.attemptLogin(login, password);
+				if (org == null) {
+					System.out.println("Login failed.");
+				}
+				else {
+					UserInterface ui = new UserInterface(ds, org);
+					ui.start();
+				}
+			} catch (IllegalStateException | IllegalArgumentException e) {
+				System.out.println(e);
 			}
-			else {
-				UserInterface ui = new UserInterface(ds, org);
-				ui.start();
+
+			// exit() or re-login
+			System.out.print("Exit [Y] | Login [ENTER]: ");
+			Scanner in = new Scanner(System.in);
+			String choice = in.nextLine();
+			if (choice.equals("Y") || choice.equals("y")) {
+				System.out.println("Closing the app...");
+				System.exit(0);
 			}
-		} catch (IllegalStateException | IllegalArgumentException e) {
-			throw e;
 		}
 	}
 }

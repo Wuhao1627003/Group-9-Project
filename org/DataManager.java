@@ -42,16 +42,25 @@ public class DataManager {
 			}
 
 			// Check password value
-			if (login.matches("\\w+")) {
+			if (password.matches("\\w+")) {
 				map.put("password", password);
 			} else {
 				throw new IllegalArgumentException("[Invalid password] word without spaces and special characters.");
 			}
 
 			String response = client.makeRequest("/findOrgByLoginAndPassword", map);
+			if (response == null) {
+				throw new IllegalStateException("[Error in communicating with server] login fails.");
+			}
 
 			JSONParser parser = new JSONParser();
-			JSONObject json = (JSONObject) parser.parse(response);
+			JSONObject json = null;
+			try {
+				json = (JSONObject) parser.parse(response);
+			} catch (Exception e) {
+
+			}
+
 			String status = (String) json.get("status");
 
 			if (status.equals("success")) {
@@ -92,11 +101,11 @@ public class DataManager {
 
 				return org;
 			} else {
-				throw new IllegalStateException("Web client return error when attempting login.");
+				throw new IllegalStateException("Error when getting organization info.");
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw new IllegalStateException("Error in communicating with server.");
+			// e.printStackTrace();
+			throw e;
 		}
 	}
 
@@ -114,7 +123,6 @@ public class DataManager {
 		}
 
 		try {
-
 			Map<String, Object> map = new HashMap<>();
 			Map<String, String> cache = new HashMap<>();
 
@@ -130,9 +138,17 @@ public class DataManager {
 			}
 
 			String response = client.makeRequest("/findContributorNameById", map);
+			if (response == null) {
+				throw new IllegalStateException("[Error in communicating with server] fail to find contributor.");
+			}
 
 			JSONParser parser = new JSONParser();
-			JSONObject json = (JSONObject) parser.parse(response);
+			JSONObject json = null;
+			try {
+				json = (JSONObject) parser.parse(response);
+			} catch (Exception e) {
+
+			}
 			String status = (String) json.get("status");
 
 			if (status.equals("success")) {
@@ -140,11 +156,12 @@ public class DataManager {
 				cache.put(id, name);
 				return name;
 			} else {
-				throw new IllegalStateException("Web client return error when finding contributor name by ID.");
+				throw new IllegalStateException("Error when getting contributor name.");
 			}
 
 		} catch (Exception e) {
-			throw new IllegalStateException("Error in communicating with server.");
+			// throw new IllegalStateException("Error in communicating with server.");
+			throw e;
 		}
 	}
 
@@ -183,9 +200,17 @@ public class DataManager {
 			map.put("target", target);
 
 			String response = client.makeRequest("/createFund", map);
+			if (response == null) {
+				throw new IllegalStateException("[Error in communicating with server] fail to create fund.");
+			}
 
 			JSONParser parser = new JSONParser();
-			JSONObject json = (JSONObject) parser.parse(response);
+			JSONObject json = null;
+			try {
+				json = (JSONObject) parser.parse(response);
+			} catch (Exception e) {
+
+			}
 			String status = (String) json.get("status");
 
 			if (status.equals("success")) {
@@ -193,11 +218,11 @@ public class DataManager {
 				String fundId = (String) fund.get("_id");
 				return new Fund(fundId, name, description, target);
 			} else {
-				throw new IllegalStateException("Web client return error when creating fund.");
+				throw new IllegalStateException("Web client return error when creating new fund.");
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw new IllegalStateException("Error in communicating with server.");
+			// e.printStackTrace();
+			throw e;
 		}
 	}
 }
