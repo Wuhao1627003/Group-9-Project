@@ -103,8 +103,10 @@ public class DataManager {
 			} else {
 				throw new IllegalStateException("Error when getting organization info.");
 			}
-		} catch (Exception e) {
+		} catch (NullPointerException e) {
 			// e.printStackTrace();
+			throw new IllegalStateException();
+		} catch (IllegalStateException | IllegalArgumentException e) {
 			throw e;
 		}
 	}
@@ -159,8 +161,10 @@ public class DataManager {
 				throw new IllegalStateException("Error when getting contributor name.");
 			}
 
-		} catch (Exception e) {
-			// throw new IllegalStateException("Error in communicating with server.");
+		} catch (NullPointerException e) {
+			// e.printStackTrace();
+			throw new IllegalStateException();
+		} catch (IllegalStateException | IllegalArgumentException e) {
 			throw e;
 		}
 	}
@@ -218,10 +222,12 @@ public class DataManager {
 				String fundId = (String) fund.get("_id");
 				return new Fund(fundId, name, description, target);
 			} else {
-				throw new IllegalStateException("Web client return error when creating new fund.");
+				throw new IllegalStateException("Error when creating new fund.");
 			}
-		} catch (Exception e) {
+		} catch (NullPointerException e) {
 			// e.printStackTrace();
+			throw new IllegalStateException();
+		} catch (IllegalStateException | IllegalArgumentException e) {
 			throw e;
 		}
 	}
