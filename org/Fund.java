@@ -1,6 +1,5 @@
 //package org;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class Fund {
 
@@ -9,6 +8,7 @@ public class Fund {
 	private String description;
 	private long target;
 	private List<Donation> donations;
+    private Map<String, Long[]> aggregateDonations;
 	
 	public Fund(String id, String name, String description, long target) {
 		// Check id value
@@ -30,6 +30,9 @@ public class Fund {
 		this.target = target;
 
 		donations = new LinkedList<>();
+
+        aggregateDonations = new HashMap<>();
+
 	}
 
 	public String getId() {
@@ -56,4 +59,31 @@ public class Fund {
 		return donations;
 	}
 
+    public void calAggregateDonations() {
+          for (Donation donation: donations) {
+              String contributorName = donation.getContributorName();
+              if (!aggregateDonations.containsKey(contributorName)) {
+                  aggregateDonations.put(contributorName, new Long[]{new Long(0),new Long(0)});
+              }
+              //for each key:first long represents the donation count
+              aggregateDonations.get(contributorName)[0]++;
+              //the second long represents the donation amount;
+              aggregateDonations.get(contributorName)[1]+=donation.getAmount();
+          }
+    }
+
+    public  List<Map.Entry<String, Long[]>>  getAggregateDonations() {
+        List<Map.Entry<String, Long[]>> entryList =
+                new ArrayList<Map.Entry<String, Long[]>>(aggregateDonations.entrySet());
+
+        // Sort the list based on values in descending order
+        Collections.sort(entryList, new Comparator<Map.Entry<String, Long[]>>() {
+            @Override
+            public int compare(Map.Entry<String, Long[]> o1, Map.Entry<String, Long[]> o2) {
+                // Compare values in descending order
+                return o2.getValue()[1].compareTo(o1.getValue()[1]);
+            }
+        });
+        return  entryList;
+    }
 }

@@ -1,6 +1,7 @@
 //package org;
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class UserInterface {
@@ -107,14 +108,39 @@ public class UserInterface {
 		System.out.println("Name: " + fund.getName());
 		System.out.println("Description: " + fund.getDescription());
 		System.out.println("Target: $" + fund.getTarget());
-		
-		List<Donation> donations = fund.getDonations();
-		System.out.println("Number of donations: " + donations.size());
+
+        System.out.println("Enter 1 to see individual donations");
+        System.out.println("Enter 2 to see aggregate donations");
+
+        int option = 0;
+        boolean validInput = false;
+        while (!validInput) {
+            try{
+                option = in.nextInt();
+                if (option == 1|| option == 2) {
+                    validInput = true;
+                } else {
+                    System.out.println("Please enter an Integer within Range");
+                    in.nextLine();
+                }
+            } catch (Exception e) {
+                System.out.println("Please enter an Integer");
+                in.nextLine();
+            }
+        }
+        in.nextLine();
+        List<Donation> donations = fund.getDonations();
+        List<Map.Entry<String, Long[]>> aggregateDonations = fund.getAggregateDonations();
+        if (option == 1) {
+            printIndividualDonation(donations);
+        } else if (option == 2) {
+            printAggregateDonation(aggregateDonations);
+        }
+
         long totalDonation = 0;
-		for (Donation donation : donations) {
-			System.out.println("* " + donation.getContributorName() + ": $" + donation.getAmount() + " on " + donation.getDate());
+        for (Donation donation : donations) {
             totalDonation += donation.getAmount();
-		}
+        }
         long target = fund.getTarget();
         if (target == 0) {
             target =1;
@@ -125,6 +151,18 @@ public class UserInterface {
 		System.out.println("Press the Enter key to go back to the listing of funds");
 		in.nextLine();
 	}
+    private static void printIndividualDonation(List<Donation> donations) {
+        System.out.println("Number of donations: " + donations.size());
+        for (Donation donation : donations) {
+            System.out.println("* " + donation.getContributorName() + ": $" + donation.getAmount() + " on " + donation.getDate());
+        }
+    }
+
+    private static void printAggregateDonation(List<Map.Entry<String, Long[]>> aggregateDonations) {
+        for (Map.Entry<String, Long[]> entry: aggregateDonations) {
+            System.out.println("* " + entry.getKey() + ", " + entry.getValue()[0] + " donations, " + "$" + entry.getValue()[1] + " total");
+        }
+    }
 
 	private static String userLoginID() {
 		Scanner loginScanner = new Scanner(System.in);
@@ -155,6 +193,7 @@ public class UserInterface {
 		while (true) {
 			String login = userLoginID();
 			String password = userLoginPassword();
+
 
 			try {
 				Organization org = ds.attemptLogin(login, password);

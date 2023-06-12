@@ -94,6 +94,7 @@ public class DataManager {
 					}
 
 					newFund.setDonations(donationList);
+                    newFund.calAggregateDonations();
 
 					org.addFund(newFund);
 
