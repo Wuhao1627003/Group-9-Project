@@ -1,8 +1,8 @@
 //package org;
 import java.text.DecimalFormat;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class UserInterface {
 	
@@ -34,13 +34,15 @@ public class UserInterface {
 				System.out.println("Enter the fund number to see more information.");
 			}
 			System.out.println("Enter 0 to create a new fund");
+            System.out.println("Enter 99 to see all contributions");
 			System.out.println("Enter -1 to logout");
+
 			int option = 0;
             boolean validInput = false;
             while (!validInput) {
                 try{
                     option = in.nextInt();
-                    if (option >= 0 && option <= org.getFunds().size()) {
+                    if ((option >= 0 && option <= org.getFunds().size()) || option == 99) {
                         validInput = true;
                     } else if (option == 0) {
                         System.out.println("Please enter an Integer within Range");
@@ -59,11 +61,45 @@ public class UserInterface {
 
 			} else if (option == 0) {
 				createFund(); 
-			} else {
+			} else if (option == 99) {
+                displayAllContributions();
+            } else {
 				displayFund(option);
 			}
 		}
 	}
+
+    public void displayAllContributions() {
+        HashMap<String, String> fundIDToName = new HashMap<>();
+        List<Fund> funds = org.getFunds();
+        List<Donation> donations = new ArrayList<>();
+        for (Fund fund: funds) {
+            donations.addAll(fund.getDonations());
+            fundIDToName.put(fund.getId(), fund.getName());
+        }
+        Collections.sort(donations, new Comparator<Donation>() {
+            @Override
+            public int compare(Donation o1, Donation o2) {
+                SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy");
+                try {
+                    Date date1 = sdf.parse(o1.getDate());
+                    Date date2 = sdf.parse(o2.getDate());
+                    return date2.compareTo(date1);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                return 0;
+            }
+        });
+
+        for (Donation donation: donations) {
+            System.out.println("fund name: " + fundIDToName.get(donation.getFundId()) +
+                    " Donation amount: " + donation.getAmount() +
+                    " Donation Date: " + donation.getDate());
+        }
+        System.out.println("Press the Enter key to go back to the listing of funds");
+        in.nextLine();
+    }
 	
 	public void createFund() {
 
