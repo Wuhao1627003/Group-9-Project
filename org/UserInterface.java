@@ -133,8 +133,8 @@ public class UserInterface {
 				UserInterface ui = new UserInterface(ds, org);
 				ui.start();
 			}
-		} catch (IllegalStateException ise) {
-			throw ise;
+		} catch (IllegalStateException | IllegalArgumentException e) {
+			throw e;
 		}
 	}
 }

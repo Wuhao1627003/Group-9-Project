@@ -26,6 +26,10 @@ public class DataManager {
 	 * @return an Organization object if successful; null if unsuccessful
 	 */
 	public Organization attemptLogin(String login, String password) {
+		// login ID or password is null
+		if (login == null || password == null) {
+			throw new IllegalArgumentException("[Invalid Input] Login ID or password cannot be empty.");
+		}
 
 		try {
 			Map<String, Object> map = new HashMap<>();
@@ -88,7 +92,7 @@ public class DataManager {
 
 				return org;
 			} else {
-				return null;
+				throw new IllegalStateException("Web client return error when attempting login.");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -104,6 +108,10 @@ public class DataManager {
 	 *         found
 	 */
 	public String getContributorName(String id) {
+		// ID is null
+		if (id == null) {
+			throw new IllegalArgumentException("[Invalid Input] Contributor ID cannot be empty.");
+		}
 
 		try {
 
@@ -131,11 +139,12 @@ public class DataManager {
 				String name = (String) json.get("data");
 				cache.put(id, name);
 				return name;
-			} else
-				return null;
+			} else {
+				throw new IllegalStateException("Web client return error when finding contributor name by ID.");
+			}
 
 		} catch (Exception e) {
-			return null;
+			throw new IllegalStateException("Error in communicating with server.");
 		}
 	}
 
@@ -146,6 +155,10 @@ public class DataManager {
 	 * @return a new Fund object if successful; null if unsuccessful
 	 */
 	public Fund createFund(String orgId, String name, String description, long target) {
+		// orgId, name, or description is null
+		if (orgId == null | name == null | description == null) {
+			throw new IllegalArgumentException("[Invalid Input] orgId, name, or description cannot be empty.");
+		}
 
 		try {
 
@@ -179,12 +192,12 @@ public class DataManager {
 				JSONObject fund = (JSONObject) json.get("data");
 				String fundId = (String) fund.get("_id");
 				return new Fund(fundId, name, description, target);
-			} else
-				return null;
-
+			} else {
+				throw new IllegalStateException("Web client return error when creating fund.");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null;
+			throw new IllegalStateException("Error in communicating with server.");
 		}
 	}
 }
