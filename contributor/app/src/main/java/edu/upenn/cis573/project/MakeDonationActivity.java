@@ -148,7 +148,9 @@ public class MakeDonationActivity extends AppCompatActivity {
 
         if (success) {
             Toast.makeText(this, "Thank you for your donation!", Toast.LENGTH_LONG).show();
-            contributor.getDonations().add(new Donation(selectedFund.getName(), contributor.getName(), Long.parseLong(amount), new Date().toString()));
+            Donation donation = new Donation(selectedFund.getName(), contributor.getName(), Long.parseLong(amount), new Date().toString());
+            contributor.getDonations().add(donation);
+            contributor.aggregateDonation(donation);
 
             Executor executor = Executors.newSingleThreadExecutor();
             executor.execute( () -> {

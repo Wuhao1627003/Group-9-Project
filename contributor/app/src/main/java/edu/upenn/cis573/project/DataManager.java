@@ -28,6 +28,7 @@ public class DataManager {
 
         try {
             Map<String, Object> map = new HashMap<>();
+            Map<String, String> fundCache = new HashMap<>();
             map.put("login", login);
             map.put("password", password);
             String response = client.makeRequest("/findContributorByLoginAndPassword", map);
@@ -55,13 +56,21 @@ public class DataManager {
                 for (int i = 0; i < donations.length(); i++) {
 
                     JSONObject jsonDonation = donations.getJSONObject(i);
-
-                    String fund = getFundName((String)jsonDonation.get("fund"));
+                    String fundId = (String)jsonDonation.get("fund");
+                    String fundName = null;
+                    if (!fundCache.containsKey(fundId)) {
+                        fundName = getFundName(fundId);
+                        fundCache.put(fundId, fundName);
+                    }
+                    else {
+                        fundName = fundCache.get(fundId);
+                    }
                     String date = (String)jsonDonation.get("date");
                     long amount = (Integer)jsonDonation.get("amount");
 
-                    Donation donation = new Donation(fund, name, amount, date);
+                    Donation donation = new Donation(fundName, name, amount, date);
                     donationList.add(donation);
+                    contributor.aggregateDonation(donation);
 
                 }
 

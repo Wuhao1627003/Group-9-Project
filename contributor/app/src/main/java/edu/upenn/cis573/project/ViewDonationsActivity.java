@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.List;
+
 public class ViewDonationsActivity extends AppCompatActivity {
 
 
@@ -31,7 +33,9 @@ public class ViewDonationsActivity extends AppCompatActivity {
 
         messageField.setText("Here are " + contributor.getName() + "'s donations:");
 
-        String[] donations = new String[contributor.getDonations().size()];
+        List<String> aggregatedDonations = contributor.getAggregatedDonations();
+        String[] donations = new String[contributor.getDonations().size() +
+                aggregatedDonations.size() + 1];
 
         int index = 0;
 
@@ -40,6 +44,12 @@ public class ViewDonationsActivity extends AppCompatActivity {
             //Log.v("donation", d.toString());
             donations[index++] = d.toString();
 
+        }
+
+        donations[index++] = "Aggregated donations:";
+
+        for (String s : aggregatedDonations) {
+            donations[index++] = s;
         }
 
         ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.listview, donations);

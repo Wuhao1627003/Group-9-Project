@@ -1,3 +1,4 @@
+
 //package org;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -18,8 +19,10 @@ public class DataManager {
 	}
 
 	/**
-	 * Attempt to log the user into an Organization account using the login and password.
+	 * Attempt to log the user into an Organization account using the login and
+	 * password.
 	 * This method uses the /findOrgByLoginAndPassword endpoint in the API
+	 * 
 	 * @return an Organization object if successful; null if unsuccessful
 	 */
 	public Organization attemptLogin(String login, String password) {
@@ -28,14 +31,14 @@ public class DataManager {
 			Map<String, Object> map = new HashMap<>();
 
 			// Check login ID value
-			if(login.matches("\\w+")) {
+			if (login.matches("\\w+")) {
 				map.put("login", login);
 			} else {
 				throw new IllegalArgumentException("[Invalid login ID] word without spaces and special characters.");
 			}
 
 			// Check password value
-			if(login.matches("\\w+")) {
+			if (login.matches("\\w+")) {
 				map.put("password", password);
 			} else {
 				throw new IllegalArgumentException("[Invalid password] word without spaces and special characters.");
@@ -45,35 +48,35 @@ public class DataManager {
 
 			JSONParser parser = new JSONParser();
 			JSONObject json = (JSONObject) parser.parse(response);
-			String status = (String)json.get("status");
+			String status = (String) json.get("status");
 
 			if (status.equals("success")) {
-				JSONObject data = (JSONObject)json.get("data");
-				String fundId = (String)data.get("_id");
-				String name = (String)data.get("name");
-				String description = (String)data.get("description"); // Correct typo
+				JSONObject data = (JSONObject) json.get("data");
+				String fundId = (String) data.get("_id");
+				String name = (String) data.get("name");
+				String description = (String) data.get("description"); // Correct typo
 				Organization org = new Organization(fundId, name, description);
 
-				JSONArray funds = (JSONArray)data.get("funds");
+				JSONArray funds = (JSONArray) data.get("funds");
 				Iterator it = funds.iterator();
-				while(it.hasNext()){
-					JSONObject fund = (JSONObject) it.next(); 
-					fundId = (String)fund.get("_id");
-					name = (String)fund.get("name");
-					description = (String)fund.get("description");
-					long target = (Long)fund.get("target");
+				while (it.hasNext()) {
+					JSONObject fund = (JSONObject) it.next();
+					fundId = (String) fund.get("_id");
+					name = (String) fund.get("name");
+					description = (String) fund.get("description");
+					long target = (Long) fund.get("target");
 
 					Fund newFund = new Fund(fundId, name, description, target);
 
-					JSONArray donations = (JSONArray)fund.get("donations");
+					JSONArray donations = (JSONArray) fund.get("donations");
 					List<Donation> donationList = new LinkedList<>();
 					Iterator it2 = donations.iterator();
-					while(it2.hasNext()){
+					while (it2.hasNext()) {
 						JSONObject donation = (JSONObject) it2.next();
-						String contributorId = (String)donation.get("contributor");
+						String contributorId = (String) donation.get("contributor");
 						String contributorName = this.getContributorName(contributorId);
-						long amount = (Long)donation.get("amount");
-						String date = (String)donation.get("date");
+						long amount = (Long) donation.get("amount");
+						String date = (String) donation.get("date");
 						donationList.add(new Donation(fundId, contributorName, amount, date));
 					}
 
@@ -87,8 +90,7 @@ public class DataManager {
 			} else {
 				return null;
 			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw new IllegalStateException("Error in communicating with server.");
 		}
@@ -97,16 +99,23 @@ public class DataManager {
 	/**
 	 * Look up the name of the contributor with the specified ID.
 	 * This method uses the /findContributorNameById endpoint in the API.
-	 * @return the name of the contributor on success; null if no contributor is found
+	 * 
+	 * @return the name of the contributor on success; null if no contributor is
+	 *         found
 	 */
 	public String getContributorName(String id) {
 
 		try {
 
 			Map<String, Object> map = new HashMap<>();
+			Map<String, String> cache = new HashMap<>();
+
+			if (cache.containsKey(id)) {
+				return cache.get(id);
+			}
 
 			// Check contributor ID value
-			if(!id.matches("\\s+")) {
+			if (!id.matches("\\s+")) {
 				map.put("id", id);
 			} else {
 				throw new IllegalArgumentException("Invalid contributor ID: contributor ID should not have spaces.");
@@ -116,23 +125,24 @@ public class DataManager {
 
 			JSONParser parser = new JSONParser();
 			JSONObject json = (JSONObject) parser.parse(response);
-			String status = (String)json.get("status");
+			String status = (String) json.get("status");
 
 			if (status.equals("success")) {
-				String name = (String)json.get("data");
+				String name = (String) json.get("data");
+				cache.put(id, name);
 				return name;
-			}
-			else return null;
+			} else
+				return null;
 
-
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			return null;
-		}	
+		}
 	}
 
 	/**
-	 * This method creates a new fund in the database using the /createFund endpoint in the API
+	 * This method creates a new fund in the database using the /createFund endpoint
+	 * in the API
+	 * 
 	 * @return a new Fund object if successful; null if unsuccessful
 	 */
 	public Fund createFund(String orgId, String name, String description, long target) {
@@ -142,14 +152,15 @@ public class DataManager {
 			Map<String, Object> map = new HashMap<>();
 
 			// Check organization ID value
-			if(orgId.matches("\\w+")) {
+			if (orgId.matches("\\w+")) {
 				map.put("orgId", orgId);
 			} else {
-				throw new IllegalArgumentException("[Invalid contributor ID] word without spaces and special characters.");
+				throw new IllegalArgumentException(
+						"[Invalid contributor ID] word without spaces and special characters.");
 			}
 
 			// Check name value
-			if(name.matches("[A-Za-z0-9\\s]*")) {
+			if (name.matches("[A-Za-z0-9\\s]*")) {
 				map.put("name", name);
 			} else {
 				throw new IllegalArgumentException("[Invalid fund name] word without special characters.");
@@ -162,19 +173,18 @@ public class DataManager {
 
 			JSONParser parser = new JSONParser();
 			JSONObject json = (JSONObject) parser.parse(response);
-			String status = (String)json.get("status");
+			String status = (String) json.get("status");
 
 			if (status.equals("success")) {
-				JSONObject fund = (JSONObject)json.get("data");
-				String fundId = (String)fund.get("_id");
+				JSONObject fund = (JSONObject) json.get("data");
+				String fundId = (String) fund.get("_id");
 				return new Fund(fundId, name, description, target);
-			}
-			else return null;
+			} else
+				return null;
 
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
-		}	
+		}
 	}
 }
