@@ -1,4 +1,4 @@
-//package org;
+package org;
 
 import org.junit.Test;
 
@@ -56,7 +56,7 @@ public class DataManager_attemptLogin_Test {
 		assertEquals("Jun 05, 2023", d.getDate());
 	}
 
-	@Test
+	@Test(expected = IllegalStateException.class)
 	public void testFailedCreation() {
 
 		DataManager dm = new DataManager(new WebClient("localhost", 3001) {
@@ -70,8 +70,6 @@ public class DataManager_attemptLogin_Test {
 		});
 
 		Organization org = dm.attemptLogin("chrism", "IamChris");
-
-		assertNull(org);
 	}
 
 	@Test(expected = IllegalStateException.class)

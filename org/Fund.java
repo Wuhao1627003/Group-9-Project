@@ -1,4 +1,5 @@
-//package org;
+package org;
+
 import java.util.*;
 
 public class Fund {

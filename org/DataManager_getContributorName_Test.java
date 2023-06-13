@@ -1,4 +1,4 @@
-//package org;
+package org;
 
 import org.junit.Test;
 
@@ -23,7 +23,7 @@ public class DataManager_getContributorName_Test {
 		assertEquals("Chris", name);
 	}
 
-	@Test
+	@Test(expected = IllegalStateException.class)
 	public void testFailedCreation() {
 		DataManager dm = new DataManager(new WebClient("localhost", 3001) {
 			@Override
@@ -33,11 +33,9 @@ public class DataManager_getContributorName_Test {
 		});
 
 		String name = dm.getContributorName("1");
-
-		assertNull(name);
 	}
 
-	@Test
+	@Test(expected = IllegalStateException.class)
 	public void testExceptionCreation() {
 		DataManager dm = new DataManager(new WebClient("localhost", 3001) {
 			@Override
@@ -47,7 +45,5 @@ public class DataManager_getContributorName_Test {
 		});
 
 		String name = dm.getContributorName("1");
-
-		assertNull(name);
 	}
 }
