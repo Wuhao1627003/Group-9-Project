@@ -133,6 +133,19 @@ public class UserInterface {
 			System.out.println(e);
 		}
 	}
+
+    public void changePassword() {
+        System.out.println("Login successfully");
+        while (true) {
+            System.out.println("Would you like to change your password?(Y/N)");
+            String option = in.nextLine();
+            if (option.equals("N")) return;
+            if (option.equals("Y")) {
+                System.out.println("You are about to change your password");
+                break;
+            }
+        }
+    }
 	
 	
 	public void displayFund(int fundNumber) {
@@ -238,6 +251,7 @@ public class UserInterface {
 				}
 				else {
 					UserInterface ui = new UserInterface(ds, org);
+                    ui.changePassword();
 					ui.start();
 				}
 			} catch (IllegalStateException | IllegalArgumentException e) {
