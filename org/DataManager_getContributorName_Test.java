@@ -49,15 +49,15 @@ public class DataManager_getContributorName_Test {
 		String name = dm.getContributorName("1");
 	}
 
-//	@Test(expected = IllegalArgumentException.class)
-//	public void testIllegalArgument() {
-//		DataManager dm = new DataManager(new WebClient("localhost", 3001) {
-//			@Override
-//			public String makeRequest(String resource, Map<String, Object> queryParams) {
-//				return "{}";
-//			}
-//		});
-//
-//		String name = dm.getContributorName("@");
-//	}
+	@Test(expected = IllegalStateException.class)
+	public void testIllegalArgument() {
+		DataManager dm = new DataManager(new WebClient("localhost", 3001) {
+			@Override
+			public String makeRequest(String resource, Map<String, Object> queryParams) {
+				return "{}";
+			}
+		});
+
+		String name = dm.getContributorName("@");
+	}
 }
