@@ -2,25 +2,24 @@ package org;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
 
 public class Donation {
-	
-	private String fundId;
-	private String contributorName;
-	private long amount;
-	private String date;
-	
+
+	private final String fundId;
+	private final String contributorName;
+	private final long amount;
+	private final String date;
+
 	public Donation(String fundId, String contributorName, long amount, String date) {
 		// Check fundId value
-		if(fundId.matches("\\w+")) {
+		if (fundId.matches("\\w+")) {
 			this.fundId = fundId;
 		} else {
 			throw new IllegalArgumentException("[Invalid fundId] word without spaces and special characters.");
 		}
 
 		// Check contributorName value
-		if(contributorName.matches("[A-Za-z0-9\\s]*")) {
+		if (contributorName.matches("[A-Za-z0-9\\s]*")) {
 			this.contributorName = contributorName;
 		} else {
 			System.out.println(contributorName);

@@ -1,17 +1,18 @@
 package org;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
 
 import java.util.Map;
 
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class DataManager_createFund_Test {
 
 	/*
 	 * This is a test class for the DataManager.createFund method.
 	 * Add more tests here for this method as needed.
-	 * 
+	 *
 	 * When writing tests for other methods, be sure to put them into separate
 	 * JUnit test classes.
 	 */

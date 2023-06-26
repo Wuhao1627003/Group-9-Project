@@ -1,10 +1,10 @@
 package org;
 
-import java.util.*;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+
+import java.util.*;
 
 public class DataManager {
 
@@ -113,7 +113,7 @@ public class DataManager {
 	 * This method uses the /findContributorNameById endpoint in the API.
 	 *
 	 * @return the name of the contributor on success; null if no contributor is
-	 *         found
+	 * found
 	 */
 	public String getContributorName(String id) {
 		// ID is null
@@ -235,8 +235,7 @@ public class DataManager {
 
 	/**
 	 * This method makes a donation on behalf of a contributor in the database using
-	 * the /makeDonation endpoint
-	 * in the API
+	 * the /makeDonation endpoint in the API
 	 *
 	 * @return list of donations for the fund after making current donation
 	 */
@@ -255,11 +254,7 @@ public class DataManager {
 		if (amount < 0) {
 			throw new IllegalArgumentException("[Invalid amount] amount cannot be negative.");
 		}
-		try {
-			this.getContributorName(contributorId);
-		} catch (Exception e) {
-			throw new IllegalArgumentException("[Invalid contributorId] invalid contributor Id: " + e.getMessage());
-		}
+		this.getContributorName(contributorId);
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("contributor", contributorId);
@@ -274,9 +269,6 @@ public class DataManager {
 		} catch (Exception e) {
 			throw new IllegalStateException("Error when parsing response from makeDonation: " + response);
 		}
-		if (json == null) {
-			throw new IllegalStateException("Null response from makeDonation.");
-		}
 
 		String status = (String) json.get("status");
 		if (status == null || !status.equals("success")) {
@@ -286,14 +278,10 @@ public class DataManager {
 			map.put("id", fundId);
 			response = client.makeRequest("/findFundById", map);
 
-			json = null;
 			try {
 				json = (JSONObject) parser.parse(response);
 			} catch (Exception e) {
 				throw new IllegalStateException("Error when parsing response from findFundById: " + response);
-			}
-			if (json == null) {
-				throw new IllegalStateException("Null response from findFundById.");
 			}
 
 			status = (String) json.get("status");
@@ -301,10 +289,9 @@ public class DataManager {
 				JSONObject fund = (JSONObject) json.get("data");
 				JSONArray donations = (JSONArray) fund.get("donations");
 				List<Donation> donationList = new LinkedList<>();
-				Iterator it2 = donations.iterator();
 
-				while (it2.hasNext()) {
-					JSONObject donation = (JSONObject) it2.next();
+				for (Object o : donations) {
+					JSONObject donation = (JSONObject) o;
 					contributorId = (String) donation.get("contributor");
 					String contributorName = this.getContributorName(contributorId);
 					amount = (Long) donation.get("amount");
@@ -352,11 +339,7 @@ public class DataManager {
 		}
 
 		String status = (String) json.get("status");
-		if (status.equals("success")) {
-			return true;
-		} else {
-			return false;
-		}
+		return status.equals("success");
 
 	}
 }
