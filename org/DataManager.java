@@ -113,7 +113,7 @@ public class DataManager {
 	 * This method uses the /findContributorNameById endpoint in the API.
 	 *
 	 * @return the name of the contributor on success; null if no contributor is
-	 * found
+	 *         found
 	 */
 	public String getContributorName(String id) {
 		// ID is null
@@ -130,7 +130,7 @@ public class DataManager {
 			}
 
 			// Check contributor ID value
-			if (!id.matches("\\s+")) {
+			if (id.matches("\\w+")) {
 				map.put("id", id);
 			} else {
 				throw new IllegalArgumentException("Invalid contributor ID: contributor ID should not have spaces.");
@@ -417,20 +417,24 @@ public class DataManager {
 	}
 
 	/**
-	 * This method checks whether an Organization's loginName already exits using
-	 * the
-	 * /findOrgByName endpoint
-	 * in the API
+	 * This method checks whether an Organization's login name already exits using
+	 * the /findOrgByName endpoint in the API
 	 *
 	 * @return true if already exits, false otherwise
 	 */
-	public boolean checkUniqueLoginName(String name) {
-		if (name == null) {
+	public boolean checkUniqueLoginName(String login) {
+		if (login == null) {
 			throw new IllegalArgumentException("[Invalid Input] login name cannot be empty" +
 					".");
 		}
 		Map<String, Object> map = new HashMap<>();
-		map.put("login", name);
+
+		if (login.matches("\\w+")) {
+			map.put("login", login);
+		} else {
+			throw new IllegalArgumentException("[Invalid login ID] word without spaces and special characters.");
+		}
+
 		String response = client.makeRequest("/findOrgByName", map);
 		JSONParser parser = new JSONParser();
 		JSONObject json = null;
@@ -442,11 +446,6 @@ public class DataManager {
 		}
 
 		String status = (String) json.get("status");
-		if (status.equals("error")) {
-			throw new IllegalStateException("[Error in communicating with server] fail to find " +
-					"Organization by name");
-		}
-
 		JSONObject data = (JSONObject) json.get("data");
 		return status.equals("success") && data != null;
 	}
@@ -467,9 +466,25 @@ public class DataManager {
 		}
 
 		Map<String, Object> map = new HashMap<>();
-		map.put("login", login);
-		map.put("password", password);
-		map.put("name", name);
+
+		if (login.matches("\\w+")) {
+			map.put("login", login);
+		} else {
+			throw new IllegalArgumentException("[Invalid login ID] word without spaces and special characters.");
+		}
+
+		if (password.matches("\\w+")) {
+			map.put("password", password);
+		} else {
+			throw new IllegalArgumentException("[Invalid password] word without spaces and special characters.");
+		}
+
+		if (name.matches("[A-Za-z0-9\\s]*")) {
+			map.put("name", name);
+		} else {
+			throw new IllegalArgumentException("[Invalid fund name] word without special characters.");
+		}
+
 		map.put("description", description);
 
 		String response = client.makeRequest("/createOrg", map);
