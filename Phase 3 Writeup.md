@@ -59,8 +59,8 @@
 
 ### 5. Contribution
 
-|        |                               Tasks                               |
-| :----: | :---------------------------------------------------------------: |
-|  Hao   |                    3.4, 3.1 UI, UI restructure                    |
-|   Qi   | 3.3, 3.1 Test, organization app change password, tuning all tests |
-| Zitong |    3.2, 3.1 api and DataManager changes, restructure codebase     |
+|        | Tasks                                                                                                                         |
+| :----: |:------------------------------------------------------------------------------------------------------------------------------|
+|  Hao   | 1. 3.4<br/>2. 3.1 UI<br/>3. UI restructure of 3.1, 3.2, and 3.3                                                               |
+|   Qi   | 1. 3.3<br/>2. 3.1 Test<br/>3. UI restructure of 3.2 and 3.3<br/>4. tuning all tests                                           |
+| Zitong | 1. 3.2 (all api changes was refer to Zitong's work in 3.2)<br/>2. 3.1 api and DataManager changes<br/>3. restructure codebase |
