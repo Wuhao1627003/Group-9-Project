@@ -49,7 +49,7 @@ public class DataManager_getContributorName_Test {
 		String name = dm.getContributorName("1");
 	}
 
-	@Test(expected = IllegalStateException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void testIllegalArgument() {
 		DataManager dm = new DataManager(new WebClient("localhost", 3001) {
 			@Override

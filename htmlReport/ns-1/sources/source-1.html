@@ -59,10 +59,10 @@ Current scope:     <a href="../../index.html">all classes</a>
 </td>
 <td class="coverageStat">
   <span class="percent">
-    99.2%
+    99.6%
   </span>
   <span class="absValue">
-    (256/258)
+    (257/258)
   </span>
 </td>
 </tr>
@@ -213,10 +213,10 @@ Current scope:     <a href="../../index.html">all classes</a>
 &nbsp;			}
 &nbsp;
 &nbsp;			// Check contributor ID value
-<b class="fc">&nbsp;			if (!id.matches(&quot;\\s+&quot;)) {</b>
+<b class="fc">&nbsp;			if (id.matches(&quot;\\w+&quot;)) {</b>
 <b class="fc">&nbsp;				map.put(&quot;id&quot;, id);</b>
 &nbsp;			} else {
-<b class="nc">&nbsp;				throw new IllegalArgumentException(&quot;Invalid contributor ID: contributor ID should not have spaces.&quot;);</b>
+<b class="fc">&nbsp;				throw new IllegalArgumentException(&quot;Invalid contributor ID: contributor ID should not have spaces.&quot;);</b>
 &nbsp;			}
 &nbsp;
 <b class="fc">&nbsp;			String response = client.makeRequest(&quot;/findContributorNameById&quot;, map);</b>
@@ -621,7 +621,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2023-06-26 03:38</div>
+    <div style="float:right;">generated on 2023-06-26 03:49</div>
 </div>
 </body>
 </html>

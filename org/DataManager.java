@@ -137,7 +137,7 @@ public class DataManager {
 			}
 
 			// Check contributor ID value
-			if (!id.matches("\\w+")) {
+			if (id.matches("\\w+")) {
 				map.put("id", id);
 			} else {
 				throw new IllegalArgumentException("Invalid contributor ID: contributor ID should not have spaces.");
