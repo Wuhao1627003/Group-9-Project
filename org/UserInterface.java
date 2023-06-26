@@ -35,6 +35,7 @@ public class UserInterface {
 			}
 			System.out.println("Enter 0 to create a new fund");
             System.out.println("Enter 99 to see all contributions");
+			System.out.println("Enter 100 to make a contribution on behalf of a contributor");
 			System.out.println("Enter -1 to logout");
 
 			int option = 0;
@@ -42,15 +43,15 @@ public class UserInterface {
             while (!validInput) {
                 try{
                     option = in.nextInt();
-                    if ((option >= 0 && option <= org.getFunds().size()) || option == 99) {
+                    if ((option >= 0 && option <= org.getFunds().size()) || option == 99 || option == 100) {
                         validInput = true;
-                    } else if (option == 0) {
-                        System.out.println("Please enter an Integer within Range");
-                        in.nextLine();
                     } else if (option == -1) {
 						logout = true;
 						break;
-					}
+					} else {
+	                    System.out.println("Please enter an Integer within Range");
+	                    in.nextLine();
+                    }
                 } catch (Exception e) {
                     System.out.println("Please enter an Integer");
                     in.nextLine();
@@ -63,13 +64,51 @@ public class UserInterface {
 				createFund(); 
 			} else if (option == 99) {
                 displayAllContributions();
-            } else {
+            } else if (option == 100) {
+				makeDonation();
+			} else {
 				displayFund(option);
 			}
 		}
 	}
 
-    public void displayAllContributions() {
+	private void makeDonation() {
+		while (true) {
+			System.out.println("Making a donation...");
+			System.out.print("Enter the fund number: ");
+			String fundId = "";
+			int fundNumber = 0;
+			try {
+				fundNumber = in.nextInt();
+				Fund fund = org.getFunds().get(fundNumber - 1);
+				fundId = fund.getId();
+			} catch (Exception e) {
+				System.out.println("[Invalid Input] Invalid fund number. Try Again.");
+				continue;
+			}
+
+			while (true) {
+				System.out.print("Enter the contributor Id: ");
+				String contributorId = in.next().trim();
+
+				System.out.print("Enter the donation amount: ");
+				String amountStr = in.next().trim();
+				System.out.println();
+
+				try {
+					List<Donation> donations = dataManager.makeDonation(contributorId, fundId, amountStr);
+					org.getFunds().get(fundNumber - 1).setDonations(donations);
+					printIndividualDonation(donations);
+					return;
+				} catch (IllegalStateException | IllegalArgumentException e) {
+					System.out.println(e.getMessage());
+					System.out.println("Try Again.");
+				}
+			}
+		}
+	}
+
+	public void displayAllContributions() {
         HashMap<String, String> fundIDToName = new HashMap<>();
         List<Fund> funds = org.getFunds();
         List<Donation> donations = new ArrayList<>();

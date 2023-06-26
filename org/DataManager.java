@@ -1,10 +1,6 @@
 package org;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -22,7 +18,7 @@ public class DataManager {
 	 * Attempt to log the user into an Organization account using the login and
 	 * password.
 	 * This method uses the /findOrgByLoginAndPassword endpoint in the API
-	 * 
+	 *
 	 * @return an Organization object if successful; null if unsuccessful
 	 */
 	public Organization attemptLogin(String login, String password) {
@@ -94,7 +90,7 @@ public class DataManager {
 					}
 
 					newFund.setDonations(donationList);
-                    newFund.calAggregateDonations();
+					newFund.calAggregateDonations();
 
 					org.addFund(newFund);
 
@@ -115,7 +111,7 @@ public class DataManager {
 	/**
 	 * Look up the name of the contributor with the specified ID.
 	 * This method uses the /findContributorNameById endpoint in the API.
-	 * 
+	 *
 	 * @return the name of the contributor on success; null if no contributor is
 	 *         found
 	 */
@@ -159,7 +155,7 @@ public class DataManager {
 				cache.put(id, name);
 				return name;
 			} else {
-				throw new IllegalStateException("Error when getting contributor name.");
+				throw new IllegalStateException("Contributor doesn't exist.");
 			}
 
 		} catch (NullPointerException e) {
@@ -173,7 +169,7 @@ public class DataManager {
 	/**
 	 * This method creates a new fund in the database using the /createFund endpoint
 	 * in the API
-	 * 
+	 *
 	 * @return a new Fund object if successful; null if unsuccessful
 	 */
 	public Fund createFund(String orgId, String name, String description, long target) {
@@ -199,6 +195,10 @@ public class DataManager {
 				map.put("name", name);
 			} else {
 				throw new IllegalArgumentException("[Invalid fund name] word without special characters.");
+			}
+
+			if (target <= 0) {
+				throw new IllegalArgumentException("[Invalid target] target should be positive.");
 			}
 
 			map.put("description", description);
@@ -230,6 +230,94 @@ public class DataManager {
 			throw new IllegalStateException();
 		} catch (IllegalStateException | IllegalArgumentException e) {
 			throw e;
+		}
+	}
+
+	/**
+	 * This method makes a donation on behalf of a contributor in the database using the /makeDonation endpoint
+	 * in the API
+	 *
+	 * @return list of donations for the fund after making current donation
+	 */
+	public List<Donation> makeDonation(String contributorId, String fundId, String amountStr) {
+		if (contributorId == null || contributorId.isBlank() ||
+				fundId == null || fundId.isBlank() ||
+				amountStr == null || amountStr.isBlank()) {
+			throw new IllegalArgumentException("[Invalid Input] contributorId, fundId, or amount cannot be empty.");
+		}
+		long amount = 0;
+		try {
+			amount = Long.parseLong(amountStr);
+		}
+		catch (Exception e) {
+			throw new IllegalArgumentException("[Invalid amount] amount cannot be parsed: " + e.getMessage());
+		}
+		if (amount < 0) {
+			throw new IllegalArgumentException("[Invalid amount] amount cannot be negative.");
+		}
+		try {
+			this.getContributorName(contributorId);
+		}
+		catch (Exception e) {
+			throw new IllegalArgumentException("[Invalid contributorId] invalid contributor Id: " + e.getMessage());
+		}
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("contributor", contributorId);
+		map.put("fund", fundId);
+		map.put("amount", amountStr);
+		String response = client.makeRequest("/makeDonation", map);
+
+		JSONParser parser = new JSONParser();
+		JSONObject json = null;
+		try {
+			json = (JSONObject) parser.parse(response);
+		} catch (Exception e) {
+			throw new IllegalStateException("Error when parsing response from makeDonation: " + response);
+		}
+		if (json == null) {
+			throw new IllegalStateException("Null response from makeDonation.");
+		}
+
+		String status = (String) json.get("status");
+		if (status == null || !status.equals("success")) {
+			throw new IllegalStateException("Error when making donation: " + json);
+		}
+		else {
+			map = new HashMap<>();
+			map.put("id", fundId);
+			response = client.makeRequest("/findFundById", map);
+
+			json = null;
+			try {
+				json = (JSONObject) parser.parse(response);
+			} catch (Exception e) {
+				throw new IllegalStateException("Error when parsing response from findFundById: " + response);
+			}
+			if (json == null) {
+				throw new IllegalStateException("Null response from findFundById.");
+			}
+
+			status = (String) json.get("status");
+			if (status != null && status.equals("success")) {
+				JSONObject fund = (JSONObject) json.get("data");
+				JSONArray donations = (JSONArray) fund.get("donations");
+				List<Donation> donationList = new LinkedList<>();
+				Iterator it2 = donations.iterator();
+
+				while (it2.hasNext()) {
+					JSONObject donation = (JSONObject) it2.next();
+					contributorId = (String) donation.get("contributor");
+					String contributorName = this.getContributorName(contributorId);
+					amount = (Long) donation.get("amount");
+					String date = (String) donation.get("date");
+					donationList.add(new Donation(fundId, contributorName, amount, date));
+				}
+
+				return donationList;
+			} else {
+				throw new IllegalStateException("Error when parsing fund donations: " + json);
+			}
 		}
 	}
 }
