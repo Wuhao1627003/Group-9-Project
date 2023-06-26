@@ -50,6 +50,47 @@ app.use('/updatePassword', (req, res) => {
 	    });
     });
 
+/*
+create a new organization
+*/
+app.use('/createOrg', (req, res) => {
+
+	var org = new Organization({
+		login: req.query.login,
+		password: req.query.password,
+		name: req.query.name,
+		description: req.query.description,
+		funds: []
+	    });
+
+	org.save( (err) => {
+		if (err) {
+		    res.json({ "status": "error", "data" : err});
+		}
+		else {
+			res.json({ "status": "success", "data" : org});
+		}
+	    });
+    });
+
+/*
+Return the Org with loginName specified as req.query.loginName
+*/
+app.use('/findOrgByName', (req, res) => {
+
+	var query = {"login" : req.query.login};
+    
+	Organization.findOne( query, (err, result) => {
+		if (err) {
+		    res.json({'status': 'error', 'data' : err});
+		}
+		else {
+		    res.json({'status' : 'success', 'data' : result});
+		}
+	    });
+	
+    });
+
 
 /*
 Create a new fund
