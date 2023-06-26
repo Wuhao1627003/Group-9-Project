@@ -234,7 +234,8 @@ public class DataManager {
 	}
 
 	/**
-	 * This method makes a donation on behalf of a contributor in the database using the /makeDonation endpoint
+	 * This method makes a donation on behalf of a contributor in the database using
+	 * the /makeDonation endpoint
 	 * in the API
 	 *
 	 * @return list of donations for the fund after making current donation
@@ -248,8 +249,7 @@ public class DataManager {
 		long amount = 0;
 		try {
 			amount = Long.parseLong(amountStr);
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			throw new IllegalArgumentException("[Invalid amount] amount cannot be parsed: " + e.getMessage());
 		}
 		if (amount < 0) {
@@ -257,8 +257,7 @@ public class DataManager {
 		}
 		try {
 			this.getContributorName(contributorId);
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			throw new IllegalArgumentException("[Invalid contributorId] invalid contributor Id: " + e.getMessage());
 		}
 
@@ -282,8 +281,7 @@ public class DataManager {
 		String status = (String) json.get("status");
 		if (status == null || !status.equals("success")) {
 			throw new IllegalStateException("Error when making donation: " + json);
-		}
-		else {
+		} else {
 			map = new HashMap<>();
 			map.put("id", fundId);
 			response = client.makeRequest("/findFundById", map);
@@ -319,5 +317,46 @@ public class DataManager {
 				throw new IllegalStateException("Error when parsing fund donations: " + json);
 			}
 		}
+	}
+
+	/**
+	 * This method updates a new password in the database using the /updatePassword
+	 * endpoint
+	 * in the API
+	 *
+	 * @return true if update is successful, false othersie
+	 */
+	public boolean updatePassword(String id, String password) {
+		if (id == null || password == null) {
+			throw new IllegalArgumentException("[Invalid Input] orgID or password cannot be empty" +
+					".");
+		}
+
+		if (!id.matches("\\w+")) {
+			throw new IllegalArgumentException(
+					"[Invalid organization ID] word without spaces and special characters.");
+		}
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("id", id);
+		map.put("password", password);
+
+		String response = client.makeRequest("/updatePassword", map);
+		JSONParser parser = new JSONParser();
+		JSONObject json = null;
+		try {
+			json = (JSONObject) parser.parse(response);
+		} catch (Exception e) {
+			throw new IllegalStateException("[Error in communicating with server] fail to update " +
+					"password");
+		}
+
+		String status = (String) json.get("status");
+		if (status.equals("success")) {
+			return true;
+		} else {
+			return false;
+		}
+
 	}
 }
