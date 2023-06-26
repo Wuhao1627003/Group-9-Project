@@ -390,6 +390,7 @@ public class UserInterface {
             System.out.println("2 - Edit Organization Name");
             System.out.println("3 - Edit Organization Description");
             System.out.println("4 - Edit Organization Name and Description");
+			System.out.println("5 - Start the APP");
             System.out.println("==========================================");
             System.out.println("Please enter your option: ");
             String option = in.nextLine();
@@ -417,7 +418,9 @@ public class UserInterface {
                 } catch (Exception e) {
                     System.out.println(e);
                 }
-            } else {
+            } else if (option.equals("5")) {
+				return;
+			} else {
                 System.out.println("[BAD INPUT] Please enter the corresponding number of the options.");
             }
         }
