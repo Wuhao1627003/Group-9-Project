@@ -487,9 +487,25 @@ public class DataManager {
 		}
 
 		Map<String, Object> map = new HashMap<>();
-		map.put("login", login);
-		map.put("password", password);
-		map.put("name", name);
+
+		if (login.matches("\\w+")) {
+			map.put("login", login);
+		} else {
+			throw new IllegalArgumentException("[Invalid login ID] word without spaces and special characters.");
+		}
+
+		if (password.matches("\\w+")) {
+			map.put("password", password);
+		} else {
+			throw new IllegalArgumentException("[Invalid password] word without spaces and special characters.");
+		}
+
+		if (name.matches("[A-Za-z0-9\\s]*")) {
+			map.put("name", name);
+		} else {
+			throw new IllegalArgumentException("[Invalid fund name] word without special characters.");
+		}
+
 		map.put("description", description);
 
 		String response = client.makeRequest("/createOrg", map);
