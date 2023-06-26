@@ -11,7 +11,7 @@ import static org.junit.Assert.assertNotNull;
 public class DataManager_getContributorName_Test {
 
 	@Test
-	public void testSuccessfulCreation() {
+	public void testSuccessfulLookup() {
 		DataManager dm = new DataManager(new WebClient("localhost", 3001) {
 			@Override
 			public String makeRequest(String resource, Map<String, Object> queryParams) {
@@ -25,8 +25,26 @@ public class DataManager_getContributorName_Test {
 		assertEquals("Chris", name);
 	}
 
+	@Test
+	public void testSuccessfulLookupWithCache() {
+		DataManager dm = new DataManager(new WebClient("localhost", 3001) {
+			@Override
+			public String makeRequest(String resource, Map<String, Object> queryParams) {
+				return "{\"status\":\"success\",\"data\":\"Chris\"}";
+			}
+		});
+
+		String name = dm.getContributorName("1");
+		String newName = dm.getContributorName("1");
+
+		assertNotNull(name);
+		assertEquals("Chris", name);
+		assertNotNull(newName);
+		assertEquals("Chris", newName);
+	}
+
 	@Test(expected = IllegalStateException.class)
-	public void testFailedCreation() {
+	public void testFailedLookup() {
 		DataManager dm = new DataManager(new WebClient("localhost", 3001) {
 			@Override
 			public String makeRequest(String resource, Map<String, Object> queryParams) {
@@ -38,7 +56,7 @@ public class DataManager_getContributorName_Test {
 	}
 
 	@Test(expected = IllegalStateException.class)
-	public void testExceptionCreation() {
+	public void testExceptionLookup() {
 		DataManager dm = new DataManager(new WebClient("localhost", 3001) {
 			@Override
 			public String makeRequest(String resource, Map<String, Object> queryParams) {

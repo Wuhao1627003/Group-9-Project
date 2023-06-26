@@ -14,6 +14,8 @@ public class DataManager {
 		this.client = client;
 	}
 
+	Map<String, String> contributorCache = new HashMap<>();
+
 	/**
 	 * Attempt to log the user into an Organization account using the login and
 	 * password.
@@ -123,10 +125,9 @@ public class DataManager {
 
 		try {
 			Map<String, Object> map = new HashMap<>();
-			Map<String, String> cache = new HashMap<>();
 
-			if (cache.containsKey(id)) {
-				return cache.get(id);
+			if (contributorCache.containsKey(id)) {
+				return contributorCache.get(id);
 			}
 
 			// Check contributor ID value
@@ -152,7 +153,7 @@ public class DataManager {
 
 			if (status.equals("success")) {
 				String name = (String) json.get("data");
-				cache.put(id, name);
+				contributorCache.put(id, name);
 				return name;
 			} else {
 				throw new IllegalStateException("Contributor doesn't exist.");
