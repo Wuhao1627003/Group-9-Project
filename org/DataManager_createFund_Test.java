@@ -1,8 +1,15 @@
-package org;
+//package org;
 
 import org.junit.Test;
 
 import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import org.Fund;
+import org.WebClient;
+import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

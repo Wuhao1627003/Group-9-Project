@@ -1,4 +1,11 @@
-package org;
+//package org;
+
+import java.util.*;
+
+import org.Donation;
+import org.Fund;
+import org.Organization;
+import org.WebClient;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -307,17 +314,100 @@ public class DataManager {
 	}
 
 	/**
-	 * This method updates a new password in the database using the /updatePassword
-	 * endpoint
-	 * in the API
+	 * This method updates the org name in the database using the
+	 * /updateOrgName endpoint in the API
 	 *
 	 * @return true if update is successful, false otherwise
 	 */
-	public boolean updatePassword(String id, String password) {
-		if (id == null || password == null) {
-			throw new IllegalArgumentException("[Invalid Input] orgID or password cannot be empty" +
-					".");
+	public boolean updateOrgName(String id, String name) {
+		if (id == null) {
+			throw new IllegalArgumentException("[Invalid Input] orgID cannot be empty.");
 		}
+
+		if (!id.matches("\\w+")) {
+			throw new IllegalArgumentException("[Invalid organization ID] word without spaces and special characters.");
+		}
+
+		Map<String, Object> map = new HashMap<>();
+
+		map.put("id", id);
+
+		if (name != null) {
+			map.put("name", name);
+		}
+
+		String response = client.makeRequest("/updateOrgName", map);
+		JSONParser parser = new JSONParser();
+		JSONObject json = null;
+		try {
+			json = (JSONObject) parser.parse(response);
+		} catch (Exception e) {
+			throw new IllegalStateException("[Error in communicating with server] fail to update password.");
+		}
+
+
+		String status = (String) json.get("status");
+		if (status.equals("success")) {
+			return true;
+		} else{
+			return false;
+		}
+
+	}
+
+	/**
+	 * This method updates the org description in the database using the
+	 * /updateOrgDescription endpoint in the API
+	 *
+	 * @return true if update is successful, false otherwise
+	 */
+	public boolean updateOrgDescription(String id, String description) {
+		if (id == null) {
+			throw new IllegalArgumentException("[Invalid Input] orgID cannot be empty.");
+		}
+
+		if (!id.matches("\\w+")) {
+			throw new IllegalArgumentException("[Invalid organization ID] word without spaces and special characters.");
+		}
+
+		Map<String, Object> map = new HashMap<>();
+
+		map.put("id", id);
+
+		if (description != null) {
+			map.put("description", description);
+		}
+
+		String response = client.makeRequest("/updateOrgDescription", map);
+		JSONParser parser = new JSONParser();
+		JSONObject json = null;
+		try {
+			json = (JSONObject) parser.parse(response);
+		} catch (Exception e) {
+			throw new IllegalStateException("[Error in communicating with server] fail to update password.");
+		}
+
+
+		String status = (String) json.get("status");
+		if (status.equals("success")) {
+			return true;
+		} else{
+			return false;
+		}
+
+	}
+
+    /**
+     * This method updates a new password in the database using the /updatePassword endpoint
+     * in the API
+     *
+     * @return true if update is successful, false otherwise
+     */
+    public boolean updatePassword(String id, String password) {
+        if (id == null || password == null) {
+            throw new IllegalArgumentException("[Invalid Input] orgID or password cannot be empty" +
+                    ".");
+        }
 
 		if (!id.matches("\\w+")) {
 			throw new IllegalArgumentException(
@@ -348,7 +438,7 @@ public class DataManager {
 	 * /findOrgByName endpoint
 	 * in the API
 	 *
-	 * @return true if already exits, false othersie
+	 * @return true if already exits, false otherwise
 	 */
 	public boolean checkUniqueLoginName(String name) {
 		if (name == null) {
