@@ -311,7 +311,7 @@ public class DataManager {
 	 * endpoint
 	 * in the API
 	 *
-	 * @return true if update is successful, false othersie
+	 * @return true if update is successful, false otherwise
 	 */
 	public boolean updatePassword(String id, String password) {
 		if (id == null || password == null) {
