@@ -1,0 +1,627 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > DataManager</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">&lt;empty package name&gt;</a>
+</div>
+
+<h1>Coverage Summary for Class: DataManager (&lt;empty package name&gt;)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">DataManager</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (10/10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    99.2%
+  </span>
+  <span class="absValue">
+    (256/258)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;//package org;
+&nbsp;
+&nbsp;import java.util.*;
+&nbsp;
+&nbsp;import org.Donation;
+&nbsp;import org.Fund;
+&nbsp;import org.Organization;
+&nbsp;import org.WebClient;
+&nbsp;
+&nbsp;import org.json.simple.JSONArray;
+&nbsp;import org.json.simple.JSONObject;
+&nbsp;import org.json.simple.parser.JSONParser;
+&nbsp;
+&nbsp;import java.util.*;
+&nbsp;
+&nbsp;public class DataManager {
+&nbsp;
+&nbsp;	private final WebClient client;
+&nbsp;
+<b class="fc">&nbsp;	public DataManager(WebClient client) {</b>
+<b class="fc">&nbsp;		this.client = client;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Attempt to log the user into an Organization account using the login and
+&nbsp;	 * password.
+&nbsp;	 * This method uses the /findOrgByLoginAndPassword endpoint in the API
+&nbsp;	 *
+&nbsp;	 * @return an Organization object if successful; null if unsuccessful
+&nbsp;	 */
+&nbsp;	public Organization attemptLogin(String login, String password) {
+&nbsp;		// login ID or password is null
+<b class="fc">&nbsp;		if (login == null || password == null) {</b>
+<b class="fc">&nbsp;			throw new IllegalArgumentException(&quot;[Invalid Input] Login ID or password cannot be empty.&quot;);</b>
+&nbsp;		}
+&nbsp;
+&nbsp;		try {
+<b class="fc">&nbsp;			Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();</b>
+&nbsp;
+&nbsp;			// Check login ID value
+<b class="fc">&nbsp;			if (login.matches(&quot;\\w+&quot;)) {</b>
+<b class="fc">&nbsp;				map.put(&quot;login&quot;, login);</b>
+&nbsp;			} else {
+<b class="fc">&nbsp;				throw new IllegalArgumentException(&quot;[Invalid login ID] word without spaces and special characters.&quot;);</b>
+&nbsp;			}
+&nbsp;
+&nbsp;			// Check password value
+<b class="fc">&nbsp;			if (password.matches(&quot;\\w+&quot;)) {</b>
+<b class="fc">&nbsp;				map.put(&quot;password&quot;, password);</b>
+&nbsp;			} else {
+<b class="fc">&nbsp;				throw new IllegalArgumentException(&quot;[Invalid password] word without spaces and special characters.&quot;);</b>
+&nbsp;			}
+&nbsp;
+<b class="fc">&nbsp;			String response = client.makeRequest(&quot;/findOrgByLoginAndPassword&quot;, map);</b>
+<b class="fc">&nbsp;			if (response == null) {</b>
+<b class="fc">&nbsp;				throw new IllegalStateException(&quot;[Error in communicating with server] login fails.&quot;);</b>
+&nbsp;			}
+&nbsp;
+<b class="fc">&nbsp;			JSONParser parser = new JSONParser();</b>
+<b class="fc">&nbsp;			JSONObject json = null;</b>
+&nbsp;			try {
+<b class="fc">&nbsp;				json = (JSONObject) parser.parse(response);</b>
+<b class="fc">&nbsp;			} catch (Exception e) {</b>
+&nbsp;
+<b class="fc">&nbsp;			}</b>
+&nbsp;
+<b class="fc">&nbsp;			String status = (String) json.get(&quot;status&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;			if (status.equals(&quot;success&quot;)) {</b>
+<b class="fc">&nbsp;				JSONObject data = (JSONObject) json.get(&quot;data&quot;);</b>
+<b class="fc">&nbsp;				String fundId = (String) data.get(&quot;_id&quot;);</b>
+<b class="fc">&nbsp;				String name = (String) data.get(&quot;name&quot;);</b>
+<b class="fc">&nbsp;				String description = (String) data.get(&quot;description&quot;); // Correct typo</b>
+<b class="fc">&nbsp;				Organization org = new Organization(fundId, name, description);</b>
+&nbsp;
+<b class="fc">&nbsp;				JSONArray funds = (JSONArray) data.get(&quot;funds&quot;);</b>
+<b class="fc">&nbsp;				Iterator it = funds.iterator();</b>
+<b class="fc">&nbsp;				while (it.hasNext()) {</b>
+<b class="fc">&nbsp;					JSONObject fund = (JSONObject) it.next();</b>
+<b class="fc">&nbsp;					fundId = (String) fund.get(&quot;_id&quot;);</b>
+<b class="fc">&nbsp;					name = (String) fund.get(&quot;name&quot;);</b>
+<b class="fc">&nbsp;					description = (String) fund.get(&quot;description&quot;);</b>
+<b class="fc">&nbsp;					long target = (Long) fund.get(&quot;target&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;					Fund newFund = new Fund(fundId, name, description, target);</b>
+&nbsp;
+<b class="fc">&nbsp;					JSONArray donations = (JSONArray) fund.get(&quot;donations&quot;);</b>
+<b class="fc">&nbsp;					List&lt;Donation&gt; donationList = new LinkedList&lt;&gt;();</b>
+<b class="fc">&nbsp;					Iterator it2 = donations.iterator();</b>
+<b class="fc">&nbsp;					while (it2.hasNext()) {</b>
+<b class="fc">&nbsp;						JSONObject donation = (JSONObject) it2.next();</b>
+<b class="fc">&nbsp;						String contributorId = (String) donation.get(&quot;contributor&quot;);</b>
+<b class="fc">&nbsp;						String contributorName = this.getContributorName(contributorId);</b>
+<b class="fc">&nbsp;						long amount = (Long) donation.get(&quot;amount&quot;);</b>
+<b class="fc">&nbsp;						String date = (String) donation.get(&quot;date&quot;);</b>
+<b class="fc">&nbsp;						donationList.add(new Donation(fundId, contributorName, amount, date));</b>
+<b class="fc">&nbsp;					}</b>
+&nbsp;
+<b class="fc">&nbsp;					newFund.setDonations(donationList);</b>
+<b class="fc">&nbsp;					newFund.calAggregateDonations();</b>
+&nbsp;
+<b class="fc">&nbsp;					org.addFund(newFund);</b>
+&nbsp;
+<b class="fc">&nbsp;				}</b>
+&nbsp;
+<b class="fc">&nbsp;				return org;</b>
+&nbsp;			} else {
+<b class="fc">&nbsp;				throw new IllegalStateException(&quot;Error when getting organization info.&quot;);</b>
+&nbsp;			}
+<b class="fc">&nbsp;		} catch (NullPointerException e) {</b>
+&nbsp;			// e.printStackTrace();
+<b class="fc">&nbsp;			throw new IllegalStateException();</b>
+<b class="fc">&nbsp;		} catch (IllegalStateException | IllegalArgumentException e) {</b>
+<b class="fc">&nbsp;			throw e;</b>
+&nbsp;		}
+&nbsp;	}
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * Look up the name of the contributor with the specified ID.
+&nbsp;	 * This method uses the /findContributorNameById endpoint in the API.
+&nbsp;	 *
+&nbsp;	 * @return the name of the contributor on success; null if no contributor is
+&nbsp;	 *         found
+&nbsp;	 */
+&nbsp;	public String getContributorName(String id) {
+&nbsp;		// ID is null
+<b class="fc">&nbsp;		if (id == null) {</b>
+<b class="fc">&nbsp;			throw new IllegalArgumentException(&quot;[Invalid Input] Contributor ID cannot be empty.&quot;);</b>
+&nbsp;		}
+&nbsp;
+&nbsp;		try {
+<b class="fc">&nbsp;			Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();</b>
+<b class="fc">&nbsp;			Map&lt;String, String&gt; cache = new HashMap&lt;&gt;();</b>
+&nbsp;
+<b class="fc">&nbsp;			if (cache.containsKey(id)) {</b>
+<b class="nc">&nbsp;				return cache.get(id);</b>
+&nbsp;			}
+&nbsp;
+&nbsp;			// Check contributor ID value
+<b class="fc">&nbsp;			if (!id.matches(&quot;\\s+&quot;)) {</b>
+<b class="fc">&nbsp;				map.put(&quot;id&quot;, id);</b>
+&nbsp;			} else {
+<b class="nc">&nbsp;				throw new IllegalArgumentException(&quot;Invalid contributor ID: contributor ID should not have spaces.&quot;);</b>
+&nbsp;			}
+&nbsp;
+<b class="fc">&nbsp;			String response = client.makeRequest(&quot;/findContributorNameById&quot;, map);</b>
+<b class="fc">&nbsp;			if (response == null) {</b>
+<b class="fc">&nbsp;				throw new IllegalStateException(&quot;[Error in communicating with server] fail to find contributor.&quot;);</b>
+&nbsp;			}
+&nbsp;
+<b class="fc">&nbsp;			JSONParser parser = new JSONParser();</b>
+<b class="fc">&nbsp;			JSONObject json = null;</b>
+&nbsp;			try {
+<b class="fc">&nbsp;				json = (JSONObject) parser.parse(response);</b>
+<b class="fc">&nbsp;			} catch (Exception e) {</b>
+&nbsp;
+<b class="fc">&nbsp;			}</b>
+<b class="fc">&nbsp;			String status = (String) json.get(&quot;status&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;			if (status.equals(&quot;success&quot;)) {</b>
+<b class="fc">&nbsp;				String name = (String) json.get(&quot;data&quot;);</b>
+<b class="fc">&nbsp;				cache.put(id, name);</b>
+<b class="fc">&nbsp;				return name;</b>
+&nbsp;			} else {
+<b class="fc">&nbsp;				throw new IllegalStateException(&quot;Contributor doesn&#39;t exist.&quot;);</b>
+&nbsp;			}
+&nbsp;
+<b class="fc">&nbsp;		} catch (NullPointerException e) {</b>
+&nbsp;			// e.printStackTrace();
+<b class="fc">&nbsp;			throw new IllegalStateException();</b>
+<b class="fc">&nbsp;		} catch (IllegalStateException | IllegalArgumentException e) {</b>
+<b class="fc">&nbsp;			throw e;</b>
+&nbsp;		}
+&nbsp;	}
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * This method creates a new fund in the database using the /createFund endpoint
+&nbsp;	 * in the API
+&nbsp;	 *
+&nbsp;	 * @return a new Fund object if successful; null if unsuccessful
+&nbsp;	 */
+&nbsp;	public Fund createFund(String orgId, String name, String description, long target) {
+&nbsp;		// orgId, name, or description is null
+<b class="fc">&nbsp;		if (orgId == null | name == null | description == null) {</b>
+<b class="fc">&nbsp;			throw new IllegalArgumentException(&quot;[Invalid Input] orgId, name, or description cannot be empty.&quot;);</b>
+&nbsp;		}
+&nbsp;
+&nbsp;		try {
+&nbsp;
+<b class="fc">&nbsp;			Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();</b>
+&nbsp;
+&nbsp;			// Check organization ID value
+<b class="fc">&nbsp;			if (orgId.matches(&quot;\\w+&quot;)) {</b>
+<b class="fc">&nbsp;				map.put(&quot;orgId&quot;, orgId);</b>
+&nbsp;			} else {
+<b class="fc">&nbsp;				throw new IllegalArgumentException(</b>
+&nbsp;						&quot;[Invalid contributor ID] word without spaces and special characters.&quot;);
+&nbsp;			}
+&nbsp;
+&nbsp;			// Check name value
+<b class="fc">&nbsp;			if (name.matches(&quot;[A-Za-z0-9\\s]*&quot;)) {</b>
+<b class="fc">&nbsp;				map.put(&quot;name&quot;, name);</b>
+&nbsp;			} else {
+<b class="fc">&nbsp;				throw new IllegalArgumentException(&quot;[Invalid fund name] word without special characters.&quot;);</b>
+&nbsp;			}
+&nbsp;
+<b class="fc">&nbsp;			if (target &lt;= 0) {</b>
+<b class="fc">&nbsp;				throw new IllegalArgumentException(&quot;[Invalid target] target should be positive.&quot;);</b>
+&nbsp;			}
+&nbsp;
+<b class="fc">&nbsp;			map.put(&quot;description&quot;, description);</b>
+<b class="fc">&nbsp;			map.put(&quot;target&quot;, target);</b>
+&nbsp;
+<b class="fc">&nbsp;			String response = client.makeRequest(&quot;/createFund&quot;, map);</b>
+<b class="fc">&nbsp;			if (response == null) {</b>
+<b class="fc">&nbsp;				throw new IllegalStateException(&quot;[Error in communicating with server] fail to create fund.&quot;);</b>
+&nbsp;			}
+&nbsp;
+<b class="fc">&nbsp;			JSONParser parser = new JSONParser();</b>
+<b class="fc">&nbsp;			JSONObject json = null;</b>
+&nbsp;			try {
+<b class="fc">&nbsp;				json = (JSONObject) parser.parse(response);</b>
+<b class="fc">&nbsp;			} catch (Exception e) {</b>
+&nbsp;
+<b class="fc">&nbsp;			}</b>
+<b class="fc">&nbsp;			String status = (String) json.get(&quot;status&quot;);</b>
+&nbsp;
+<b class="fc">&nbsp;			if (status.equals(&quot;success&quot;)) {</b>
+<b class="fc">&nbsp;				JSONObject fund = (JSONObject) json.get(&quot;data&quot;);</b>
+<b class="fc">&nbsp;				String fundId = (String) fund.get(&quot;_id&quot;);</b>
+<b class="fc">&nbsp;				return new Fund(fundId, name, description, target);</b>
+&nbsp;			} else {
+<b class="fc">&nbsp;				throw new IllegalStateException(&quot;Error when creating new fund.&quot;);</b>
+&nbsp;			}
+<b class="fc">&nbsp;		} catch (NullPointerException e) {</b>
+&nbsp;			// e.printStackTrace();
+<b class="fc">&nbsp;			throw new IllegalStateException();</b>
+<b class="fc">&nbsp;		} catch (IllegalStateException | IllegalArgumentException e) {</b>
+<b class="fc">&nbsp;			throw e;</b>
+&nbsp;		}
+&nbsp;	}
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * This method makes a donation on behalf of a contributor in the database using
+&nbsp;	 * the /makeDonation endpoint in the API
+&nbsp;	 *
+&nbsp;	 * @return list of donations for the fund after making current donation
+&nbsp;	 */
+&nbsp;	public List&lt;Donation&gt; makeDonation(String contributorId, String fundId, String amountStr) {
+<b class="fc">&nbsp;		if (contributorId == null || contributorId.isBlank() ||</b>
+<b class="fc">&nbsp;				fundId == null || fundId.isBlank() ||</b>
+<b class="fc">&nbsp;				amountStr == null || amountStr.isBlank()) {</b>
+<b class="fc">&nbsp;			throw new IllegalArgumentException(&quot;[Invalid Input] contributorId, fundId, or amount cannot be empty.&quot;);</b>
+&nbsp;		}
+<b class="fc">&nbsp;		long amount = 0;</b>
+&nbsp;		try {
+<b class="fc">&nbsp;			amount = Long.parseLong(amountStr);</b>
+<b class="fc">&nbsp;		} catch (Exception e) {</b>
+<b class="fc">&nbsp;			throw new IllegalArgumentException(&quot;[Invalid amount] amount cannot be parsed: &quot; + e.getMessage());</b>
+<b class="fc">&nbsp;		}</b>
+<b class="fc">&nbsp;		if (amount &lt; 0) {</b>
+<b class="fc">&nbsp;			throw new IllegalArgumentException(&quot;[Invalid amount] amount cannot be negative.&quot;);</b>
+&nbsp;		}
+<b class="fc">&nbsp;		this.getContributorName(contributorId);</b>
+&nbsp;
+<b class="fc">&nbsp;		Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();</b>
+<b class="fc">&nbsp;		map.put(&quot;contributor&quot;, contributorId);</b>
+<b class="fc">&nbsp;		map.put(&quot;fund&quot;, fundId);</b>
+<b class="fc">&nbsp;		map.put(&quot;amount&quot;, amountStr);</b>
+<b class="fc">&nbsp;		String response = client.makeRequest(&quot;/makeDonation&quot;, map);</b>
+&nbsp;
+<b class="fc">&nbsp;		JSONParser parser = new JSONParser();</b>
+<b class="fc">&nbsp;		JSONObject json = null;</b>
+&nbsp;		try {
+<b class="fc">&nbsp;			json = (JSONObject) parser.parse(response);</b>
+<b class="fc">&nbsp;		} catch (Exception e) {</b>
+<b class="fc">&nbsp;			throw new IllegalStateException(&quot;Error when parsing response from makeDonation: &quot; + response);</b>
+<b class="fc">&nbsp;		}</b>
+&nbsp;
+<b class="fc">&nbsp;		String status = (String) json.get(&quot;status&quot;);</b>
+<b class="fc">&nbsp;		if (status == null || !status.equals(&quot;success&quot;)) {</b>
+<b class="fc">&nbsp;			throw new IllegalStateException(&quot;Error when making donation: &quot; + json);</b>
+&nbsp;		} else {
+<b class="fc">&nbsp;			map = new HashMap&lt;&gt;();</b>
+<b class="fc">&nbsp;			map.put(&quot;id&quot;, fundId);</b>
+<b class="fc">&nbsp;			response = client.makeRequest(&quot;/findFundById&quot;, map);</b>
+&nbsp;
+&nbsp;			try {
+<b class="fc">&nbsp;				json = (JSONObject) parser.parse(response);</b>
+<b class="fc">&nbsp;			} catch (Exception e) {</b>
+<b class="fc">&nbsp;				throw new IllegalStateException(&quot;Error when parsing response from findFundById: &quot; + response);</b>
+<b class="fc">&nbsp;			}</b>
+&nbsp;
+<b class="fc">&nbsp;			status = (String) json.get(&quot;status&quot;);</b>
+<b class="fc">&nbsp;			if (status != null &amp;&amp; status.equals(&quot;success&quot;)) {</b>
+<b class="fc">&nbsp;				JSONObject fund = (JSONObject) json.get(&quot;data&quot;);</b>
+<b class="fc">&nbsp;				JSONArray donations = (JSONArray) fund.get(&quot;donations&quot;);</b>
+<b class="fc">&nbsp;				List&lt;Donation&gt; donationList = new LinkedList&lt;&gt;();</b>
+&nbsp;
+<b class="fc">&nbsp;				for (Object o : donations) {</b>
+<b class="fc">&nbsp;					JSONObject donation = (JSONObject) o;</b>
+<b class="fc">&nbsp;					contributorId = (String) donation.get(&quot;contributor&quot;);</b>
+<b class="fc">&nbsp;					String contributorName = this.getContributorName(contributorId);</b>
+<b class="fc">&nbsp;					amount = (Long) donation.get(&quot;amount&quot;);</b>
+<b class="fc">&nbsp;					String date = (String) donation.get(&quot;date&quot;);</b>
+<b class="fc">&nbsp;					donationList.add(new Donation(fundId, contributorName, amount, date));</b>
+<b class="fc">&nbsp;				}</b>
+&nbsp;
+<b class="fc">&nbsp;				return donationList;</b>
+&nbsp;			} else {
+<b class="fc">&nbsp;				throw new IllegalStateException(&quot;Error when parsing fund donations: &quot; + json);</b>
+&nbsp;			}
+&nbsp;		}
+&nbsp;	}
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * This method updates the org name in the database using the
+&nbsp;	 * /updateOrgName endpoint in the API
+&nbsp;	 *
+&nbsp;	 * @return true if update is successful, false otherwise
+&nbsp;	 */
+&nbsp;	public boolean updateOrgName(String id, String name) {
+<b class="fc">&nbsp;		if (id == null) {</b>
+<b class="fc">&nbsp;			throw new IllegalArgumentException(&quot;[Invalid Input] orgID cannot be empty.&quot;);</b>
+&nbsp;		}
+&nbsp;
+<b class="fc">&nbsp;		if (!id.matches(&quot;\\w+&quot;)) {</b>
+<b class="fc">&nbsp;			throw new IllegalArgumentException(&quot;[Invalid organization ID] word without spaces and special characters.&quot;);</b>
+&nbsp;		}
+&nbsp;
+<b class="fc">&nbsp;		Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();</b>
+&nbsp;
+<b class="fc">&nbsp;		map.put(&quot;id&quot;, id);</b>
+&nbsp;
+<b class="fc">&nbsp;		if (name != null) {</b>
+<b class="fc">&nbsp;			map.put(&quot;name&quot;, name);</b>
+&nbsp;		}
+&nbsp;
+<b class="fc">&nbsp;		String response = client.makeRequest(&quot;/updateOrgName&quot;, map);</b>
+<b class="fc">&nbsp;		JSONParser parser = new JSONParser();</b>
+<b class="fc">&nbsp;		JSONObject json = null;</b>
+&nbsp;		try {
+<b class="fc">&nbsp;			json = (JSONObject) parser.parse(response);</b>
+<b class="fc">&nbsp;		} catch (Exception e) {</b>
+<b class="fc">&nbsp;			throw new IllegalStateException(&quot;[Error in communicating with server] fail to update password.&quot;);</b>
+<b class="fc">&nbsp;		}</b>
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;		String status = (String) json.get(&quot;status&quot;);</b>
+<b class="fc">&nbsp;		if (status.equals(&quot;success&quot;)) {</b>
+<b class="fc">&nbsp;			return true;</b>
+&nbsp;		} else{
+<b class="fc">&nbsp;			return false;</b>
+&nbsp;		}
+&nbsp;
+&nbsp;	}
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * This method updates the org description in the database using the
+&nbsp;	 * /updateOrgDescription endpoint in the API
+&nbsp;	 *
+&nbsp;	 * @return true if update is successful, false otherwise
+&nbsp;	 */
+&nbsp;	public boolean updateOrgDescription(String id, String description) {
+<b class="fc">&nbsp;		if (id == null) {</b>
+<b class="fc">&nbsp;			throw new IllegalArgumentException(&quot;[Invalid Input] orgID cannot be empty.&quot;);</b>
+&nbsp;		}
+&nbsp;
+<b class="fc">&nbsp;		if (!id.matches(&quot;\\w+&quot;)) {</b>
+<b class="fc">&nbsp;			throw new IllegalArgumentException(&quot;[Invalid organization ID] word without spaces and special characters.&quot;);</b>
+&nbsp;		}
+&nbsp;
+<b class="fc">&nbsp;		Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();</b>
+&nbsp;
+<b class="fc">&nbsp;		map.put(&quot;id&quot;, id);</b>
+&nbsp;
+<b class="fc">&nbsp;		if (description != null) {</b>
+<b class="fc">&nbsp;			map.put(&quot;description&quot;, description);</b>
+&nbsp;		}
+&nbsp;
+<b class="fc">&nbsp;		String response = client.makeRequest(&quot;/updateOrgDescription&quot;, map);</b>
+<b class="fc">&nbsp;		JSONParser parser = new JSONParser();</b>
+<b class="fc">&nbsp;		JSONObject json = null;</b>
+&nbsp;		try {
+<b class="fc">&nbsp;			json = (JSONObject) parser.parse(response);</b>
+<b class="fc">&nbsp;		} catch (Exception e) {</b>
+<b class="fc">&nbsp;			throw new IllegalStateException(&quot;[Error in communicating with server] fail to update password.&quot;);</b>
+<b class="fc">&nbsp;		}</b>
+&nbsp;
+&nbsp;
+<b class="fc">&nbsp;		String status = (String) json.get(&quot;status&quot;);</b>
+<b class="fc">&nbsp;		if (status.equals(&quot;success&quot;)) {</b>
+<b class="fc">&nbsp;			return true;</b>
+&nbsp;		} else{
+<b class="fc">&nbsp;			return false;</b>
+&nbsp;		}
+&nbsp;
+&nbsp;	}
+&nbsp;
+&nbsp;    /**
+&nbsp;     * This method updates a new password in the database using the /updatePassword endpoint
+&nbsp;     * in the API
+&nbsp;     *
+&nbsp;     * @return true if update is successful, false otherwise
+&nbsp;     */
+&nbsp;    public boolean updatePassword(String id, String password) {
+<b class="fc">&nbsp;        if (id == null || password == null) {</b>
+<b class="fc">&nbsp;            throw new IllegalArgumentException(&quot;[Invalid Input] orgID or password cannot be empty&quot; +</b>
+&nbsp;                    &quot;.&quot;);
+&nbsp;        }
+&nbsp;
+<b class="fc">&nbsp;		if (!id.matches(&quot;\\w+&quot;)) {</b>
+<b class="fc">&nbsp;			throw new IllegalArgumentException(</b>
+&nbsp;					&quot;[Invalid organization ID] word without spaces and special characters.&quot;);
+&nbsp;		}
+&nbsp;
+<b class="fc">&nbsp;		Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();</b>
+<b class="fc">&nbsp;		map.put(&quot;id&quot;, id);</b>
+<b class="fc">&nbsp;		map.put(&quot;password&quot;, password);</b>
+&nbsp;
+<b class="fc">&nbsp;		String response = client.makeRequest(&quot;/updatePassword&quot;, map);</b>
+<b class="fc">&nbsp;		JSONParser parser = new JSONParser();</b>
+<b class="fc">&nbsp;		JSONObject json = null;</b>
+&nbsp;		try {
+<b class="fc">&nbsp;			json = (JSONObject) parser.parse(response);</b>
+<b class="fc">&nbsp;		} catch (Exception e) {</b>
+<b class="fc">&nbsp;			throw new IllegalStateException(&quot;[Error in communicating with server] fail to update &quot; +</b>
+&nbsp;					&quot;password&quot;);
+<b class="fc">&nbsp;		}</b>
+&nbsp;
+<b class="fc">&nbsp;		String status = (String) json.get(&quot;status&quot;);</b>
+<b class="fc">&nbsp;		return status.equals(&quot;success&quot;);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * This method checks whether an Organization&#39;s login name already exits using
+&nbsp;	 * the /findOrgByName endpoint in the API
+&nbsp;	 *
+&nbsp;	 * @return true if already exits, false otherwise
+&nbsp;	 */
+&nbsp;	public boolean checkUniqueLoginName(String login) {
+<b class="fc">&nbsp;		if (login == null) {</b>
+<b class="fc">&nbsp;			throw new IllegalArgumentException(&quot;[Invalid Input] login name cannot be empty&quot; +</b>
+&nbsp;					&quot;.&quot;);
+&nbsp;		}
+<b class="fc">&nbsp;		Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();</b>
+&nbsp;
+<b class="fc">&nbsp;		if (login.matches(&quot;\\w+&quot;)) {</b>
+<b class="fc">&nbsp;			map.put(&quot;login&quot;, login);</b>
+&nbsp;		} else {
+<b class="fc">&nbsp;			throw new IllegalArgumentException(&quot;[Invalid login ID] word without spaces and special characters.&quot;);</b>
+&nbsp;		}
+&nbsp;
+<b class="fc">&nbsp;		String response = client.makeRequest(&quot;/findOrgByName&quot;, map);</b>
+<b class="fc">&nbsp;		JSONParser parser = new JSONParser();</b>
+<b class="fc">&nbsp;		JSONObject json = null;</b>
+&nbsp;		try {
+<b class="fc">&nbsp;			json = (JSONObject) parser.parse(response);</b>
+<b class="fc">&nbsp;		} catch (Exception e) {</b>
+<b class="fc">&nbsp;			throw new IllegalStateException(&quot;[Error in communicating with server] fail to find &quot; +</b>
+&nbsp;					&quot;Organization by name&quot;);
+<b class="fc">&nbsp;		}</b>
+&nbsp;
+<b class="fc">&nbsp;		String status = (String) json.get(&quot;status&quot;);</b>
+<b class="fc">&nbsp;		JSONObject data = (JSONObject) json.get(&quot;data&quot;);</b>
+<b class="fc">&nbsp;		if (status.equals(&quot;success&quot;) &amp;&amp; data != null) {</b>
+<b class="fc">&nbsp;			return true;</b>
+&nbsp;		}
+<b class="fc">&nbsp;		return false;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	/**
+&nbsp;	 * This method creates a new organization in the database using the /createOrg
+&nbsp;	 * endpoint
+&nbsp;	 * in the API
+&nbsp;	 *
+&nbsp;	 * @return true if successful; false if unsuccessful
+&nbsp;	 */
+&nbsp;	public boolean createOrg(String login, String password, String name, String description) {
+<b class="fc">&nbsp;		if (login == null || password == null || name == null || description == null) {</b>
+<b class="fc">&nbsp;			throw new IllegalArgumentException(&quot;[Invalid Input] login, password, name and &quot; +</b>
+&nbsp;					&quot;description&quot; +
+&nbsp;					&quot; cannot be empty&quot; +
+&nbsp;					&quot;.&quot;);
+&nbsp;		}
+&nbsp;
+<b class="fc">&nbsp;		Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();</b>
+&nbsp;
+<b class="fc">&nbsp;		if (login.matches(&quot;\\w+&quot;)) {</b>
+<b class="fc">&nbsp;			map.put(&quot;login&quot;, login);</b>
+&nbsp;		} else {
+<b class="fc">&nbsp;			throw new IllegalArgumentException(&quot;[Invalid login ID] word without spaces and special characters.&quot;);</b>
+&nbsp;		}
+&nbsp;
+<b class="fc">&nbsp;		if (password.matches(&quot;\\w+&quot;)) {</b>
+<b class="fc">&nbsp;			map.put(&quot;password&quot;, password);</b>
+&nbsp;		} else {
+<b class="fc">&nbsp;			throw new IllegalArgumentException(&quot;[Invalid password] word without spaces and special characters.&quot;);</b>
+&nbsp;		}
+&nbsp;
+<b class="fc">&nbsp;		if (name.matches(&quot;[A-Za-z0-9\\s]*&quot;)) {</b>
+<b class="fc">&nbsp;			map.put(&quot;name&quot;, name);</b>
+&nbsp;		} else {
+<b class="fc">&nbsp;			throw new IllegalArgumentException(&quot;[Invalid fund name] word without special characters.&quot;);</b>
+&nbsp;		}
+&nbsp;
+<b class="fc">&nbsp;		map.put(&quot;description&quot;, description);</b>
+&nbsp;
+<b class="fc">&nbsp;		String response = client.makeRequest(&quot;/createOrg&quot;, map);</b>
+<b class="fc">&nbsp;		JSONParser parser = new JSONParser();</b>
+<b class="fc">&nbsp;		JSONObject json = null;</b>
+&nbsp;		try {
+<b class="fc">&nbsp;			json = (JSONObject) parser.parse(response);</b>
+<b class="fc">&nbsp;		} catch (Exception e) {</b>
+<b class="fc">&nbsp;			throw new IllegalStateException(&quot;[Error in communicating with server] fail to create &quot; +</b>
+&nbsp;					&quot;a new organization&quot;);
+<b class="fc">&nbsp;		}</b>
+<b class="fc">&nbsp;		String status = (String) json.get(&quot;status&quot;);</b>
+<b class="fc">&nbsp;		if (status.equals(&quot;success&quot;)) {</b>
+<b class="fc">&nbsp;			return true;</b>
+&nbsp;		}
+<b class="fc">&nbsp;		return false;</b>
+&nbsp;	}
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-06-26 03:35</div>
+</div>
+</body>
+</html>

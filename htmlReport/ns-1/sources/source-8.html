@@ -1,0 +1,343 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > DataManager_makeDonation_Test</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">&lt;empty package name&gt;</a>
+</div>
+
+<h1>Coverage Summary for Class: DataManager_makeDonation_Test (&lt;empty package name&gt;)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">DataManager_makeDonation_Test</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (11/11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (20/20)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">DataManager_makeDonation_Test$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    87.5%
+  </span>
+  <span class="absValue">
+    (7/8)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">DataManager_makeDonation_Test$2</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (4/4)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">DataManager_makeDonation_Test$3</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    87.5%
+  </span>
+  <span class="absValue">
+    (7/8)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">DataManager_makeDonation_Test$4</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    75%
+  </span>
+  <span class="absValue">
+    (6/8)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">DataManager_makeDonation_Test$5</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    87.5%
+  </span>
+  <span class="absValue">
+    (7/8)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (21/21)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    91.1%
+  </span>
+  <span class="absValue">
+    (51/56)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;//package org;
+&nbsp;
+&nbsp;import org.Donation;
+&nbsp;import org.WebClient;
+&nbsp;import org.junit.Test;
+&nbsp;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Map;
+&nbsp;import java.util.Objects;
+&nbsp;
+&nbsp;import static org.junit.Assert.*;
+&nbsp;
+<b class="fc">&nbsp;public class DataManager_makeDonation_Test {</b>
+&nbsp;	@Test(expected = IllegalArgumentException.class)
+&nbsp;	public void testEmptyContributorId() {
+<b class="fc">&nbsp;		validDataManager.makeDonation(&quot;&quot;, &quot;1&quot;, &quot;10&quot;);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Test(expected = IllegalArgumentException.class)
+&nbsp;	public void testEmptyFundId() {
+<b class="fc">&nbsp;		validDataManager.makeDonation(&quot;1&quot;, &quot;&quot;, &quot;10&quot;);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Test(expected = IllegalArgumentException.class)
+&nbsp;	public void testEmptyAmount() {
+<b class="fc">&nbsp;		validDataManager.makeDonation(&quot;1&quot;, &quot;1&quot;, &quot;&quot;);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Test(expected = IllegalArgumentException.class)
+&nbsp;	public void testNaNAmount() {
+<b class="fc">&nbsp;		validDataManager.makeDonation(&quot;1&quot;, &quot;1&quot;, &quot;test&quot;);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Test(expected = IllegalArgumentException.class)
+&nbsp;	public void testNegativeAmount() {
+<b class="fc">&nbsp;		validDataManager.makeDonation(&quot;1&quot;, &quot;1&quot;, &quot;-2&quot;);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Test(expected = IllegalStateException.class)
+&nbsp;	public void testNullDonationResponse() {
+<b class="fc">&nbsp;		nullStringDataManager.makeDonation(&quot;1&quot;, &quot;1&quot;, &quot;1&quot;);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Test(expected = IllegalStateException.class)
+&nbsp;	public void testEmptyFundJson() {
+<b class="fc">&nbsp;		emptyFundDataManager.makeDonation(&quot;1&quot;, &quot;1&quot;, &quot;1&quot;);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Test(expected = IllegalStateException.class)
+&nbsp;	public void testFailedDonation() {
+<b class="fc">&nbsp;		failedDonationDataManager.makeDonation(&quot;1&quot;, &quot;1&quot;, &quot;1&quot;);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Test(expected = IllegalStateException.class)
+&nbsp;	public void testFailedFind() {
+<b class="fc">&nbsp;		failedFindDataManager.makeDonation(&quot;1&quot;, &quot;1&quot;, &quot;1&quot;);</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Test
+&nbsp;	public void testSingleDonation() {
+<b class="fc">&nbsp;		List&lt;Donation&gt; donations = validDataManager.makeDonation(&quot;1&quot;, &quot;funId&quot;, &quot;1&quot;);</b>
+<b class="fc">&nbsp;		assertEquals(1, donations.size());</b>
+<b class="fc">&nbsp;		Donation donation = donations.get(0);</b>
+<b class="fc">&nbsp;		assertEquals(&quot;funId&quot;, donation.getFundId());</b>
+<b class="fc">&nbsp;		assertEquals(30, donation.getAmount());</b>
+&nbsp;	}
+&nbsp;
+<b class="fc">&nbsp;	private final DataManager validDataManager = new DataManager(new WebClient(&quot;localhost&quot;, 3001) {</b>
+&nbsp;		@Override
+&nbsp;		public String makeRequest(String resource, Map&lt;String, Object&gt; queryParams) {
+<b class="fc">&nbsp;			if (Objects.equals(resource, &quot;/findFundById&quot;)) {</b>
+<b class="fc">&nbsp;				return &quot;{\&quot;status\&quot;:\&quot;success\&quot;,\&quot;data\&quot;:{\&quot;target\&quot;:100,\&quot;_id\&quot;:\&quot;funId\&quot;,\&quot;name\&quot;:\&quot;testFund\&quot;,&quot;</b>
+&nbsp;						+ &quot;\&quot;description\&quot;:\&quot;test fund\&quot;,\&quot;org\&quot;:\&quot;0\&quot;,\&quot;donations\&quot;:&quot;
+&nbsp;						+ &quot;[{\&quot;_id\&quot;:\&quot;donId\&quot;,\&quot;contributor\&quot;:\&quot;conId\&quot;,\&quot;fund\&quot;:\&quot;funId\&quot;,\&quot;date\&quot;:\&quot;2023-06-04T06:28:58.218Z\&quot;,\&quot;amount\&quot;:30,\&quot;__v\&quot;:0}],\&quot;__v\&quot;:0}}&quot;;
+<b class="fc">&nbsp;			} else if (Objects.equals(resource, &quot;/makeDonation&quot;)) {</b>
+<b class="fc">&nbsp;				return &quot;{\&quot;status\&quot;:\&quot;success\&quot;,\&quot;data\&quot;:{\&quot;_id\&quot;:\&quot;1\&quot;,\&quot;contributor\&quot;:\&quot;conId\&quot;,&quot;</b>
+&nbsp;						+ &quot;\&quot;fund\&quot;:\&quot;funId\&quot;,\&quot;date\&quot;:\&quot;2023-06-26T04:20:55.651Z\&quot;,\&quot;amount\&quot;:1,\&quot;__v\&quot;:0}}&quot;;
+<b class="fc">&nbsp;			} else if (Objects.equals(resource, &quot;/findContributorNameById&quot;)) {</b>
+<b class="fc">&nbsp;				return &quot;{\&quot;status\&quot;:\&quot;success\&quot;,\&quot;data\&quot;:\&quot;Chris\&quot;}&quot;;</b>
+&nbsp;			}
+<b class="nc">&nbsp;			return null;</b>
+&nbsp;		}
+&nbsp;	});
+&nbsp;
+<b class="fc">&nbsp;	private final DataManager nullStringDataManager = new DataManager(new WebClient(&quot;localhost&quot;, 3001) {</b>
+&nbsp;		@Override
+&nbsp;		public String makeRequest(String resource, Map&lt;String, Object&gt; queryParams) {
+<b class="fc">&nbsp;			if (Objects.equals(resource, &quot;/findContributorNameById&quot;)) {</b>
+<b class="fc">&nbsp;				return &quot;{\&quot;status\&quot;:\&quot;success\&quot;,\&quot;data\&quot;:\&quot;Chris\&quot;}&quot;;</b>
+&nbsp;			}
+<b class="fc">&nbsp;			return null;</b>
+&nbsp;		}
+&nbsp;	});
+&nbsp;
+<b class="fc">&nbsp;	private final DataManager emptyFundDataManager = new DataManager(new WebClient(&quot;localhost&quot;, 3001) {</b>
+&nbsp;		@Override
+&nbsp;		public String makeRequest(String resource, Map&lt;String, Object&gt; queryParams) {
+<b class="fc">&nbsp;			if (Objects.equals(resource, &quot;/makeDonation&quot;)) {</b>
+<b class="fc">&nbsp;				return &quot;{\&quot;status\&quot;:\&quot;success\&quot;,\&quot;data\&quot;:{\&quot;_id\&quot;:\&quot;1\&quot;,\&quot;contributor\&quot;:\&quot;conId\&quot;,&quot;</b>
+&nbsp;						+ &quot;\&quot;fund\&quot;:\&quot;funId\&quot;,\&quot;date\&quot;:\&quot;2023-06-26T04:20:55.651Z\&quot;,\&quot;amount\&quot;:1,\&quot;__v\&quot;:0}}&quot;;
+<b class="fc">&nbsp;			} else if (Objects.equals(resource, &quot;/findFundById&quot;)) {</b>
+<b class="fc">&nbsp;				return &quot;&quot;;</b>
+<b class="fc">&nbsp;			} else if (Objects.equals(resource, &quot;/findContributorNameById&quot;)) {</b>
+<b class="fc">&nbsp;				return &quot;{\&quot;status\&quot;:\&quot;success\&quot;,\&quot;data\&quot;:\&quot;Chris\&quot;}&quot;;</b>
+&nbsp;			}
+<b class="nc">&nbsp;			return null;</b>
+&nbsp;		}
+&nbsp;	});
+&nbsp;
+<b class="fc">&nbsp;	private final DataManager failedDonationDataManager = new DataManager(new WebClient(&quot;localhost&quot;, 3001) {</b>
+&nbsp;		@Override
+&nbsp;		public String makeRequest(String resource, Map&lt;String, Object&gt; queryParams) {
+<b class="fc">&nbsp;			if (Objects.equals(resource, &quot;/makeDonation&quot;)) {</b>
+<b class="fc">&nbsp;				return &quot;{\&quot;status\&quot;:\&quot;failed\&quot;}&quot;;</b>
+<b class="fc">&nbsp;			} else if (Objects.equals(resource, &quot;/findFundById&quot;)) {</b>
+<b class="nc">&nbsp;				return &quot;&quot;;</b>
+<b class="fc">&nbsp;			} else if (Objects.equals(resource, &quot;/findContributorNameById&quot;)) {</b>
+<b class="fc">&nbsp;				return &quot;{\&quot;status\&quot;:\&quot;success\&quot;,\&quot;data\&quot;:\&quot;Chris\&quot;}&quot;;</b>
+&nbsp;			}
+<b class="nc">&nbsp;			return null;</b>
+&nbsp;		}
+&nbsp;	});
+&nbsp;
+<b class="fc">&nbsp;	private final DataManager failedFindDataManager = new DataManager(new WebClient(&quot;localhost&quot;, 3001) {</b>
+&nbsp;		@Override
+&nbsp;		public String makeRequest(String resource, Map&lt;String, Object&gt; queryParams) {
+<b class="fc">&nbsp;			if (Objects.equals(resource, &quot;/makeDonation&quot;)) {</b>
+<b class="fc">&nbsp;				return &quot;{\&quot;status\&quot;:\&quot;success\&quot;,\&quot;data\&quot;:{\&quot;_id\&quot;:\&quot;1\&quot;,\&quot;contributor\&quot;:\&quot;conId\&quot;,&quot;</b>
+&nbsp;						+ &quot;\&quot;fund\&quot;:\&quot;funId\&quot;,\&quot;date\&quot;:\&quot;2023-06-26T04:20:55.651Z\&quot;,\&quot;amount\&quot;:1,\&quot;__v\&quot;:0}}&quot;;
+<b class="fc">&nbsp;			} else if (Objects.equals(resource, &quot;/findFundById&quot;)) {</b>
+<b class="fc">&nbsp;				return &quot;{\&quot;status\&quot;:\&quot;failed\&quot;}&quot;;</b>
+<b class="fc">&nbsp;			} else if (Objects.equals(resource, &quot;/findContributorNameById&quot;)) {</b>
+<b class="fc">&nbsp;				return &quot;{\&quot;status\&quot;:\&quot;success\&quot;,\&quot;data\&quot;:\&quot;Chris\&quot;}&quot;;</b>
+&nbsp;			}
+<b class="nc">&nbsp;			return null;</b>
+&nbsp;		}
+&nbsp;	});
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-06-26 03:35</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,590 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > UserInterface</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">&lt;empty package name&gt;</a>
+</div>
+
+<h1>Coverage Summary for Class: UserInterface (&lt;empty package name&gt;)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">UserInterface</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/18)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/284)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">UserInterface$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/8)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/20)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/292)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;import org.Donation;
+&nbsp;import org.Fund;
+&nbsp;import org.Organization;
+&nbsp;import org.WebClient;
+&nbsp;
+&nbsp;import java.text.ParseException;
+&nbsp;import java.text.SimpleDateFormat;
+&nbsp;import java.util.*;
+&nbsp;
+&nbsp;public class UserInterface {
+&nbsp;
+&nbsp;
+&nbsp;	private final DataManager dataManager;
+&nbsp;	private final Organization org;
+<b class="nc">&nbsp;	private final Scanner in = new Scanner(System.in);</b>
+&nbsp;
+<b class="nc">&nbsp;	public UserInterface(DataManager dataManager, Organization org) {</b>
+<b class="nc">&nbsp;		this.dataManager = dataManager;</b>
+<b class="nc">&nbsp;		this.org = org;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void start() {
+<b class="nc">&nbsp;		boolean logout = false;</b>
+&nbsp;
+<b class="nc">&nbsp;		while (!logout) {</b>
+<b class="nc">&nbsp;			System.out.println(&quot;\n\n&quot;);</b>
+<b class="nc">&nbsp;			if (org.getFunds().size() &gt; 0) {</b>
+<b class="nc">&nbsp;				System.out.println(&quot;There are &quot; + org.getFunds().size() + &quot; funds in this organization:&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;				int count = 1;</b>
+<b class="nc">&nbsp;				for (Fund f : org.getFunds()) {</b>
+&nbsp;
+<b class="nc">&nbsp;					System.out.println(count + &quot;: &quot; + f.getName());</b>
+&nbsp;
+<b class="nc">&nbsp;					count++;</b>
+<b class="nc">&nbsp;				}</b>
+<b class="nc">&nbsp;				System.out.println(&quot;Enter the fund number to see more information.&quot;);</b>
+&nbsp;			}
+<b class="nc">&nbsp;			System.out.println(&quot;Enter 0 to create a new fund&quot;);</b>
+<b class="nc">&nbsp;			System.out.println(&quot;Enter 99 to see all contributions&quot;);</b>
+<b class="nc">&nbsp;			System.out.println(&quot;Enter 100 to make a contribution on behalf of a contributor&quot;);</b>
+<b class="nc">&nbsp;			System.out.println(&quot;Enter -1 to logout&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;			int option = 0;</b>
+<b class="nc">&nbsp;			boolean validInput = false;</b>
+<b class="nc">&nbsp;			while (!validInput) {</b>
+&nbsp;				try {
+<b class="nc">&nbsp;					option = in.nextInt();</b>
+<b class="nc">&nbsp;					if ((option &gt;= 0 &amp;&amp; option &lt;= org.getFunds().size()) || option == 99 || option == 100) {</b>
+<b class="nc">&nbsp;						validInput = true;</b>
+<b class="nc">&nbsp;					} else if (option == -1) {</b>
+<b class="nc">&nbsp;						logout = true;</b>
+<b class="nc">&nbsp;						break;</b>
+&nbsp;					} else {
+<b class="nc">&nbsp;						System.out.println(&quot;Please enter an Integer within Range&quot;);</b>
+<b class="nc">&nbsp;						in.nextLine();</b>
+&nbsp;					}
+<b class="nc">&nbsp;				} catch (Exception e) {</b>
+<b class="nc">&nbsp;					System.out.println(&quot;Please enter an Integer&quot;);</b>
+<b class="nc">&nbsp;					in.nextLine();</b>
+<b class="nc">&nbsp;				}</b>
+&nbsp;			}
+<b class="nc">&nbsp;			in.nextLine();</b>
+<b class="nc">&nbsp;			if (option == -1) {</b>
+&nbsp;
+<b class="nc">&nbsp;			} else if (option == 0) {</b>
+<b class="nc">&nbsp;				createFund();</b>
+<b class="nc">&nbsp;			} else if (option == 99) {</b>
+<b class="nc">&nbsp;				displayAllContributions();</b>
+<b class="nc">&nbsp;			} else if (option == 100) {</b>
+<b class="nc">&nbsp;				makeDonation();</b>
+&nbsp;			} else {
+<b class="nc">&nbsp;				displayFund(option);</b>
+&nbsp;			}
+<b class="nc">&nbsp;		}</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	private void makeDonation() {
+&nbsp;		while (true) {
+<b class="nc">&nbsp;			System.out.println(&quot;Making a donation...&quot;);</b>
+<b class="nc">&nbsp;			System.out.print(&quot;Enter the fund number: &quot;);</b>
+<b class="nc">&nbsp;			String fundId = &quot;&quot;;</b>
+<b class="nc">&nbsp;			int fundNumber = 0;</b>
+&nbsp;			try {
+<b class="nc">&nbsp;				fundNumber = in.nextInt();</b>
+<b class="nc">&nbsp;				Fund fund = org.getFunds().get(fundNumber - 1);</b>
+<b class="nc">&nbsp;				fundId = fund.getId();</b>
+<b class="nc">&nbsp;			} catch (Exception e) {</b>
+<b class="nc">&nbsp;				System.out.println(&quot;[Invalid Input] Invalid fund number. Try Again.&quot;);</b>
+<b class="nc">&nbsp;				continue;</b>
+<b class="nc">&nbsp;			}</b>
+&nbsp;
+&nbsp;			while (true) {
+<b class="nc">&nbsp;				System.out.print(&quot;Enter the contributor Id: &quot;);</b>
+<b class="nc">&nbsp;				String contributorId = in.next().trim();</b>
+&nbsp;
+<b class="nc">&nbsp;				System.out.print(&quot;Enter the donation amount: &quot;);</b>
+<b class="nc">&nbsp;				String amountStr = in.next().trim();</b>
+<b class="nc">&nbsp;				System.out.println();</b>
+&nbsp;
+&nbsp;				try {
+<b class="nc">&nbsp;					List&lt;Donation&gt; donations = dataManager.makeDonation(contributorId, fundId, amountStr);</b>
+<b class="nc">&nbsp;					org.getFunds().get(fundNumber - 1).setDonations(donations);</b>
+<b class="nc">&nbsp;					printIndividualDonation(donations);</b>
+&nbsp;					return;
+<b class="nc">&nbsp;				} catch (IllegalStateException | IllegalArgumentException e) {</b>
+<b class="nc">&nbsp;					System.out.println(e.getMessage());</b>
+<b class="nc">&nbsp;					System.out.println(&quot;Try Again.&quot;);</b>
+&nbsp;				}
+<b class="nc">&nbsp;			}</b>
+&nbsp;		}
+&nbsp;	}
+&nbsp;
+&nbsp;	public void displayAllContributions() {
+<b class="nc">&nbsp;		HashMap&lt;String, String&gt; fundIDToName = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;		List&lt;Fund&gt; funds = org.getFunds();</b>
+<b class="nc">&nbsp;		List&lt;Donation&gt; donations = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;		for (Fund fund : funds) {</b>
+<b class="nc">&nbsp;			donations.addAll(fund.getDonations());</b>
+<b class="nc">&nbsp;			fundIDToName.put(fund.getId(), fund.getName());</b>
+<b class="nc">&nbsp;		}</b>
+<b class="nc">&nbsp;		Collections.sort(donations, new Comparator&lt;Donation&gt;() {</b>
+&nbsp;			@Override
+&nbsp;			public int compare(Donation o1, Donation o2) {
+<b class="nc">&nbsp;				SimpleDateFormat sdf = new SimpleDateFormat(&quot;MMM dd, yyyy&quot;);</b>
+&nbsp;				try {
+<b class="nc">&nbsp;					Date date1 = sdf.parse(o1.getDate());</b>
+<b class="nc">&nbsp;					Date date2 = sdf.parse(o2.getDate());</b>
+<b class="nc">&nbsp;					return date2.compareTo(date1);</b>
+<b class="nc">&nbsp;				} catch (ParseException e) {</b>
+<b class="nc">&nbsp;					e.printStackTrace();</b>
+&nbsp;				}
+<b class="nc">&nbsp;				return 0;</b>
+&nbsp;			}
+&nbsp;		});
+&nbsp;
+<b class="nc">&nbsp;		for (Donation donation : donations) {</b>
+<b class="nc">&nbsp;			System.out.println(&quot;fund name: &quot; + fundIDToName.get(donation.getFundId()) +</b>
+<b class="nc">&nbsp;					&quot; Donation amount: &quot; + donation.getAmount() +</b>
+<b class="nc">&nbsp;					&quot; Donation Date: &quot; + donation.getDate());</b>
+<b class="nc">&nbsp;		}</b>
+<b class="nc">&nbsp;		System.out.println(&quot;Press the Enter key to go back to the listing of funds&quot;);</b>
+<b class="nc">&nbsp;		in.nextLine();</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void createFund() {
+&nbsp;
+<b class="nc">&nbsp;		String name = &quot;&quot;;</b>
+&nbsp;		while (true) {
+<b class="nc">&nbsp;			System.out.print(&quot;Enter the fund name: &quot;);</b>
+<b class="nc">&nbsp;			name = in.nextLine().trim();</b>
+<b class="nc">&nbsp;			if (!name.equals(&quot;&quot;)) break;</b>
+&nbsp;		}
+&nbsp;
+<b class="nc">&nbsp;		System.out.print(&quot;Enter the fund description: &quot;);</b>
+<b class="nc">&nbsp;		String description = in.nextLine().trim();</b>
+&nbsp;
+<b class="nc">&nbsp;		System.out.print(&quot;Enter the fund target: &quot;);</b>
+<b class="nc">&nbsp;		long target = 0;</b>
+&nbsp;		while (true) {
+&nbsp;			try {
+<b class="nc">&nbsp;				target = in.nextInt();</b>
+<b class="nc">&nbsp;				in.nextLine();</b>
+<b class="nc">&nbsp;				break;</b>
+<b class="nc">&nbsp;			} catch (Exception e) {</b>
+<b class="nc">&nbsp;				System.out.print(&quot;Please enter an Integer: &quot;);</b>
+<b class="nc">&nbsp;				in.nextLine();</b>
+<b class="nc">&nbsp;			}</b>
+&nbsp;		}
+&nbsp;
+&nbsp;		try {
+<b class="nc">&nbsp;			Fund fund = dataManager.createFund(org.getId(), name, description, target);</b>
+<b class="nc">&nbsp;			org.getFunds().add(fund);</b>
+<b class="nc">&nbsp;		} catch (IllegalStateException | IllegalArgumentException e) {</b>
+<b class="nc">&nbsp;			System.out.println(e);</b>
+<b class="nc">&nbsp;		}</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void displayFund(int fundNumber) {
+&nbsp;
+<b class="nc">&nbsp;		Fund fund = org.getFunds().get(fundNumber - 1);</b>
+&nbsp;
+<b class="nc">&nbsp;		System.out.println(&quot;\n\n&quot;);</b>
+<b class="nc">&nbsp;		System.out.println(&quot;Here is information about this fund:&quot;);</b>
+<b class="nc">&nbsp;		System.out.println(&quot;Name: &quot; + fund.getName());</b>
+<b class="nc">&nbsp;		System.out.println(&quot;Description: &quot; + fund.getDescription());</b>
+<b class="nc">&nbsp;		System.out.println(&quot;Target: $&quot; + fund.getTarget());</b>
+&nbsp;
+<b class="nc">&nbsp;		System.out.println(&quot;Enter 1 to see individual donations&quot;);</b>
+<b class="nc">&nbsp;		System.out.println(&quot;Enter 2 to see aggregate donations&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;		int option = 0;</b>
+<b class="nc">&nbsp;		boolean validInput = false;</b>
+<b class="nc">&nbsp;		while (!validInput) {</b>
+&nbsp;			try {
+<b class="nc">&nbsp;				option = in.nextInt();</b>
+<b class="nc">&nbsp;				if (option == 1 || option == 2) {</b>
+<b class="nc">&nbsp;					validInput = true;</b>
+&nbsp;				} else {
+<b class="nc">&nbsp;					System.out.println(&quot;Please enter an Integer within Range&quot;);</b>
+<b class="nc">&nbsp;					in.nextLine();</b>
+&nbsp;				}
+<b class="nc">&nbsp;			} catch (Exception e) {</b>
+<b class="nc">&nbsp;				System.out.println(&quot;Please enter an Integer&quot;);</b>
+<b class="nc">&nbsp;				in.nextLine();</b>
+<b class="nc">&nbsp;			}</b>
+&nbsp;		}
+<b class="nc">&nbsp;		in.nextLine();</b>
+<b class="nc">&nbsp;		List&lt;Donation&gt; donations = fund.getDonations();</b>
+<b class="nc">&nbsp;		List&lt;Map.Entry&lt;String, Long[]&gt;&gt; aggregateDonations = fund.getAggregateDonations();</b>
+<b class="nc">&nbsp;		if (option == 1) {</b>
+<b class="nc">&nbsp;			printIndividualDonation(donations);</b>
+<b class="nc">&nbsp;		} else if (option == 2) {</b>
+<b class="nc">&nbsp;			printAggregateDonation(aggregateDonations);</b>
+&nbsp;		}
+&nbsp;
+<b class="nc">&nbsp;		long totalDonation = 0;</b>
+<b class="nc">&nbsp;		for (Donation donation : donations) {</b>
+<b class="nc">&nbsp;			totalDonation += donation.getAmount();</b>
+<b class="nc">&nbsp;		}</b>
+<b class="nc">&nbsp;		long target = fund.getTarget();</b>
+<b class="nc">&nbsp;		if (target == 0) {</b>
+<b class="nc">&nbsp;			target = 1;</b>
+&nbsp;		}
+<b class="nc">&nbsp;		double donationPercentage = totalDonation * 1.0 / target;</b>
+<b class="nc">&nbsp;		System.out.println(&quot;Total donation amount: $&quot; + totalDonation + &quot;(&quot; + Math.round(donationPercentage * 100) + &quot;% of &quot; +</b>
+&nbsp;				&quot;the target)&quot;);
+<b class="nc">&nbsp;		System.out.println(&quot;Press the Enter key to go back to the listing of funds&quot;);</b>
+<b class="nc">&nbsp;		in.nextLine();</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	private static void printIndividualDonation(List&lt;Donation&gt; donations) {
+<b class="nc">&nbsp;		System.out.println(&quot;Number of donations: &quot; + donations.size());</b>
+<b class="nc">&nbsp;		for (Donation donation : donations) {</b>
+<b class="nc">&nbsp;			System.out.println(&quot;* &quot; + donation.getContributorName() + &quot;: $&quot; + donation.getAmount() + &quot; on &quot; + donation.getDate());</b>
+<b class="nc">&nbsp;		}</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	private static void printAggregateDonation(List&lt;Map.Entry&lt;String, Long[]&gt;&gt; aggregateDonations) {
+<b class="nc">&nbsp;		for (Map.Entry&lt;String, Long[]&gt; entry : aggregateDonations) {</b>
+<b class="nc">&nbsp;			System.out.println(&quot;* &quot; + entry.getKey() + &quot;, &quot; + entry.getValue()[0] + &quot; donations, &quot; + &quot;$&quot; + entry.getValue()[1] + &quot; total&quot;);</b>
+<b class="nc">&nbsp;		}</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	private static String userLoginID() {
+<b class="nc">&nbsp;		Scanner loginScanner = new Scanner(System.in);</b>
+<b class="nc">&nbsp;		System.out.print(&quot;Enter your login ID: &quot;);</b>
+<b class="nc">&nbsp;		String login = loginScanner.nextLine();</b>
+<b class="nc">&nbsp;		if (login.equals(&quot;&quot;)) {</b>
+<b class="nc">&nbsp;			return null;</b>
+&nbsp;		}
+<b class="nc">&nbsp;		return login;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	private static String userLoginPassword() {
+<b class="nc">&nbsp;		Scanner loginScanner = new Scanner(System.in);</b>
+<b class="nc">&nbsp;		System.out.print(&quot;Enter your password: &quot;);</b>
+<b class="nc">&nbsp;		String password = loginScanner.nextLine();</b>
+<b class="nc">&nbsp;		if (password.equals(&quot;&quot;)) {</b>
+<b class="nc">&nbsp;			return null;</b>
+&nbsp;		}
+<b class="nc">&nbsp;		return password;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;    private boolean editConfirm() {
+<b class="nc">&nbsp;        System.out.println(&quot;Confirm your change [Y/N]: &quot;);</b>
+&nbsp;        while (true) {
+<b class="nc">&nbsp;            String choice = in.nextLine();</b>
+<b class="nc">&nbsp;            if (choice.equals(&quot;Y&quot;) || choice.equals(&quot;y&quot;)) {</b>
+<b class="nc">&nbsp;                return true;</b>
+<b class="nc">&nbsp;            } else if (choice.equals(&quot;N&quot;) || choice.equals(&quot;n&quot;)) {</b>
+<b class="nc">&nbsp;                return false;</b>
+&nbsp;            }
+<b class="nc">&nbsp;            System.out.println(&quot;Please enter [Y/N]: &quot;);</b>
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    private String userNewDescription() {
+<b class="nc">&nbsp;        System.out.println(&quot;Please enter the new organization description: &quot;);</b>
+<b class="nc">&nbsp;        String newDescription = in.nextLine();</b>
+<b class="nc">&nbsp;        if(editConfirm()) {</b>
+<b class="nc">&nbsp;            return newDescription;</b>
+&nbsp;        } else {
+<b class="nc">&nbsp;            return null;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    private String userNewName() {
+&nbsp;        while (true) {
+<b class="nc">&nbsp;            System.out.println(&quot;Please enter the new organization name: &quot;);</b>
+<b class="nc">&nbsp;            String newName = in.nextLine();</b>
+&nbsp;
+&nbsp;            // Check name value
+<b class="nc">&nbsp;            if (newName.matches(&quot;[A-Za-z0-9\\s]*&quot;)) {</b>
+<b class="nc">&nbsp;                if(editConfirm()) {</b>
+<b class="nc">&nbsp;                    return newName;</b>
+&nbsp;                } else {
+<b class="nc">&nbsp;                    return null;</b>
+&nbsp;                }
+&nbsp;            } else {
+<b class="nc">&nbsp;                throw new IllegalArgumentException(&quot;[Invalid org name] word without special characters.&quot;);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    private String userLoginNewPassword() {
+&nbsp;        while (true) {
+<b class="nc">&nbsp;            System.out.println(&quot;Please enter your new password: &quot;);</b>
+<b class="nc">&nbsp;            String passwordOne = in.nextLine();</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Please enter your new password again: &quot;);</b>
+<b class="nc">&nbsp;            String passwordTwo = in.nextLine();</b>
+&nbsp;
+<b class="nc">&nbsp;            if (passwordOne.equals(passwordTwo)) {</b>
+<b class="nc">&nbsp;                return passwordOne;</b>
+&nbsp;            } else {
+<b class="nc">&nbsp;                throw new IllegalStateException(&quot;New Password does not match.&quot;);</b>
+&nbsp;            }
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    public boolean changeAccountInfo(DataManager ds, String login, int editInfoFlag) {
+<b class="nc">&nbsp;        String password = userLoginPassword();</b>
+&nbsp;        try {
+<b class="nc">&nbsp;            Organization org = ds.attemptLogin(login, password);</b>
+<b class="nc">&nbsp;            if (editInfoFlag == 2) {</b>
+<b class="nc">&nbsp;                String newName = userNewName();</b>
+<b class="nc">&nbsp;                if (newName != null &amp;&amp; ds.updateOrgName(org.getId(), newName)) {</b>
+<b class="nc">&nbsp;                    System.out.println(&quot;Name updated successfully.&quot;);</b>
+<b class="nc">&nbsp;                    return true;</b>
+&nbsp;                }
+<b class="nc">&nbsp;            } else if (editInfoFlag == 3) {</b>
+<b class="nc">&nbsp;                String newDescription = userNewDescription();</b>
+<b class="nc">&nbsp;                if (newDescription != null &amp;&amp; ds.updateOrgDescription(org.getId(), newDescription)) {</b>
+<b class="nc">&nbsp;                    System.out.println(&quot;Description updated successfully.&quot;);</b>
+<b class="nc">&nbsp;                    return true;</b>
+&nbsp;                }
+<b class="nc">&nbsp;            } else {</b>
+<b class="nc">&nbsp;                String newName = userNewName();</b>
+<b class="nc">&nbsp;                String newDescription = userNewDescription();</b>
+<b class="nc">&nbsp;                boolean nameFlag = false;</b>
+<b class="nc">&nbsp;                boolean desFlag = false;</b>
+&nbsp;
+<b class="nc">&nbsp;                if (newName != null &amp;&amp; ds.updateOrgName(org.getId(), newName)) {</b>
+<b class="nc">&nbsp;                    nameFlag = true;</b>
+&nbsp;                }
+&nbsp;
+<b class="nc">&nbsp;                if (newDescription != null &amp;&amp; ds.updateOrgDescription(org.getId(), newDescription)) {</b>
+<b class="nc">&nbsp;                    desFlag = true;</b>
+&nbsp;                }
+&nbsp;
+<b class="nc">&nbsp;                if (nameFlag &amp;&amp; desFlag) {</b>
+<b class="nc">&nbsp;                    System.out.println(&quot;Name and description updated successfully.&quot;);</b>
+<b class="nc">&nbsp;                    return true;</b>
+<b class="nc">&nbsp;                } else if (nameFlag &amp;&amp; !desFlag) {</b>
+<b class="nc">&nbsp;                    System.out.println(&quot;Only name updated successfully; description updated failed.&quot;);</b>
+<b class="nc">&nbsp;                    return true;</b>
+<b class="nc">&nbsp;                } else if (!nameFlag &amp;&amp; desFlag) {</b>
+<b class="nc">&nbsp;                    System.out.println(&quot;Only description updated successfully; name updated failed.&quot;);</b>
+<b class="nc">&nbsp;                    return true;</b>
+&nbsp;                }
+&nbsp;            }
+<b class="nc">&nbsp;        } catch (Exception e) {</b>
+<b class="nc">&nbsp;            System.out.println(e);</b>
+<b class="nc">&nbsp;            return false;</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return false;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public boolean changePassword(DataManager ds, String login) {
+<b class="nc">&nbsp;        String password = userLoginPassword();</b>
+&nbsp;        try {
+<b class="nc">&nbsp;            Organization org = ds.attemptLogin(login, password);</b>
+<b class="nc">&nbsp;            String newPassword = userLoginNewPassword();</b>
+<b class="nc">&nbsp;            if (ds.updatePassword(org.getId(), newPassword)) {</b>
+<b class="nc">&nbsp;                System.out.println(&quot;Password updated successfully.&quot;);</b>
+<b class="nc">&nbsp;                return true;</b>
+&nbsp;            };
+<b class="nc">&nbsp;        } catch (Exception e) {</b>
+<b class="nc">&nbsp;            System.out.println(e);</b>
+<b class="nc">&nbsp;            return false;</b>
+<b class="nc">&nbsp;        }</b>
+<b class="nc">&nbsp;        return false;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void orgAppMainMenu(DataManager ds, String login) {
+<b class="nc">&nbsp;        System.out.println(&quot;Login successfully&quot;);</b>
+&nbsp;        while (true) {
+<b class="nc">&nbsp;            System.out.println(&quot;================== MENU ==================&quot;);</b>
+<b class="nc">&nbsp;            System.out.println(&quot;1 - Change Password&quot;);</b>
+<b class="nc">&nbsp;            System.out.println(&quot;2 - Edit Organization Name&quot;);</b>
+<b class="nc">&nbsp;            System.out.println(&quot;3 - Edit Organization Description&quot;);</b>
+<b class="nc">&nbsp;            System.out.println(&quot;4 - Edit Organization Name and Description&quot;);</b>
+<b class="nc">&nbsp;			System.out.println(&quot;5 - Start the APP&quot;);</b>
+<b class="nc">&nbsp;            System.out.println(&quot;==========================================&quot;);</b>
+<b class="nc">&nbsp;            System.out.println(&quot;Please enter your option: &quot;);</b>
+<b class="nc">&nbsp;            String option = in.nextLine();</b>
+<b class="nc">&nbsp;            if (option.equals(&quot;1&quot;)) {</b>
+&nbsp;                try {
+<b class="nc">&nbsp;                    changePassword(ds, login);</b>
+<b class="nc">&nbsp;                } catch (Exception e) {</b>
+<b class="nc">&nbsp;                    System.out.println(e);</b>
+<b class="nc">&nbsp;                }</b>
+<b class="nc">&nbsp;            } else if (option.equals(&quot;2&quot;)) {</b>
+&nbsp;                try {
+<b class="nc">&nbsp;                    changeAccountInfo(ds, login, 2);</b>
+<b class="nc">&nbsp;                } catch (Exception e) {</b>
+<b class="nc">&nbsp;                    System.out.println(e);</b>
+<b class="nc">&nbsp;                }</b>
+<b class="nc">&nbsp;            } else if (option.equals(&quot;3&quot;)) {</b>
+&nbsp;                try {
+<b class="nc">&nbsp;                    changeAccountInfo(ds, login, 3);</b>
+<b class="nc">&nbsp;                } catch (Exception e) {</b>
+<b class="nc">&nbsp;                    System.out.println(e);</b>
+<b class="nc">&nbsp;                }</b>
+<b class="nc">&nbsp;            } else if (option.equals(&quot;4&quot;)) {</b>
+&nbsp;                try {
+<b class="nc">&nbsp;                    changeAccountInfo(ds, login, 4);</b>
+<b class="nc">&nbsp;                } catch (Exception e) {</b>
+<b class="nc">&nbsp;                    System.out.println(e);</b>
+<b class="nc">&nbsp;                }</b>
+<b class="nc">&nbsp;            } else if (option.equals(&quot;5&quot;)) {</b>
+&nbsp;				return;
+&nbsp;			} else {
+<b class="nc">&nbsp;                System.out.println(&quot;[BAD INPUT] Please enter the corresponding number of the options.&quot;);</b>
+&nbsp;            }
+<b class="nc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;	public static void main(String[] args) {
+&nbsp;
+<b class="nc">&nbsp;		DataManager ds = new DataManager(new WebClient(&quot;localhost&quot;, 3001));</b>
+&nbsp;
+&nbsp;		// Login
+&nbsp;		while (true) {
+<b class="nc">&nbsp;			String login = userLoginID();</b>
+<b class="nc">&nbsp;			String password = userLoginPassword();</b>
+&nbsp;
+&nbsp;			try {
+<b class="nc">&nbsp;				Organization org = ds.attemptLogin(login, password);</b>
+<b class="nc">&nbsp;				if (org == null) {</b>
+<b class="nc">&nbsp;					System.out.println(&quot;Login failed.&quot;);</b>
+&nbsp;				} else {
+<b class="nc">&nbsp;					UserInterface ui = new UserInterface(ds, org);</b>
+<b class="nc">&nbsp;                    ui.orgAppMainMenu(ds, login);</b>
+<b class="nc">&nbsp;					ui.start();</b>
+&nbsp;				}
+<b class="nc">&nbsp;			} catch (IllegalStateException | IllegalArgumentException e) {</b>
+<b class="nc">&nbsp;				System.out.println(e);</b>
+<b class="nc">&nbsp;			}</b>
+&nbsp;
+&nbsp;			// exit() or re-login
+<b class="nc">&nbsp;			System.out.print(&quot;Exit [Y] | Login [ENTER]: &quot;);</b>
+<b class="nc">&nbsp;			Scanner in = new Scanner(System.in);</b>
+<b class="nc">&nbsp;			String choice = in.nextLine();</b>
+<b class="nc">&nbsp;			if (choice.equals(&quot;Y&quot;) || choice.equals(&quot;y&quot;)) {</b>
+<b class="nc">&nbsp;				System.out.println(&quot;Closing the app...&quot;);</b>
+<b class="nc">&nbsp;				System.exit(0);</b>
+&nbsp;			}
+<b class="nc">&nbsp;		}</b>
+&nbsp;	}
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-06-26 03:35</div>
+</div>
+</body>
+</html>

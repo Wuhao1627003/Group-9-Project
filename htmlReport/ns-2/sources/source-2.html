@@ -1,0 +1,219 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > Fund</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">org</a>
+</div>
+
+<h1>Coverage Summary for Class: Fund (org)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Fund</td>
+<td class="coverageStat">
+  <span class="percent">
+    88.9%
+  </span>
+  <span class="absValue">
+    (8/9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    78.6%
+  </span>
+  <span class="absValue">
+    (22/28)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">Fund$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    72.7%
+  </span>
+  <span class="absValue">
+    (8/11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    73.3%
+  </span>
+  <span class="absValue">
+    (22/30)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package org;
+&nbsp;
+&nbsp;import java.util.*;
+&nbsp;
+&nbsp;public class Fund {
+&nbsp;
+&nbsp;	private final String id;
+&nbsp;	private final String name;
+&nbsp;	private final String description;
+&nbsp;	private final long target;
+&nbsp;	private List&lt;Donation&gt; donations;
+&nbsp;	private final Map&lt;String, Long[]&gt; aggregateDonations;
+&nbsp;
+<b class="fc">&nbsp;	public Fund(String id, String name, String description, long target) {</b>
+&nbsp;		// Check id value
+<b class="fc">&nbsp;		if (id.matches(&quot;\\w+&quot;)) {</b>
+<b class="fc">&nbsp;			this.id = id;</b>
+&nbsp;		} else {
+<b class="nc">&nbsp;			throw new IllegalArgumentException(&quot;[Invalid id] word without spaces and special characters.&quot;);</b>
+&nbsp;		}
+&nbsp;
+&nbsp;		// Check name value
+<b class="fc">&nbsp;		if (name.matches(&quot;[A-Za-z0-9\\s]*&quot;)) {</b>
+<b class="fc">&nbsp;			this.name = name;</b>
+&nbsp;		} else {
+<b class="nc">&nbsp;			throw new IllegalArgumentException(&quot;[Invalid name] word without special characters.&quot;);</b>
+&nbsp;		}
+&nbsp;
+<b class="fc">&nbsp;		this.description = description;</b>
+&nbsp;
+<b class="fc">&nbsp;		this.target = target;</b>
+&nbsp;
+<b class="fc">&nbsp;		donations = new LinkedList&lt;&gt;();</b>
+&nbsp;
+<b class="fc">&nbsp;		aggregateDonations = new HashMap&lt;&gt;();</b>
+&nbsp;
+&nbsp;	}
+&nbsp;
+&nbsp;	public String getId() {
+<b class="fc">&nbsp;		return id;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public String getName() {
+<b class="fc">&nbsp;		return name;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public String getDescription() {
+<b class="fc">&nbsp;		return description;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public long getTarget() {
+<b class="fc">&nbsp;		return target;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void setDonations(List&lt;Donation&gt; donations) {
+<b class="fc">&nbsp;		this.donations = donations;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public List&lt;Donation&gt; getDonations() {
+<b class="fc">&nbsp;		return donations;</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public void calAggregateDonations() {
+<b class="fc">&nbsp;		for (Donation donation : donations) {</b>
+<b class="fc">&nbsp;			String contributorName = donation.getContributorName();</b>
+<b class="fc">&nbsp;			if (!aggregateDonations.containsKey(contributorName)) {</b>
+<b class="fc">&nbsp;				aggregateDonations.put(contributorName, new Long[]{Long.valueOf(0), Long.valueOf(0)});</b>
+&nbsp;			}
+&nbsp;			//for each key:first long represents the donation count
+<b class="fc">&nbsp;			aggregateDonations.get(contributorName)[0]++;</b>
+&nbsp;			//the second long represents the donation amount;
+<b class="fc">&nbsp;			aggregateDonations.get(contributorName)[1] += donation.getAmount();</b>
+<b class="fc">&nbsp;		}</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	public List&lt;Map.Entry&lt;String, Long[]&gt;&gt; getAggregateDonations() {
+<b class="nc">&nbsp;		List&lt;Map.Entry&lt;String, Long[]&gt;&gt; entryList =</b>
+<b class="nc">&nbsp;				new ArrayList&lt;Map.Entry&lt;String, Long[]&gt;&gt;(aggregateDonations.entrySet());</b>
+&nbsp;
+&nbsp;		// Sort the list based on values in descending order
+<b class="nc">&nbsp;		Collections.sort(entryList, new Comparator&lt;Map.Entry&lt;String, Long[]&gt;&gt;() {</b>
+&nbsp;			@Override
+&nbsp;			public int compare(Map.Entry&lt;String, Long[]&gt; o1, Map.Entry&lt;String, Long[]&gt; o2) {
+&nbsp;				// Compare values in descending order
+<b class="nc">&nbsp;				return o2.getValue()[1].compareTo(o1.getValue()[1]);</b>
+&nbsp;			}
+&nbsp;		});
+<b class="nc">&nbsp;		return entryList;</b>
+&nbsp;	}
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-06-26 03:35</div>
+</div>
+</body>
+</html>

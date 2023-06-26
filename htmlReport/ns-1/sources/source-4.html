@@ -1,0 +1,296 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > DataManager_checkUniqueLoginName_Test</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">&lt;empty package name&gt;</a>
+</div>
+
+<h1>Coverage Summary for Class: DataManager_checkUniqueLoginName_Test (&lt;empty package name&gt;)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">DataManager_checkUniqueLoginName_Test</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (11/11)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">DataManager_checkUniqueLoginName_Test$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (1/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    25%
+  </span>
+  <span class="absValue">
+    (1/4)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">DataManager_checkUniqueLoginName_Test$2</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (1/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    25%
+  </span>
+  <span class="absValue">
+    (1/4)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">DataManager_checkUniqueLoginName_Test$3</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    75%
+  </span>
+  <span class="absValue">
+    (3/4)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">DataManager_checkUniqueLoginName_Test$4</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    75%
+  </span>
+  <span class="absValue">
+    (3/4)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">DataManager_checkUniqueLoginName_Test$5</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/2)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    87.5%
+  </span>
+  <span class="absValue">
+    (14/16)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    72.4%
+  </span>
+  <span class="absValue">
+    (21/29)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;import org.WebClient;
+&nbsp;import org.junit.Test;
+&nbsp;
+&nbsp;import java.util.Map;
+&nbsp;import java.util.Objects;
+&nbsp;
+&nbsp;import static org.junit.Assert.assertFalse;
+&nbsp;import static org.junit.Assert.assertTrue;
+&nbsp;
+<b class="fc">&nbsp;public class DataManager_checkUniqueLoginName_Test {</b>
+&nbsp;    @Test(expected = IllegalArgumentException.class)
+&nbsp;    public void testIllegalArgument1() {
+<b class="fc">&nbsp;        DataManager dm = new DataManager(new WebClient(&quot;localhost&quot;, 3001) {</b>
+&nbsp;            @Override
+&nbsp;            public String makeRequest(String resource, Map&lt;String, Object&gt; queryParams) {
+<b class="nc">&nbsp;                if (Objects.equals(resource, &quot;/findOrgByName&quot;)) {</b>
+<b class="nc">&nbsp;                    return &quot;{\&quot;status\&quot;:\&quot;success\&quot;,\&quot;data\&quot;:{\&quot;_id\&quot;:\&quot;123\&quot;,\&quot;name\&quot;:\&quot;new org\&quot;,\&quot;description\&quot;:\&quot;this is the new org\&quot;, &quot;</b>
+&nbsp;                            +
+&nbsp;                            &quot;\&quot;funds\&quot;: [{\&quot;_id\&quot;:\&quot;12345\&quot;,\&quot;name\&quot;:\&quot;new fund\&quot;,\&quot;description\&quot;:\&quot;this is the new fund\&quot;,\&quot;target\&quot;:10000,&quot;
+&nbsp;                            +
+&nbsp;                            &quot;\&quot;donations\&quot;:[{\&quot;contributor\&quot;:\&quot;1\&quot;, \&quot;amount\&quot;:1, \&quot;date\&quot;:\&quot;2023-06-05T23:00:59.238Z\&quot;}]}]}}&quot;;
+&nbsp;                }
+<b class="nc">&nbsp;                return null;</b>
+&nbsp;            }
+&nbsp;        });
+&nbsp;
+<b class="fc">&nbsp;        dm.checkUniqueLoginName(null);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test(expected = IllegalArgumentException.class)
+&nbsp;    public void testIllegalIdArgument2() {
+<b class="fc">&nbsp;        DataManager dm = new DataManager(new WebClient(&quot;localhost&quot;, 3001) {</b>
+&nbsp;            @Override
+&nbsp;            public String makeRequest(String resource, Map&lt;String, Object&gt; queryParams) {
+<b class="nc">&nbsp;                if (Objects.equals(resource, &quot;/findOrgByName&quot;)) {</b>
+<b class="nc">&nbsp;                    return &quot;{\&quot;status\&quot;:\&quot;success\&quot;,\&quot;data\&quot;:{\&quot;_id\&quot;:\&quot;123\&quot;,\&quot;name\&quot;:\&quot;new org\&quot;,\&quot;description\&quot;:\&quot;this is the new org\&quot;, &quot;</b>
+&nbsp;                            +
+&nbsp;                            &quot;\&quot;funds\&quot;: [{\&quot;_id\&quot;:\&quot;12345\&quot;,\&quot;name\&quot;:\&quot;new fund\&quot;,\&quot;description\&quot;:\&quot;this is the new fund\&quot;,\&quot;target\&quot;:10000,&quot;
+&nbsp;                            +
+&nbsp;                            &quot;\&quot;donations\&quot;:[{\&quot;contributor\&quot;:\&quot;1\&quot;, \&quot;amount\&quot;:1, \&quot;date\&quot;:\&quot;2023-06-05T23:00:59.238Z\&quot;}]}]}}&quot;;
+&nbsp;                }
+<b class="nc">&nbsp;                return null;</b>
+&nbsp;            }
+&nbsp;        });
+&nbsp;
+<b class="fc">&nbsp;        dm.checkUniqueLoginName(&quot;123@&quot;);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testSuccessfulCreate() {
+<b class="fc">&nbsp;        DataManager dm = new DataManager(new WebClient(&quot;localhost&quot;, 3001) {</b>
+&nbsp;            @Override
+&nbsp;            public String makeRequest(String resource, Map&lt;String, Object&gt; queryParams) {
+<b class="fc">&nbsp;                if (Objects.equals(resource, &quot;/findOrgByName&quot;)) {</b>
+<b class="fc">&nbsp;                    return &quot;{\&quot;status\&quot;:\&quot;success\&quot;,\&quot;data\&quot;:{\&quot;_id\&quot;:\&quot;123\&quot;,\&quot;name\&quot;:\&quot;new org\&quot;,\&quot;description\&quot;:\&quot;this is the new org\&quot;, &quot;</b>
+&nbsp;                            +
+&nbsp;                            &quot;\&quot;funds\&quot;: [{\&quot;_id\&quot;:\&quot;12345\&quot;,\&quot;name\&quot;:\&quot;new fund\&quot;,\&quot;description\&quot;:\&quot;this is the new fund\&quot;,\&quot;target\&quot;:10000,&quot;
+&nbsp;                            +
+&nbsp;                            &quot;\&quot;donations\&quot;:[{\&quot;contributor\&quot;:\&quot;1\&quot;, \&quot;amount\&quot;:1, \&quot;date\&quot;:\&quot;2023-06-05T23:00:59.238Z\&quot;}]}]}}&quot;;
+&nbsp;                }
+<b class="nc">&nbsp;                return null;</b>
+&nbsp;            }
+&nbsp;        });
+<b class="fc">&nbsp;        assertTrue(dm.checkUniqueLoginName(&quot;123&quot;));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test
+&nbsp;    public void testFailedCreate() {
+<b class="fc">&nbsp;        DataManager dm = new DataManager(new WebClient(&quot;localhost&quot;, 3001) {</b>
+&nbsp;            @Override
+&nbsp;            public String makeRequest(String resource, Map&lt;String, Object&gt; queryParams) {
+<b class="fc">&nbsp;                if (Objects.equals(resource, &quot;/findOrgByName&quot;)) {</b>
+<b class="fc">&nbsp;                    return &quot;{\&quot;status\&quot;:\&quot;error\&quot;,\&quot;data\&quot;: null}&quot;;</b>
+&nbsp;                }
+<b class="nc">&nbsp;                return null;</b>
+&nbsp;            }
+&nbsp;        });
+<b class="fc">&nbsp;        assertFalse(dm.checkUniqueLoginName(&quot;123&quot;));</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Test(expected = IllegalStateException.class)
+&nbsp;    public void testIllegalStateException() {
+<b class="fc">&nbsp;        DataManager dm = new DataManager(new WebClient(&quot;localhost&quot;, 3001) {</b>
+&nbsp;            @Override
+&nbsp;            public String makeRequest(String resource, Map&lt;String, Object&gt; queryParams) {
+<b class="fc">&nbsp;                return null;</b>
+&nbsp;            }
+&nbsp;        });
+<b class="fc">&nbsp;        dm.checkUniqueLoginName(&quot;123&quot;);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-06-26 03:35</div>
+</div>
+</body>
+</html>

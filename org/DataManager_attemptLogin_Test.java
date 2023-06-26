@@ -98,4 +98,42 @@ public class DataManager_attemptLogin_Test {
 
 		Organization org = dm.attemptLogin("chrism", "IamChris");
 	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testIllegalIdArgument1() {
+		DataManager dm = new DataManager(new WebClient("localhost", 3001) {
+			@Override
+			public String makeRequest(String resource, Map<String, Object> queryParams) {
+				if (Objects.equals(resource, "/findOrgByLoginAndPassword")) {
+					return "{\"status\":\"success\",\"data\":{\"_id\":\"123\",\"name\":\"new org\",\"description\":\"this is the new org\", "
+							+
+							"\"funds\": [{\"_id\":\"12345\",\"name\":\"new fund\",\"description\":\"this is the new fund\",\"target\":10000,"
+							+
+							"\"donations\":[{\"contributor\":\"1\", \"amount\":1, \"date\":\"2023-06-05T23:00:59.238Z\"}]}]}}";
+				}
+				return null;
+			}
+		});
+
+		dm.attemptLogin("chrism@", "IamChris");
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testIllegalIdArgument2() {
+		DataManager dm = new DataManager(new WebClient("localhost", 3001) {
+			@Override
+			public String makeRequest(String resource, Map<String, Object> queryParams) {
+				if (Objects.equals(resource, "/findOrgByLoginAndPassword")) {
+					return "{\"status\":\"success\",\"data\":{\"_id\":\"123\",\"name\":\"new org\",\"description\":\"this is the new org\", "
+							+
+							"\"funds\": [{\"_id\":\"12345\",\"name\":\"new fund\",\"description\":\"this is the new fund\",\"target\":10000,"
+							+
+							"\"donations\":[{\"contributor\":\"1\", \"amount\":1, \"date\":\"2023-06-05T23:00:59.238Z\"}]}]}}";
+				}
+				return null;
+			}
+		});
+
+		dm.attemptLogin("chrism", "IamChris@");
+	}
 }

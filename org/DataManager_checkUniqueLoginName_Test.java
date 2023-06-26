@@ -9,7 +9,7 @@ import static org.junit.Assert.assertTrue;
 
 public class DataManager_checkUniqueLoginName_Test {
     @Test(expected = IllegalArgumentException.class)
-    public void testIllegalArgument() {
+    public void testIllegalArgument1() {
         DataManager dm = new DataManager(new WebClient("localhost", 3001) {
             @Override
             public String makeRequest(String resource, Map<String, Object> queryParams) {
@@ -28,7 +28,7 @@ public class DataManager_checkUniqueLoginName_Test {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testIllegalIdArgument() {
+    public void testIllegalIdArgument2() {
         DataManager dm = new DataManager(new WebClient("localhost", 3001) {
             @Override
             public String makeRequest(String resource, Map<String, Object> queryParams) {
@@ -64,7 +64,7 @@ public class DataManager_checkUniqueLoginName_Test {
         assertTrue(dm.checkUniqueLoginName("123"));
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void testFailedCreate() {
         DataManager dm = new DataManager(new WebClient("localhost", 3001) {
             @Override

@@ -462,16 +462,10 @@ public class DataManager {
 		}
 
 		String status = (String) json.get("status");
-		if (status.equals("error")) {
-			throw new IllegalStateException("[Error in communicating with server] fail to find " +
-					"Organization by name");
-		}
-
 		JSONObject data = (JSONObject) json.get("data");
 		if (status.equals("success") && data != null) {
 			return true;
 		}
-
 		return false;
 	}
 
