@@ -433,20 +433,24 @@ public class DataManager {
 	}
 
 	/**
-	 * This method checks whether an Organization's loginName already exits using
-	 * the
-	 * /findOrgByName endpoint
-	 * in the API
+	 * This method checks whether an Organization's login name already exits using
+	 * the /findOrgByName endpoint in the API
 	 *
 	 * @return true if already exits, false otherwise
 	 */
-	public boolean checkUniqueLoginName(String name) {
-		if (name == null) {
+	public boolean checkUniqueLoginName(String login) {
+		if (login == null) {
 			throw new IllegalArgumentException("[Invalid Input] login name cannot be empty" +
 					".");
 		}
 		Map<String, Object> map = new HashMap<>();
-		map.put("login", name);
+
+		if (login.matches("\\w+")) {
+			map.put("login", login);
+		} else {
+			throw new IllegalArgumentException("[Invalid login ID] word without spaces and special characters.");
+		}
+
 		String response = client.makeRequest("/findOrgByName", map);
 		JSONParser parser = new JSONParser();
 		JSONObject json = null;
