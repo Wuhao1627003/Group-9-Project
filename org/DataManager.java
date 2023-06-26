@@ -319,44 +319,118 @@ public class DataManager {
 		}
 	}
 
-	/**
-	 * This method updates a new password in the database using the /updatePassword
-	 * endpoint
-	 * in the API
-	 *
-	 * @return true if update is successful, false othersie
-	 */
-	public boolean updatePassword(String id, String password) {
-		if (id == null || password == null) {
-			throw new IllegalArgumentException("[Invalid Input] orgID or password cannot be empty" +
-					".");
-		}
+    /**
+     * This method updates a new password in the database using the /updatePassword endpoint
+     * in the API
+     *
+     * @return true if update is successful, false othersie
+     */
+    public boolean updatePassword(String id, String password) {
+        if (id == null || password == null) {
+            throw new IllegalArgumentException("[Invalid Input] orgID or password cannot be empty" +
+                    ".");
+        }
 
-		if (!id.matches("\\w+")) {
-			throw new IllegalArgumentException(
-					"[Invalid organization ID] word without spaces and special characters.");
-		}
+        if (!id.matches("\\w+")) {
+            throw new IllegalArgumentException(
+                    "[Invalid organization ID] word without spaces and special characters.");
+        }
 
-		Map<String, Object> map = new HashMap<>();
-		map.put("id", id);
-		map.put("password", password);
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", id);
+        map.put("password", password);
 
-		String response = client.makeRequest("/updatePassword", map);
-		JSONParser parser = new JSONParser();
-		JSONObject json = null;
-		try {
-			json = (JSONObject) parser.parse(response);
-		} catch (Exception e) {
-			throw new IllegalStateException("[Error in communicating with server] fail to update " +
-					"password");
-		}
+        String response = client.makeRequest("/updatePassword", map);
+        JSONParser parser = new JSONParser();
+        JSONObject json = null;
+        try {
+            json = (JSONObject) parser.parse(response);
+        } catch (Exception e) {
+            throw new IllegalStateException("[Error in communicating with server] fail to update " +
+                    "password");
+        }
 
-		String status = (String) json.get("status");
-		if (status.equals("success")) {
-			return true;
-		} else {
-			return false;
-		}
 
-	}
+        String status = (String) json.get("status");
+        if (status.equals("success")) {
+            return true;
+        } else{
+            return false;
+        }
+
+    }
+
+    /**
+     * This method checks whether an Organization's loginName already exits using the
+     * /findOrgByName endpoint
+     * in the API
+     *
+     * @return true if already exits, false othersie
+     */
+     public boolean checkUniqueLoginName(String name) {
+         if (name == null) {
+             throw new IllegalArgumentException("[Invalid Input] login name cannot be empty" +
+                     ".");
+         }
+         Map<String, Object> map = new HashMap<>();
+         map.put("login", name);
+         String response = client.makeRequest("/findOrgByName", map);
+         JSONParser parser = new JSONParser();
+         JSONObject json = null;
+         try {
+             json = (JSONObject) parser.parse(response);
+         } catch (Exception e) {
+             throw new IllegalStateException("[Error in communicating with server] fail to find " +
+                     "Organization by name");
+         }
+
+         String status = (String) json.get("status");
+         if (status.equals("error")) {
+             throw new IllegalStateException("[Error in communicating with server] fail to find " +
+                     "Organization by name");
+         }
+
+         JSONObject data = (JSONObject)json.get("data");
+         if(status.equals("success") && data != null) {
+             return true;
+         }
+
+        return false;
+     }
+
+    /**
+     * This method creates a new organization in the database using the /createOrg endpoint
+     * in the API
+     *
+     * @return true if successful; false if unsuccessful
+     */
+    public boolean createOrg(String login, String password, String name, String description) {
+        if (login == null || password == null || name == null || description == null) {
+            throw new IllegalArgumentException("[Invalid Input] login, password, name and " +
+                    "description" +
+                    " cannot be empty" +
+                    ".");
+        }
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("login", login);
+        map.put("password", password);
+        map.put("name", name);
+        map.put("description", description);
+
+        String response = client.makeRequest("/createOrg", map);
+        JSONParser parser = new JSONParser();
+        JSONObject json = null;
+        try {
+            json = (JSONObject) parser.parse(response);
+        } catch (Exception e) {
+            throw new IllegalStateException("[Error in communicating with server] fail to create " +
+                    "a new organization");
+        }
+        String status = (String) json.get("status");
+        if(status.equals("success")) {
+            return true;
+        }
+        return false;
+    }
 }
