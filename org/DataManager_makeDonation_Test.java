@@ -1,4 +1,4 @@
-//package org;
+package org;
 
 import org.Donation;
 import org.WebClient;
@@ -8,9 +8,76 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class DataManager_makeDonation_Test {
+	private final DataManager validDataManager = new DataManager(new WebClient("localhost", 3001) {
+		@Override
+		public String makeRequest(String resource, Map<String, Object> queryParams) {
+			if (Objects.equals(resource, "/findFundById")) {
+				return "{\"status\":\"success\",\"data\":{\"target\":100,\"_id\":\"funId\",\"name\":\"testFund\","
+						+ "\"description\":\"test fund\",\"org\":\"0\",\"donations\":"
+						+ "[{\"_id\":\"donId\",\"contributor\":\"conId\",\"fund\":\"funId\",\"date\":\"2023-06-04T06:28:58.218Z\",\"amount\":30,\"__v\":0}],\"__v\":0}}";
+			} else if (Objects.equals(resource, "/makeDonation")) {
+				return "{\"status\":\"success\",\"data\":{\"_id\":\"1\",\"contributor\":\"conId\","
+						+ "\"fund\":\"funId\",\"date\":\"2023-06-26T04:20:55.651Z\",\"amount\":1,\"__v\":0}}";
+			} else if (Objects.equals(resource, "/findContributorNameById")) {
+				return "{\"status\":\"success\",\"data\":\"Chris\"}";
+			}
+			return null;
+		}
+	});
+	private final DataManager nullStringDataManager = new DataManager(new WebClient("localhost", 3001) {
+		@Override
+		public String makeRequest(String resource, Map<String, Object> queryParams) {
+			if (Objects.equals(resource, "/findContributorNameById")) {
+				return "{\"status\":\"success\",\"data\":\"Chris\"}";
+			}
+			return null;
+		}
+	});
+	private final DataManager emptyFundDataManager = new DataManager(new WebClient("localhost", 3001) {
+		@Override
+		public String makeRequest(String resource, Map<String, Object> queryParams) {
+			if (Objects.equals(resource, "/makeDonation")) {
+				return "{\"status\":\"success\",\"data\":{\"_id\":\"1\",\"contributor\":\"conId\","
+						+ "\"fund\":\"funId\",\"date\":\"2023-06-26T04:20:55.651Z\",\"amount\":1,\"__v\":0}}";
+			} else if (Objects.equals(resource, "/findFundById")) {
+				return "";
+			} else if (Objects.equals(resource, "/findContributorNameById")) {
+				return "{\"status\":\"success\",\"data\":\"Chris\"}";
+			}
+			return null;
+		}
+	});
+	private final DataManager failedDonationDataManager = new DataManager(new WebClient("localhost", 3001) {
+		@Override
+		public String makeRequest(String resource, Map<String, Object> queryParams) {
+			if (Objects.equals(resource, "/makeDonation")) {
+				return "{\"status\":\"failed\"}";
+			} else if (Objects.equals(resource, "/findFundById")) {
+				return "";
+			} else if (Objects.equals(resource, "/findContributorNameById")) {
+				return "{\"status\":\"success\",\"data\":\"Chris\"}";
+			}
+			return null;
+		}
+	});
+	private final DataManager failedFindDataManager = new DataManager(new WebClient("localhost", 3001) {
+		@Override
+		public String makeRequest(String resource, Map<String, Object> queryParams) {
+			if (Objects.equals(resource, "/makeDonation")) {
+				return "{\"status\":\"success\",\"data\":{\"_id\":\"1\",\"contributor\":\"conId\","
+						+ "\"fund\":\"funId\",\"date\":\"2023-06-26T04:20:55.651Z\",\"amount\":1,\"__v\":0}}";
+			} else if (Objects.equals(resource, "/findFundById")) {
+				return "{\"status\":\"failed\"}";
+			} else if (Objects.equals(resource, "/findContributorNameById")) {
+				return "{\"status\":\"success\",\"data\":\"Chris\"}";
+			}
+			return null;
+		}
+	});
+
 	@Test(expected = IllegalArgumentException.class)
 	public void testEmptyContributorId() {
 		validDataManager.makeDonation("", "1", "10");
@@ -64,75 +131,4 @@ public class DataManager_makeDonation_Test {
 		assertEquals("funId", donation.getFundId());
 		assertEquals(30, donation.getAmount());
 	}
-
-	private final DataManager validDataManager = new DataManager(new WebClient("localhost", 3001) {
-		@Override
-		public String makeRequest(String resource, Map<String, Object> queryParams) {
-			if (Objects.equals(resource, "/findFundById")) {
-				return "{\"status\":\"success\",\"data\":{\"target\":100,\"_id\":\"funId\",\"name\":\"testFund\","
-						+ "\"description\":\"test fund\",\"org\":\"0\",\"donations\":"
-						+ "[{\"_id\":\"donId\",\"contributor\":\"conId\",\"fund\":\"funId\",\"date\":\"2023-06-04T06:28:58.218Z\",\"amount\":30,\"__v\":0}],\"__v\":0}}";
-			} else if (Objects.equals(resource, "/makeDonation")) {
-				return "{\"status\":\"success\",\"data\":{\"_id\":\"1\",\"contributor\":\"conId\","
-						+ "\"fund\":\"funId\",\"date\":\"2023-06-26T04:20:55.651Z\",\"amount\":1,\"__v\":0}}";
-			} else if (Objects.equals(resource, "/findContributorNameById")) {
-				return "{\"status\":\"success\",\"data\":\"Chris\"}";
-			}
-			return null;
-		}
-	});
-
-	private final DataManager nullStringDataManager = new DataManager(new WebClient("localhost", 3001) {
-		@Override
-		public String makeRequest(String resource, Map<String, Object> queryParams) {
-			if (Objects.equals(resource, "/findContributorNameById")) {
-				return "{\"status\":\"success\",\"data\":\"Chris\"}";
-			}
-			return null;
-		}
-	});
-
-	private final DataManager emptyFundDataManager = new DataManager(new WebClient("localhost", 3001) {
-		@Override
-		public String makeRequest(String resource, Map<String, Object> queryParams) {
-			if (Objects.equals(resource, "/makeDonation")) {
-				return "{\"status\":\"success\",\"data\":{\"_id\":\"1\",\"contributor\":\"conId\","
-						+ "\"fund\":\"funId\",\"date\":\"2023-06-26T04:20:55.651Z\",\"amount\":1,\"__v\":0}}";
-			} else if (Objects.equals(resource, "/findFundById")) {
-				return "";
-			} else if (Objects.equals(resource, "/findContributorNameById")) {
-				return "{\"status\":\"success\",\"data\":\"Chris\"}";
-			}
-			return null;
-		}
-	});
-
-	private final DataManager failedDonationDataManager = new DataManager(new WebClient("localhost", 3001) {
-		@Override
-		public String makeRequest(String resource, Map<String, Object> queryParams) {
-			if (Objects.equals(resource, "/makeDonation")) {
-				return "{\"status\":\"failed\"}";
-			} else if (Objects.equals(resource, "/findFundById")) {
-				return "";
-			} else if (Objects.equals(resource, "/findContributorNameById")) {
-				return "{\"status\":\"success\",\"data\":\"Chris\"}";
-			}
-			return null;
-		}
-	});
-
-	private final DataManager failedFindDataManager = new DataManager(new WebClient("localhost", 3001) {
-		@Override
-		public String makeRequest(String resource, Map<String, Object> queryParams) {
-			if (Objects.equals(resource, "/makeDonation")) {
-				return "{\"status\":\"success\",\"data\":{\"_id\":\"1\",\"contributor\":\"conId\","
-						+ "\"fund\":\"funId\",\"date\":\"2023-06-26T04:20:55.651Z\",\"amount\":1,\"__v\":0}}";
-			} else if (Objects.equals(resource, "/findFundById")) {
-				return "{\"status\":\"failed\"}";
-			} else if (Objects.equals(resource, "/findContributorNameById")) {
-				return "{\"status\":\"success\",\"data\":\"Chris\"}";
-			}
-			return null;
-		}
-	});
 }

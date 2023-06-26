@@ -1,6 +1,5 @@
-//package org;
+package org;
 
-import org.WebClient;
 import org.junit.Test;
 
 import java.util.Map;

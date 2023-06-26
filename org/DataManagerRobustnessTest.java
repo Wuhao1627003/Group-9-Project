@@ -1,11 +1,6 @@
-//package org;
-
-import static org.junit.Assert.*;
-
-import java.util.Map;
+package org;
 
 import org.WebClient;
-
 import org.junit.Test;
 
 import java.util.Map;

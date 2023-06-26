@@ -1,11 +1,4 @@
-//package org;
-
-import java.util.*;
-
-import org.Donation;
-import org.Fund;
-import org.Organization;
-import org.WebClient;
+package org;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -120,7 +113,7 @@ public class DataManager {
 	 * This method uses the /findContributorNameById endpoint in the API.
 	 *
 	 * @return the name of the contributor on success; null if no contributor is
-	 *         found
+	 * found
 	 */
 	public String getContributorName(String id) {
 		// ID is null
@@ -345,13 +338,8 @@ public class DataManager {
 			throw new IllegalStateException("[Error in communicating with server] fail to update password.");
 		}
 
-
 		String status = (String) json.get("status");
-		if (status.equals("success")) {
-			return true;
-		} else{
-			return false;
-		}
+		return status.equals("success");
 
 	}
 
@@ -387,27 +375,23 @@ public class DataManager {
 			throw new IllegalStateException("[Error in communicating with server] fail to update password.");
 		}
 
-
 		String status = (String) json.get("status");
-		if (status.equals("success")) {
-			return true;
-		} else{
-			return false;
-		}
+		return status.equals("success");
 
 	}
 
-    /**
-     * This method updates a new password in the database using the /updatePassword endpoint
-     * in the API
-     *
-     * @return true if update is successful, false otherwise
-     */
-    public boolean updatePassword(String id, String password) {
-        if (id == null || password == null) {
-            throw new IllegalArgumentException("[Invalid Input] orgID or password cannot be empty" +
-                    ".");
-        }
+	/**
+	 * This method updates a new password in the database using the /updatePassword
+	 * endpoint
+	 * in the API
+	 *
+	 * @return true if update is successful, false otherwise
+	 */
+	public boolean updatePassword(String id, String password) {
+		if (id == null || password == null) {
+			throw new IllegalArgumentException("[Invalid Input] orgID or password cannot be empty" +
+					".");
+		}
 
 		if (!id.matches("\\w+")) {
 			throw new IllegalArgumentException(
@@ -425,7 +409,7 @@ public class DataManager {
 			json = (JSONObject) parser.parse(response);
 		} catch (Exception e) {
 			throw new IllegalStateException("[Error in communicating with server] fail to update " +
-					"password");
+					"password: " + response);
 		}
 
 		String status = (String) json.get("status");
@@ -464,11 +448,7 @@ public class DataManager {
 		}
 
 		JSONObject data = (JSONObject) json.get("data");
-		if (status.equals("success") && data != null) {
-			return true;
-		}
-
-		return false;
+		return status.equals("success") && data != null;
 	}
 
 	/**
@@ -502,9 +482,6 @@ public class DataManager {
 					"a new organization");
 		}
 		String status = (String) json.get("status");
-		if (status.equals("success")) {
-			return true;
-		}
-		return false;
+		return status.equals("success");
 	}
 }

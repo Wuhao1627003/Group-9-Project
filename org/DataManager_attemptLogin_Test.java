@@ -1,4 +1,4 @@
-//package org;
+package org;
 
 import org.Donation;
 import org.Fund;

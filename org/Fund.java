@@ -8,8 +8,8 @@ public class Fund {
 	private final String name;
 	private final String description;
 	private final long target;
+	private Map<String, Long[]> aggregateDonations;
 	private List<Donation> donations;
-	private final Map<String, Long[]> aggregateDonations;
 
 	public Fund(String id, String name, String description, long target) {
 		// Check id value
@@ -31,9 +31,6 @@ public class Fund {
 		this.target = target;
 
 		donations = new LinkedList<>();
-
-		aggregateDonations = new HashMap<>();
-
 	}
 
 	public String getId() {
@@ -52,15 +49,16 @@ public class Fund {
 		return target;
 	}
 
-	public void setDonations(List<Donation> donations) {
-		this.donations = donations;
-	}
-
 	public List<Donation> getDonations() {
 		return donations;
 	}
 
+	public void setDonations(List<Donation> donations) {
+		this.donations = donations;
+	}
+
 	public void calAggregateDonations() {
+		aggregateDonations = new HashMap<>();
 		for (Donation donation : donations) {
 			String contributorName = donation.getContributorName();
 			if (!aggregateDonations.containsKey(contributorName)) {
