@@ -1,17 +1,12 @@
 //package org;
 
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
 import java.util.*;
 
 import org.Donation;
 import org.Fund;
 import org.Organization;
 import org.WebClient;
-=======
->>>>>>> 4ddd9ea20314836a09145b5ff2edab21266938bc
->>>>>>> Stashed changes
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -319,13 +314,10 @@ public class DataManager {
 	}
 
 	/**
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
 	 * This method updates the org name in the database using the
 	 * /updateOrgName endpoint in the API
 	 *
-	 * @return true if update is successful, false othersie
+	 * @return true if update is successful, false otherwise
 	 */
 	public boolean updateOrgName(String id, String name) {
 		if (id == null) {
@@ -367,7 +359,7 @@ public class DataManager {
 	 * This method updates the org description in the database using the
 	 * /updateOrgDescription endpoint in the API
 	 *
-	 * @return true if update is successful, false othersie
+	 * @return true if update is successful, false otherwise
 	 */
 	public boolean updateOrgDescription(String id, String description) {
 		if (id == null) {
@@ -409,30 +401,13 @@ public class DataManager {
      * This method updates a new password in the database using the /updatePassword endpoint
      * in the API
      *
-     * @return true if update is successful, false othersie
+     * @return true if update is successful, false otherwise
      */
     public boolean updatePassword(String id, String password) {
         if (id == null || password == null) {
             throw new IllegalArgumentException("[Invalid Input] orgID or password cannot be empty" +
                     ".");
         }
-=======
->>>>>>> Stashed changes
-	 * This method updates a new password in the database using the /updatePassword
-	 * endpoint
-	 * in the API
-	 *
-	 * @return true if update is successful, false othersie
-	 */
-	public boolean updatePassword(String id, String password) {
-		if (id == null || password == null) {
-			throw new IllegalArgumentException("[Invalid Input] orgID or password cannot be empty" +
-					".");
-		}
-<<<<<<< Updated upstream
-=======
->>>>>>> 4ddd9ea20314836a09145b5ff2edab21266938bc
->>>>>>> Stashed changes
 
 		if (!id.matches("\\w+")) {
 			throw new IllegalArgumentException(
@@ -463,7 +438,7 @@ public class DataManager {
 	 * /findOrgByName endpoint
 	 * in the API
 	 *
-	 * @return true if already exits, false othersie
+	 * @return true if already exits, false otherwise
 	 */
 	public boolean checkUniqueLoginName(String name) {
 		if (name == null) {

@@ -1,15 +1,7 @@
-<<<<<<< Updated upstream
-package org;
-=======
-<<<<<<< HEAD
 import org.Donation;
 import org.Fund;
 import org.Organization;
 import org.WebClient;
-=======
-package org;
->>>>>>> 4ddd9ea20314836a09145b5ff2edab21266938bc
->>>>>>> Stashed changes
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -183,53 +175,7 @@ public class UserInterface {
 			System.out.println(e);
 		}
 	}
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
-	
-=======
->>>>>>> Stashed changes
 
-	public void changePassword(DataManager ds, String login) {
-		System.out.println("Login successfully");
-		while (true) {
-			System.out.println("Would you like to change your password?(Y/N)");
-			String option = in.nextLine();
-			if (option.equals("N")) return;
-			if (option.equals("Y")) {
-				String password = userLoginPassword();
-				try {
-					Organization org = ds.attemptLogin(login, password);
-					String newPassword = userLoginNewPassword();
-					if (ds.updatePassword(org.getId(), newPassword)) {
-						System.out.println("password updated successfully");
-						break;
-					}
-				} catch (Exception e) {
-					System.out.println(e);
-				}
-			}
-		}
-	}
-
-	private String userLoginNewPassword() {
-		System.out.println("Please enter your new password");
-		String passwordOne = in.nextLine();
-		System.out.println("Please enter your new password again");
-		String passwordTwo = in.nextLine();
-
-		if (!passwordOne.equals(passwordTwo)) {
-			throw new IllegalStateException("New Password does not match");
-		}
-
-		return passwordOne;
-	}
-
-
-<<<<<<< Updated upstream
-=======
->>>>>>> 4ddd9ea20314836a09145b5ff2edab21266938bc
->>>>>>> Stashed changes
 	public void displayFund(int fundNumber) {
 
 		Fund fund = org.getFunds().get(fundNumber - 1);
@@ -316,9 +262,6 @@ public class UserInterface {
 		return password;
 	}
 
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
     private boolean editConfirm() {
         System.out.println("Confirm your change [Y/N]: ");
         while (true) {
@@ -479,9 +422,6 @@ public class UserInterface {
             }
         }
     }
-=======
->>>>>>> 4ddd9ea20314836a09145b5ff2edab21266938bc
->>>>>>> Stashed changes
 
 	public static void main(String[] args) {
 
@@ -498,15 +438,7 @@ public class UserInterface {
 					System.out.println("Login failed.");
 				} else {
 					UserInterface ui = new UserInterface(ds, org);
-<<<<<<< Updated upstream
-					ui.changePassword(ds, login);
-=======
-<<<<<<< HEAD
                     ui.orgAppMainMenu(ds, login);
-=======
-					ui.changePassword(ds, login);
->>>>>>> 4ddd9ea20314836a09145b5ff2edab21266938bc
->>>>>>> Stashed changes
 					ui.start();
 				}
 			} catch (IllegalStateException | IllegalArgumentException e) {
