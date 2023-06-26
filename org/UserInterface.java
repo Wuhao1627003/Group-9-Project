@@ -237,6 +237,7 @@ public class UserInterface {
 
 		if (option == 3) {
 			this.makeDonation(fund, fundNumber);
+			return;
 		}
 		List<Donation> donations = fund.getDonations();
 		List<Map.Entry<String, Long[]>> aggregateDonations = fund.getAggregateDonations();
@@ -275,6 +276,7 @@ public class UserInterface {
 				fund.setDonations(donations);
 				fund.calAggregateDonations();
 				printIndividualDonation(donations);
+				in.nextLine();
 				return;
 			} catch (IllegalStateException | IllegalArgumentException e) {
 				System.out.println(e.getMessage());

@@ -1,3 +1,5 @@
+package org;
+
 import org.WebClient;
 import org.junit.Test;
 
