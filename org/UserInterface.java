@@ -1,5 +1,6 @@
-package org;
-import java.text.DecimalFormat;
+import org.*;
+import org.DataManager;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -134,17 +135,39 @@ public class UserInterface {
 		}
 	}
 
-    public void changePassword() {
+    public void changePassword(DataManager ds, String login) {
         System.out.println("Login successfully");
         while (true) {
             System.out.println("Would you like to change your password?(Y/N)");
             String option = in.nextLine();
             if (option.equals("N")) return;
             if (option.equals("Y")) {
-                System.out.println("You are about to change your password");
-                break;
+                String password = userLoginPassword();
+                try {
+                    Organization org = ds.attemptLogin(login, password);
+                    String newPassword = userLoginNewPassword();
+                    if (ds.updatePassword(org.getId(), newPassword)) {
+                        System.out.println("password updated successfully");
+                        break;
+                    };
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
             }
         }
+    }
+
+    private String userLoginNewPassword() {
+        System.out.println("Please enter your new password");
+        String passwordOne = in.nextLine();
+        System.out.println("Please enter your new password again");
+        String passwordTwo = in.nextLine();
+
+        if (!passwordOne.equals(passwordTwo)) {
+            throw new IllegalStateException("New Password does not match");
+        }
+
+        return passwordOne;
     }
 	
 	
@@ -251,7 +274,7 @@ public class UserInterface {
 				}
 				else {
 					UserInterface ui = new UserInterface(ds, org);
-                    ui.changePassword();
+                    ui.changePassword(ds, login);
 					ui.start();
 				}
 			} catch (IllegalStateException | IllegalArgumentException e) {

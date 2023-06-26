@@ -112,6 +112,8 @@ public class DataManager {
 		}
 	}
 
+
+
 	/**
 	 * Look up the name of the contributor with the specified ID.
 	 * This method uses the /findContributorNameById endpoint in the API.
@@ -232,4 +234,45 @@ public class DataManager {
 			throw e;
 		}
 	}
+
+    /**
+     * This method updates a new password in the database using the /updatePassword endpoint
+     * in the API
+     *
+     * @return true if update is successful, false othersie
+     */
+    public boolean updatePassword(String id, String password) {
+        if (id == null || password == null) {
+            throw new IllegalArgumentException("[Invalid Input] orgID or password cannot be empty" +
+                    ".");
+        }
+
+        if (!id.matches("\\w+")) {
+            throw new IllegalArgumentException(
+                    "[Invalid organization ID] word without spaces and special characters.");
+        }
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", id);
+        map.put("password", password);
+
+        String response = client.makeRequest("/updatePassword", map);
+        JSONParser parser = new JSONParser();
+        JSONObject json = null;
+        try {
+            json = (JSONObject) parser.parse(response);
+        } catch (Exception e) {
+            throw new IllegalStateException("[Error in communicating with server] fail to update " +
+                    "password");
+        }
+
+
+        String status = (String) json.get("status");
+        if (status.equals("success")) {
+            return true;
+        } else{
+            return false;
+        }
+
+    }
 }

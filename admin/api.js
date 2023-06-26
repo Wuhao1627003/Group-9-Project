@@ -30,6 +30,28 @@ app.use('/findOrgByLoginAndPassword', (req, res) => {
     });
 
 /*
+Handle the form submission to update an password to org
+*/
+app.use('/updatePassword', (req, res) => {
+
+	var filter = {"_id" : req.query.id};
+
+	var update = {"password" : req.query.password};
+	
+	var action = { "$set" : update };
+
+	Organization.findOneAndUpdate( filter, action, { new : true }, (err, result) => {
+		if (err || result==null) {
+		    res.json({ "status": "error", "data" : err});
+		}
+		else {
+		    res.json({ "status": "success", "data" : result});
+		}
+	    });
+    });
+
+
+/*
 Create a new fund
 */
 app.use('/createFund', (req, res) => {
