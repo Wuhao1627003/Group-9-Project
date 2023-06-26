@@ -51,6 +51,48 @@ app.use('/updatePassword', (req, res) => {
     });
 
 /*
+Handle the form submission to update a name to org
+*/
+app.use('/updateOrgName', (req, res) => {
+
+	var filter = {"_id" : req.query.id};
+
+	var update = {"name" : req.query.name};
+
+	var action = { "$set" : update };
+
+	Organization.findOneAndUpdate( filter, action, { new : true }, (err, result) => {
+		if (err || result==null) {
+		    res.json({ "status": "error", "data" : err});
+		}
+		else {
+		    res.json({ "status": "success", "data" : result});
+		}
+	    });
+    });
+
+/*
+Handle the form submission to update a description to org
+*/
+app.use('/updateOrgDescription', (req, res) => {
+
+	var filter = {"_id" : req.query.id};
+
+	var update = {"description" : req.query.description};
+
+	var action = { "$set" : update };
+
+	Organization.findOneAndUpdate( filter, action, { new : true }, (err, result) => {
+		if (err || result==null) {
+		    res.json({ "status": "error", "data" : err});
+		}
+		else {
+		    res.json({ "status": "success", "data" : result});
+		}
+	    });
+    });
+
+/*
 create a new organization
 */
 app.use('/createOrg', (req, res) => {

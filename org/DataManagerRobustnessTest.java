@@ -1,5 +1,16 @@
-package org;
+//package org;
 
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+import static org.junit.Assert.*;
+
+import java.util.Map;
+
+import org.WebClient;
+=======
+>>>>>>> 4ddd9ea20314836a09145b5ff2edab21266938bc
+>>>>>>> Stashed changes
 import org.junit.Test;
 
 import java.util.Map;
@@ -30,8 +41,18 @@ public class DataManagerRobustnessTest {
 
 		dm = new DataManager(new WebClient("localhost", 3001));
 		dm.attemptLogin(null, "password");
+<<<<<<< Updated upstream
 		fail("DataManager.attemptLogin does not throw IllegalArgumentxception when login is null");
 
+=======
+<<<<<<< HEAD
+		fail("DataManager.attemptLogin does not throw IllegalArgumentException when login is null");
+		
+=======
+		fail("DataManager.attemptLogin does not throw IllegalArgumentxception when login is null");
+
+>>>>>>> 4ddd9ea20314836a09145b5ff2edab21266938bc
+>>>>>>> Stashed changes
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -39,8 +60,18 @@ public class DataManagerRobustnessTest {
 
 		dm = new DataManager(new WebClient("localhost", 3001));
 		dm.attemptLogin("login", null);
+<<<<<<< Updated upstream
 		fail("DataManager.attemptLogin does not throw IllegalArgumentxception when password is null");
 
+=======
+<<<<<<< HEAD
+		fail("DataManager.attemptLogin does not throw IllegalArgumentException when password is null");
+		
+=======
+		fail("DataManager.attemptLogin does not throw IllegalArgumentxception when password is null");
+
+>>>>>>> 4ddd9ea20314836a09145b5ff2edab21266938bc
+>>>>>>> Stashed changes
 	}
 
 	@Test(expected = IllegalStateException.class)
@@ -114,8 +145,18 @@ public class DataManagerRobustnessTest {
 
 		dm = new DataManager(new WebClient("localhost", 3001));
 		dm.getContributorName(null);
+<<<<<<< Updated upstream
 		fail("DataManager.getContributorName does not throw IllegalArgumentxception when id is null");
 
+=======
+<<<<<<< HEAD
+		fail("DataManager.getContributorName does not throw IllegalArgumentException when id is null");
+		
+=======
+		fail("DataManager.getContributorName does not throw IllegalArgumentxception when id is null");
+
+>>>>>>> 4ddd9ea20314836a09145b5ff2edab21266938bc
+>>>>>>> Stashed changes
 	}
 
 	@Test(expected = IllegalStateException.class)
@@ -131,7 +172,7 @@ public class DataManagerRobustnessTest {
 	@Test(expected = IllegalStateException.class)
 	public void testGetContributorName_WebClientReturnsNull() {
 
-		dm = new DataManager(new WebClient("locahost", 3001) {
+		dm = new DataManager(new WebClient("localhost", 3001) {
 			@Override
 			public String makeRequest(String resource, Map<String, Object> queryParams) {
 				return null;
@@ -191,8 +232,18 @@ public class DataManagerRobustnessTest {
 
 		dm = new DataManager(new WebClient("localhost", 3001));
 		dm.createFund(null, "name", "description", 100);
+<<<<<<< Updated upstream
 		fail("DataManager.createFund does not throw IllegalArgumentxception when orgId is null");
 
+=======
+<<<<<<< HEAD
+		fail("DataManager.createFund does not throw IllegalArgumentException when orgId is null");
+		
+=======
+		fail("DataManager.createFund does not throw IllegalArgumentxception when orgId is null");
+
+>>>>>>> 4ddd9ea20314836a09145b5ff2edab21266938bc
+>>>>>>> Stashed changes
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -200,8 +251,18 @@ public class DataManagerRobustnessTest {
 
 		dm = new DataManager(new WebClient("localhost", 3001));
 		dm.createFund("orgId", null, "description", 100);
+<<<<<<< Updated upstream
 		fail("DataManager.createFund does not throw IllegalArgumentxception when name is null");
 
+=======
+<<<<<<< HEAD
+		fail("DataManager.createFund does not throw IllegalArgumentException when name is null");
+		
+=======
+		fail("DataManager.createFund does not throw IllegalArgumentxception when name is null");
+
+>>>>>>> 4ddd9ea20314836a09145b5ff2edab21266938bc
+>>>>>>> Stashed changes
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -209,8 +270,18 @@ public class DataManagerRobustnessTest {
 
 		dm = new DataManager(new WebClient("localhost", 3001));
 		dm.createFund("orgId", "name", null, 100);
+<<<<<<< Updated upstream
 		fail("DataManager.createFund does not throw IllegalArgumentxception when description is null");
 
+=======
+<<<<<<< HEAD
+		fail("DataManager.createFund does not throw IllegalArgumentException when description is null");
+		
+=======
+		fail("DataManager.createFund does not throw IllegalArgumentxception when description is null");
+
+>>>>>>> 4ddd9ea20314836a09145b5ff2edab21266938bc
+>>>>>>> Stashed changes
 	}
 
 	@Test(expected = IllegalStateException.class)

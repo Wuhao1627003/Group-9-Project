@@ -1,4 +1,15 @@
+<<<<<<< Updated upstream
 package org;
+=======
+<<<<<<< HEAD
+import org.Donation;
+import org.Fund;
+import org.Organization;
+import org.WebClient;
+=======
+package org;
+>>>>>>> 4ddd9ea20314836a09145b5ff2edab21266938bc
+>>>>>>> Stashed changes
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -172,6 +183,12 @@ public class UserInterface {
 			System.out.println(e);
 		}
 	}
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+	
+=======
+>>>>>>> Stashed changes
 
 	public void changePassword(DataManager ds, String login) {
 		System.out.println("Login successfully");
@@ -209,6 +226,10 @@ public class UserInterface {
 	}
 
 
+<<<<<<< Updated upstream
+=======
+>>>>>>> 4ddd9ea20314836a09145b5ff2edab21266938bc
+>>>>>>> Stashed changes
 	public void displayFund(int fundNumber) {
 
 		Fund fund = org.getFunds().get(fundNumber - 1);
@@ -295,6 +316,172 @@ public class UserInterface {
 		return password;
 	}
 
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+    private boolean editConfirm() {
+        System.out.println("Confirm your change [Y/N]: ");
+        while (true) {
+            String choice = in.nextLine();
+            if (choice.equals("Y") || choice.equals("y")) {
+                return true;
+            } else if (choice.equals("N") || choice.equals("n")) {
+                return false;
+            }
+            System.out.println("Please enter [Y/N]: ");
+        }
+    }
+
+    private String userNewDescription() {
+        System.out.println("Please enter the new organization description: ");
+        String newDescription = in.nextLine();
+        if(editConfirm()) {
+            return newDescription;
+        } else {
+            return null;
+        }
+    }
+
+    private String userNewName() {
+        while (true) {
+            System.out.println("Please enter the new organization name: ");
+            String newName = in.nextLine();
+
+            // Check name value
+            if (newName.matches("[A-Za-z0-9\\s]*")) {
+                if(editConfirm()) {
+                    return newName;
+                } else {
+                    return null;
+                }
+            } else {
+                throw new IllegalArgumentException("[Invalid org name] word without special characters.");
+            }
+        }
+    }
+
+    private String userLoginNewPassword() {
+        while (true) {
+            System.out.println("Please enter your new password: ");
+            String passwordOne = in.nextLine();
+            System.out.println("Please enter your new password again: ");
+            String passwordTwo = in.nextLine();
+
+            if (passwordOne.equals(passwordTwo)) {
+                return passwordOne;
+            } else {
+                throw new IllegalStateException("New Password does not match.");
+            }
+        }
+    }
+
+    public boolean changeAccountInfo(DataManager ds, String login, int editInfoFlag) {
+        String password = userLoginPassword();
+        try {
+            Organization org = ds.attemptLogin(login, password);
+            if (editInfoFlag == 2) {
+                String newName = userNewName();
+                if (newName != null && ds.updateOrgName(org.getId(), newName)) {
+                    System.out.println("Name updated successfully.");
+                    return true;
+                }
+            } else if (editInfoFlag == 3) {
+                String newDescription = userNewDescription();
+                if (newDescription != null && ds.updateOrgDescription(org.getId(), newDescription)) {
+                    System.out.println("Description updated successfully.");
+                    return true;
+                }
+            } else {
+                String newName = userNewName();
+                String newDescription = userNewDescription();
+                boolean nameFlag = false;
+                boolean desFlag = false;
+
+                if (newName != null && ds.updateOrgName(org.getId(), newName)) {
+                    nameFlag = true;
+                }
+
+                if (newDescription != null && ds.updateOrgDescription(org.getId(), newDescription)) {
+                    desFlag = true;
+                }
+
+                if (nameFlag && desFlag) {
+                    System.out.println("Name and description updated successfully.");
+                    return true;
+                } else if (nameFlag && !desFlag) {
+                    System.out.println("Only name updated successfully; description updated failed.");
+                    return true;
+                } else if (!nameFlag && desFlag) {
+                    System.out.println("Only description updated successfully; name updated failed.");
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+            return false;
+        }
+        return false;
+    }
+
+    public boolean changePassword(DataManager ds, String login) {
+        String password = userLoginPassword();
+        try {
+            Organization org = ds.attemptLogin(login, password);
+            String newPassword = userLoginNewPassword();
+            if (ds.updatePassword(org.getId(), newPassword)) {
+                System.out.println("Password updated successfully.");
+                return true;
+            };
+        } catch (Exception e) {
+            System.out.println(e);
+            return false;
+        }
+        return false;
+    }
+
+    public void orgAppMainMenu(DataManager ds, String login) {
+        System.out.println("Login successfully");
+        while (true) {
+            System.out.println("================== MENU ==================");
+            System.out.println("1 - Change Password");
+            System.out.println("2 - Edit Organization Name");
+            System.out.println("3 - Edit Organization Description");
+            System.out.println("4 - Edit Organization Name and Description");
+            System.out.println("==========================================");
+            System.out.println("Please enter your option: ");
+            String option = in.nextLine();
+            if (option.equals("1")) {
+                try {
+                    changePassword(ds, login);
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+            } else if (option.equals("2")) {
+                try {
+                    changeAccountInfo(ds, login, 2);
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+            } else if (option.equals("3")) {
+                try {
+                    changeAccountInfo(ds, login, 3);
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+            } else if (option.equals("4")) {
+                try {
+                    changeAccountInfo(ds, login, 4);
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+            } else {
+                System.out.println("[BAD INPUT] Please enter the corresponding number of the options.");
+            }
+        }
+    }
+=======
+>>>>>>> 4ddd9ea20314836a09145b5ff2edab21266938bc
+>>>>>>> Stashed changes
 
 	public static void main(String[] args) {
 
@@ -305,14 +492,21 @@ public class UserInterface {
 			String login = userLoginID();
 			String password = userLoginPassword();
 
-
 			try {
 				Organization org = ds.attemptLogin(login, password);
 				if (org == null) {
 					System.out.println("Login failed.");
 				} else {
 					UserInterface ui = new UserInterface(ds, org);
+<<<<<<< Updated upstream
 					ui.changePassword(ds, login);
+=======
+<<<<<<< HEAD
+                    ui.orgAppMainMenu(ds, login);
+=======
+					ui.changePassword(ds, login);
+>>>>>>> 4ddd9ea20314836a09145b5ff2edab21266938bc
+>>>>>>> Stashed changes
 					ui.start();
 				}
 			} catch (IllegalStateException | IllegalArgumentException e) {

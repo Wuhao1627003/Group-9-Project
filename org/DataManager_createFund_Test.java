@@ -1,11 +1,22 @@
-package org;
+//package org;
 
 import org.junit.Test;
 
 import java.util.Map;
 
+<<<<<<< Updated upstream
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+=======
+<<<<<<< HEAD
+import org.Fund;
+import org.WebClient;
+import org.junit.Test;
+=======
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+>>>>>>> 4ddd9ea20314836a09145b5ff2edab21266938bc
+>>>>>>> Stashed changes
 
 public class DataManager_createFund_Test {
 
